@@ -1,0 +1,15 @@
+deployment:
+  tasks:
+    # - export DEPLOYPATH=/home/radijmdg/fenfitnepal/ #this is demo
+    - export DEPLOYPATH=/home/kantggjb/industry/ #this is original
+    - /bin/cp -r accounts $DEPLOYPATH
+    - /bin/cp -r faq $DEPLOYPATH
+    - /bin/cp -r fdip $DEPLOYPATH
+    - /bin/cp -r fonts $DEPLOYPATH
+    - /bin/cp -r industry $DEPLOYPATH
+    - /bin/cp -r pdf_gen $DEPLOYPATH
+    - /bin/cp -r report $DEPLOYPATH
+    - /bin/cp -r static $DEPLOYPATH
+    - /bin/cp -r templates $DEPLOYPATH
+  
+  
