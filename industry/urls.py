@@ -16,5 +16,5 @@ urlpatterns = [
     path('download/csv/', views.industry_csv, name="download-csv"),
     
     path('download/pdf/', views.pdf_report_create, name='download-pdf'),
-    path('index/', views.index)
+    path('index/', views.index, name="index"), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
