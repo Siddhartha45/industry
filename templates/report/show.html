@@ -1,0 +1,29 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+<div class="container my-5">
+    <div class="kit-row">
+        <h2 class="kit-page-heading">Report Details ( रिपोर्ट विवरण )</h2>
+        <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> Report Detail</div>
+    </div>
+
+    <div class="kit-form-container">
+        <div class="row">
+            <h2 class="kit-page-sm-heading">Report Details ( रिपोर्ट विवरण )</h2>
+        </div>
+
+        <div class="row">
+            <p>{{ report.message }}</p>
+        </div>
+
+        <div class="row">
+            <h2 class="kit-page-sm-heading">Report Image ( रिपोर्ट तस्बिर )</h2>
+        </div>
+
+        <div class="row report-img">
+            <img src="{{ report.issue_image.url }}" alt="">
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec my-5">
+        <div class="kit-row">
+            <h2 class="kit-page-heading">My Account ( मेरो खाता )</h2>
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> My Account</div>
+        </div>
+
+        <div class="kit-form-container">
+            <div class="kit-row">
+                <div class="kit-user">
+                    <div class="kit-user-icon">{{ user.fullname|first }}</div>
+                    <div class="kit-user-detail">
+                        <h2>{{ user.fullname }}</h2>
+                        <p class="kit-user-info"><span>Username:</span>{{ user.username }}</p>
+                        <p class="kit-user-info mbl-kit-user-info">
+                            <span>Email:  {{ user.email }}</span>
+                            <span>Mobile No:  {{ user.phone_no }}</span> 
+                        </p>
+                    </div>
+                </div>
+                <div class="kit-btn-container kit-user-btn-container">
+                    <a href="" class="kit-btn kit-view-btn mbl-kit-btn"><img src="{% static '/image/change.png' %}" alt="">Change Password</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}

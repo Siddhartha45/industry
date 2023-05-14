@@ -1,0 +1,325 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec my-5">
+        <div class="kit-row">
+            <h2 class="kit-page-heading">Add Industry Profile ( उद्योग जोड्नुहोस् )</h2>
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> Add
+                Industry Profile</div>
+        </div>
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        <div class="kit-form-container">
+            <h2 class="kit-page-heading">Industry Details ( उद्योग विवरण )</h2>
+            <form action="{% url 'add-industry' %}" method="post" enctype="multipart/form-data" id="form-upload">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उद्योग नाम( Industry Name )</label>
+                        <input type="text" class="form-control kit-form-control" placeholder="Enter your Industry Name" name="industry_name" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उद्योग दर्ता नम्बर(Industry Registration No)</label>
+                        <input type="text" class="form-control kit-form-control" placeholder="Enter Industry Registration No" name="industry_reg_no" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उद्योग दर्ता मिति(Registration Date)</label>
+                        <div class="input-container">
+                            <img class="login-icon-right" src="../image/dateVector.png" alt="">
+                            <input type="date" class="form-control kit-form-control"
+                                placeholder="Enter Registration Date" name="reg_date" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">प्रोप्राइटरको नाम (Owner’s Name)</label>
+                        <input type="text" class="form-control kit-form-control" placeholder="Enter Owner’s Name" name="owner_name" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">लिङ्ग (Sex)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="sex" required>
+                            <option value="" selected disabled>Select Sex</option>
+                            {% for key,value in data.sex %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">जाती (Caste) </label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="caste" required>
+                            <option value="" selected disabled>Select Caste</option>
+                            {% for key,value in data.cas %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">ठेगाना (Address)</label>
+                        <input type="text" class="form-control kit-form-control"
+                            placeholder="Enter Address" name="address" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">फोन नं.(Telephone no.)</label>
+                        <input type="text" class="form-control kit-form-control"
+                            placeholder="Enter Telephone no." name="telephone_number" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">सम्पर्क व्यक्ति (Contact Person)</label>
+                        <input type="text" class="form-control kit-form-control"
+                            placeholder="Enter Contact Person" name="contact_person" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">मोबाइल नं (Mobile No.)</label>
+                        <input type="text" class="form-control kit-form-control"
+                            placeholder="Enter Mobile No." name="mobile_number" required>
+                    </div>
+                </div>
+
+                <h2 class="kit-page-heading mt-5">Industry Address ( उद्योग ठेगाना )</h2>
+                <div class="kit-industry-detail mb-4">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <label class="form-label kit-form-label">जिल्ला (District)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter District" name="district" required>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Local Body" name="local_body" required>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label kit-form-label">वडा नं.(Ward No.)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Ward No." name="ward_no" required>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label kit-form-label">गाउँ/टोल/बस्ती (Settlement)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Settlement" name="settlement" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 kit-location-container">
+                        <div class="col-sm-10">
+                            <label class="form-label kit-form-label">Industry Address ( उद्योगको ठेगाना
+                                )</label>
+                            <div class="kit-input-icon">
+                                <img src="{% static '/image/search.png' %}" alt="">
+                                <input type="text" class="form-control kit-form-control kit-form-location"
+                                    placeholder="Search Location" id="us2-address">
+                                <input type="text" id="us2-lat" hidden name="latitude"/>
+                                <input type="text" id="us2-lon" hidden name="longitude"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 mbl-hide">
+                            <button class="kit-form-button">Reset</button>
+                        </div>
+                    </div>
+                    <div class="row mb-3 kit-map">
+                        <div class="col-sm-12 kit-map-container" id="maparea"></div>
+                    </div>
+                    <div class="col-sm-2 mbl-show">
+                        <button class="kit-form-button">Reset</button>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label class="form-label kit-form-label">उत्पादनको नाम (Product Description)</label>
+                        <textarea name="product_description" class="form-control kit-form-control kit-form-textarea" id="" cols="30"
+                            rows="100" placeholder="Enter Product Description" required></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">लगानीको प्रकृतिको आधारमा उद्योग(Industry in accordance
+                            to Investment)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="investment" required>
+                            <option value="" selected disabled>Select Investment Type</option>
+                            {% for key,value in data.inv %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उद्योगको स्वामित्व (Ownership)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="ownership" required>
+                            <option value="" selected disabled>Select Ownership</option>
+                            {% for key,value in data.own %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">कच्चा पदार्थको स्रोत ( Source of Raw Materials)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="raw_material_source" required>
+                            <option value="" selected disabled>Source of Raw Materials</option>
+                            {% for key,value in data.raw %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance
+                            to Product)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="industry_acc_product" required>
+                            <option value="" selected disabled>Select Type of Product</option>
+                            {% for key,value in data.top %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">उद्योगको वर्तमान अवस्था(Current Status)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_status" required>
+                            <option value="" selected disabled>Current Status</option>
+                            {% for key,value in data.cs %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label kit-form-label">कुन क्षमतामा उद्योग संचालनमा छ? (Current Running Capacity)</label>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_running_capacity" required>
+                            <option value="" selected disabled>Current Running Capacity</option>
+                            {% for key,value in data.ca %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label class="form-label kit-form-label">मेशिन औजारको विवरण (Machinery Tool)</label>
+                        <textarea name="machinery_tool" class="form-control kit-form-control kit-form-textarea" id="" cols="30"
+                            rows="100" placeholder="Enter Machinery Description" required></textarea>
+                    </div>
+                </div>
+
+                <h2 class="kit-page-heading mt-5">उत्पादनको विवरण (Product Description)</h2>
+                <div class="kit-industry-detail mb-4">
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">वस्तु वा सेवाको नाम(Product Service Name)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Product Service Name" name="product_service_name" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">वार्षिक उत्पादन क्षमता(Yearly Capacity)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Yearly Capacity" name="yearly_capacity" required>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="kit-page-heading mt-5">रोजगारीको अवस्था (Employment)</h2>
+                <div class="kit-industry-detail mb-4">
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">जम्मा जनशक्ति संख्या (Total Manpower)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Total Manpower" name="total_manpower" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">विदेशी जनशक्ति संख्या(Foreign)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Foreign Manpower" name="foreign" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">दक्ष जनशक्ति संख्या(Skill full)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Skillfull Manpower" name="skillfull" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">पुरुष जनशक्ति संख्या(Male)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Male Manpower" name="male" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">अदक्ष जनशक्ति संख्या(Unskilled)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Unskilled Manpower" name="unskilled" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">महिला जनशक्ति संख्या(Female)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Female Manpower" name="female" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">स्वदेशी जनशक्ति संख्या(Indigenous)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter Number of Indigenous Manpower" name="indigenous" required>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="kit-page-heading mt-5">पूँजीको अवस्था (Capital)</h2>
+                <div class="kit-industry-detail mb-4">
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <label class="form-label kit-form-label">स्थिर पूँजी (Fixed Capital)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Rs." name="fixed_capital" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label kit-form-label">चालु पूँजी (Current Capital)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Rs." name="current_capital" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label kit-form-label">जम्मा पूँजी (Total Capital)</label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Rs." name="total_capital" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label class="form-label kit-form-label">Industry Photo ( उद्योग तस्विर
+                            )</label>
+                        <input type="file" class="form-control kit-form-control kit-file-control" id="inputImage" accept="image/*" multiple name="photo" required >
+                        <p id="kit-text-preview" class="mt-3">Image Preview</p>
+                        <div class="img-thumbs img-thumbs-hidden" id="img-preview"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <button class="kit-form-button">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block customjs %}
+    <script src="{% static '/js/locationpicker.js' %}"></script>
+    <script src="{% static '/js/imagepreview.js' %}"></script>
+{% endblock %}
+
+
+
+    
+    

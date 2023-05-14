@@ -1,0 +1,33 @@
+0000000000000000000000000000000000000000 0fb923d84306ab0802020f493d2b37c8cb1f50ad Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683189891 +0545	branch: Created from HEAD
+0fb923d84306ab0802020f493d2b37c8cb1f50ad 2671e1acca464de6c5982e73ea2ac35e3ed3fb1c Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683190399 +0545	commit: added venv
+2671e1acca464de6c5982e73ea2ac35e3ed3fb1c 7e506e57767973274b1521ab0a3ed5c928994d28 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683193103 +0545	commit: added gunicorn
+7e506e57767973274b1521ab0a3ed5c928994d28 af807692d066ad7754df8b02308ce33fcc33f356 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683193441 +0545	commit: added allowed hosts
+af807692d066ad7754df8b02308ce33fcc33f356 fbc56eed7665f53278cf507973697436c931907e Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683193716 +0545	commit: .
+fbc56eed7665f53278cf507973697436c931907e 143c07b74930f27ec64b7f1868c5f9099a424b94 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683196652 +0545	commit: .
+143c07b74930f27ec64b7f1868c5f9099a424b94 53efa64bcf10ded0c9776bbeb79529ecf4dfc9da Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683197747 +0545	commit: static fix
+53efa64bcf10ded0c9776bbeb79529ecf4dfc9da ef6b46da5d19b8c6c1d7bca27bfb743f0f63a972 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683216855 +0545	commit: added superuser
+ef6b46da5d19b8c6c1d7bca27bfb743f0f63a972 d9086198b3746511b359e0ae9bfa417caaee67cc Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683217404 +0545	commit: superuser
+d9086198b3746511b359e0ae9bfa417caaee67cc bb428919b295fac90516f8be21a491eff9b28263 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683217970 +0545	commit: .
+bb428919b295fac90516f8be21a491eff9b28263 e398244fbb7422880a97d40bdf46fca207e83960 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683280958 +0545	commit: change password added
+e398244fbb7422880a97d40bdf46fca207e83960 4d9d3f793ad4ec982dc72d9bf6279503dc367a7a Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683283944 +0545	commit: .
+4d9d3f793ad4ec982dc72d9bf6279503dc367a7a 1c64c4ae0bec48ee66fb2757e102eaefd0f17175 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683387302 +0545	commit (merge): faq complete
+1c64c4ae0bec48ee66fb2757e102eaefd0f17175 c744bfcda2fdb2bef6b6842ad8977141ec51464d Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683387637 +0545	commit (merge): faq completed
+c744bfcda2fdb2bef6b6842ad8977141ec51464d fea7b7786a2e52a7cbde30a5a50c869257171446 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683450895 +0545	commit: forms
+fea7b7786a2e52a7cbde30a5a50c869257171446 bd56a071a951c973d99df6ecd63f7762faac4c82 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683451231 +0545	commit: edit
+bd56a071a951c973d99df6ecd63f7762faac4c82 72de06bfb48b888540de07fca0e444cb1bc993b3 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683452523 +0545	commit (merge): resolve conflicts
+72de06bfb48b888540de07fca0e444cb1bc993b3 e5000205ea0295ea26fda52e12b6d73fdcb9a99c Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683455704 +0545	commit: template
+e5000205ea0295ea26fda52e12b6d73fdcb9a99c 0d1497858b7be535c4a7c1dbfaa85eec0a669897 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683461491 +0545	commit: db
+0d1497858b7be535c4a7c1dbfaa85eec0a669897 9333d7aecc9c03c71d38c8894a0f0788ef3dfd72 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683461594 +0545	commit: db
+9333d7aecc9c03c71d38c8894a0f0788ef3dfd72 5fda0350b420d56eb545d44210effba09db216c1 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683461645 +0545	commit (merge): db
+5fda0350b420d56eb545d44210effba09db216c1 864f11f70570d0a9e69a94e1a80c600115631470 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683567586 +0545	commit: changes
+864f11f70570d0a9e69a94e1a80c600115631470 539eb3b6faf63f6f31bdd419b3fad2e9c9fcf38b Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683568366 +0545	commit (merge): .
+539eb3b6faf63f6f31bdd419b3fad2e9c9fcf38b fe8da202b83b56965e7ddb94a3c7d9b427240253 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683570835 +0545	commit: messages added
+fe8da202b83b56965e7ddb94a3c7d9b427240253 bc85c80784bcd4498b4beec5d883cc48e48fd8e3 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683611388 +0545	commit: c
+bc85c80784bcd4498b4beec5d883cc48e48fd8e3 2b6f7c61175935e208a996c05ae387333f3bc5c4 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683614655 +0545	commit: database
+2b6f7c61175935e208a996c05ae387333f3bc5c4 8b21a1bcfe1943edae89353180c37584e47a671f Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683620558 +0545	pull: Fast-forward
+8b21a1bcfe1943edae89353180c37584e47a671f b8a6776982b8c0f7c42a4f2d05ee88ef534b8d2e Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683622301 +0545	commit: changes
+b8a6776982b8c0f7c42a4f2d05ee88ef534b8d2e 89d8c10cedbeeef79df8df5d1b363db1431c26b7 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683622496 +0545	commit (merge): made change
+89d8c10cedbeeef79df8df5d1b363db1431c26b7 3962602b20a775aeb4eec4286bf324b2e40a0331 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683714589 +0545	commit: message
+3962602b20a775aeb4eec4286bf324b2e40a0331 c1348a1c06e0383efcc66b4c7280c0b14810880f Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683722913 +0545	commit (merge): added data in chart
+c1348a1c06e0383efcc66b4c7280c0b14810880f ab54bf379ec1fa6e3d9bb37886a00bf2fd35c4f2 Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683723127 +0545	commit: added data to chart
+ab54bf379ec1fa6e3d9bb37886a00bf2fd35c4f2 38fbbc75ac19e17639d4d98d6f9fbfa0f30136ef Siddhartha45 <87509046+Siddhartha45@users.noreply.github.com> 1683838152 +0545	commit: csv and excel

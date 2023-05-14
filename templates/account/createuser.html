@@ -1,0 +1,90 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec my-5">
+        <div class="kit-row">
+            {% if edit_id %}
+                <h2 class="kit-page-heading">Update Users Info( प्रयोगकर्ताहरू )</h2>
+            {% else %}
+                <h2 class="kit-page-heading">Create Admin Users ( प्रयोगकर्ताहरू )</h2>
+            {% endif %}    
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> Add
+                Industry Profile</div>
+        </div>
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        <div class="kit-form-container">
+            {% if edit_id %}
+                <form action="{% url 'user-create' id=edit_id %}" method="post">
+            {% else %}
+                <form action="{% url 'user-create' %}" method="post">
+            {% endif %}
+                {% csrf_token %}
+                <div class="kit-industry-detail">
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">Full Name </label>
+                            <input type="text" class="form-control kit-form-control"
+                                placeholder="Enter your Full Name" name="fullname" value="{{user_data.fullname}}" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">Username</label>
+                            <input type="text" class="form-control kit-form-control"
+                            placeholder="Create Username" name="username" value ="{{user_data.username}}" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">Email Address</label>
+                            <input type="email" class="form-control kit-form-control"
+                                placeholder="Enter your Email Address" name="email" value ="{{user_data.email}}" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label kit-form-label">Phone No.</label>
+                            <input type="text" class="form-control kit-form-control"
+                            placeholder="Enter a Valid  Phone Number" name="phone_no" value ="{{user_data.phone_no}}" required>
+                            {% if form.phone_no.errors %}
+                                {{ form.phone_no.errors }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="form-label kit-form-label">Role</label>
+                            <select class="form-select kit-form-control" aria-label="Default select example" name="role" required>
+                                <option value="" selected disabled>Select</option>
+                                {% for key,value in role %}
+                                    <option value="{{key}}" {% if user_data.role == key %} selected {% endif %}>{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="form-label kit-form-label">Creat New Password</label>
+                            <input type="password" class="form-control kit-form-control"
+                                placeholder="Create New Password" name="password" required>
+                                {% if form.password.errors %}
+                                    {{ form.password.errors }}
+                                {% endif %}
+                        </div>
+                    
+                    </div>
+
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        {% if edit_id %}
+                            <button class="kit-form-button">Save</button>
+                        {% else %}
+                            <button class="kit-form-button">Create User</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

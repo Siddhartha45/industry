@@ -1,0 +1,44 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec my-5">
+        <div class="kit-row">
+            <h2 class="kit-page-heading">Report a Problem ( समस्या रिपोर्ट गर्नुहोस् )</h2>
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> Report Problem</div>
+        </div>
+        
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+            
+        <div class="kit-form-container">
+            <h2 class="kit-page-heading">Report Form ( रिपोर्ट फरम )</h2>
+            <form action="{% url 'report' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="kit-industry-detail">
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="form-label kit-form-label">Message ( सन्देश )</label>
+                            <textarea class="form-control kit-form-control kit-textarea" name="message" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="form-label kit-form-label">Issue Image ( समस्याको फोटो )</label>
+                            <input type="file" class="form-control kit-form-control kit-file-control" id="inputImage" name="issue_image" required>
+                            <p id="kit-img-preview" class="mt-2">Image Preview</p>
+                            <img src="" id="displayImage" class="mt-1">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <button class="kit-form-button">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

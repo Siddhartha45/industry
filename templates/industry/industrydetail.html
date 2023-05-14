@@ -1,0 +1,264 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container my-5">
+        <div class="kit-row">
+            <h2 class="kit-page-heading">My Industry Details ( मेरो उद्योग विवरण )</h2>
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> My
+                Industry Detail</div>
+        </div>
+
+        <div class="kit-form-container">
+            <div class="kit-row mb-4">
+                <h2 class="kit-page-heading">Industry Details ( उद्योग विवरण )</h2>
+                
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                        
+                        <div class="carousel-inner">
+                            <!--<div class="carousel-item active">-->
+                                {% for photo in photos %}
+                                    <div class="carousel-item{% if forloop.first %} active {% endif %}">
+                                        <img src="{{photo.photo.url}}" class="d-block w-100" alt="...">
+                                        <div class="story-overlay"></div>
+                                    </div>
+                                {% endfor %}
+                            <!--<div class="carousel-item">
+                                <img src="{% static '/image/1.jpg' %}" class="d-block w-100" alt="...">
+                                <div class="story-overlay"></div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static '/image/3.jpg' %}" class="d-block w-100" alt="...">
+                                <div class="story-overlay"></div>
+                            </div>-->
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"><i
+                                    class="fa-solid fa-chevron-left"></i></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"><i
+                                    class="fa-solid fa-chevron-right"></i></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kit-row">
+                <h2 class="kit-smpage-heading">Industry Details ( उद्योग विवरण )</h2>
+                <div class="kit-btn-container">
+                    <a href="{% url 'edit-industry' industry_id=industry.id %}" class="kit-btn kit-info-btn"><img src="{% static '/image/edit.png' %}" alt="">Update Info</a>
+                </div>
+            </div>
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको नाम(Name of Industry)</p>
+                        <h2 class="kit-industry-content">{{ industry.industry_name }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योग दर्ता मिति (Industry Registration No)</p>
+                        <h2 class="kit-industry-content">{{ industry.industry_reg_no }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योग दर्ता मिति(Registration Date):</p>
+                        <h2 class="kit-industry-content">{{ industry.reg_date }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">प्रोप्राइटरको नाम (Owner’s Name)</p>
+                        <h2 class="kit-industry-content">{{ industry.owner_name }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">लिङ्ग (Sex)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_sex_display }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">जाती (Caste)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_caste_display }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">ठेगाना (Address)</p>
+                        <h2 class="kit-industry-content">{{ industry.address }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">फोन नं.(Telephone no.)</p>
+                        <h2 class="kit-industry-content">{{ industry.telephone_number }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">सम्पर्क व्यक्ति (Contact Person)</p>
+                        <h2 class="kit-industry-content">{{ industry.contact_person }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">मोबाइल नं (Mobile No.)</p>
+                        <h2 class="kit-industry-content">{{ industry.mobile_number }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-5">Industry Address ( उद्योग ठेगाना )</h2>
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">जिल्ला (District)</p>
+                        <h2 class="kit-industry-content">{{ industry.district }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">स्थानिय तह (Local Body)</p>
+                        <h2 class="kit-industry-content">{{ industry.local_body }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">वडा नं.(Ward No.)</p>
+                        <h2 class="kit-industry-content">{{ industry.ward_no }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">गाउँ/टोल/बस्ती (Settlement)p>
+                        <h2 class="kit-industry-content">{{ industry.settlement }}</h2>
+                    </div>
+                </div>
+                <div class="row kit-map">
+                    <p class="d-none" id="lat">{{ industry.latitude}}</p>
+                    <p class="d-none" id="long">{{ industry.longitude }}</p>
+                    <div class="col-sm-12 kit-map-container-view" id="maparea"></div>
+                </div>
+            </div>
+
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <p class="kit-industry-title">उद्योगले उत्पादन गर्ने बस्तु वा सेवाको विवरण (Product Description)
+                        </p>
+                        <h2 class="kit-industry-content">{{ industry.product_description }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">लगानीको प्रकृतिको आधारमा उद्योग(Industry in accordance to
+                            Investment)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_investment_display }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको स्वामित्व (Ownership)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_ownership_display }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">कच्चा पदार्थको स्रोत ( Source of Raw Materials)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_raw_material_source_display }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance to
+                            Product)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_industry_acc_product_display }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको वर्तमान अवस्था(Current Status)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_current_status_display }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">कुन क्षमतामा उद्योग संचालनमा छ? (Current Running Capacity)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_current_running_capacity_display }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <p class="kit-industry-title">मेशिन औजारको विवरण (Machinery Tool)</p>
+                        <h2 class="kit-industry-content">{{ industry.machinery_tool }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">उत्पादनको विवरण (Product Description)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">वस्तु वा सेवाको नाम(Product Service Name)</p>
+                        <h2 class="kit-industry-content">{{ industry.product_service_name }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">वार्षिक उत्पादन क्षमता(Yearly Capacity)</p>
+                        <h2 class="kit-industry-content">{{ industry.yearly_capacity }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">रोजगारीको अवस्था (Employment)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">जम्मा जनशक्ति संख्या (Total Manpower)</p>
+                        <h2 class="kit-industry-content">{{ industry.total_manpower }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">विदेशी जनशक्ति संख्या(Foreign)</p>
+                                        <h2 class="kit-industry-content">{{ industry.foreign }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">दक्ष जनशक्ति संख्या(Skill full)</p>
+                        <h2 class="kit-industry-content">{{ industry.skillfull }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">पुरुष जनशक्ति संख्या(Male)</p>
+                        <h2 class="kit-industry-content">{{ industry.male }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">अदक्ष जनशक्ति संख्या(Unskilled)</p>
+                        <h2 class="kit-industry-content">{{ industry.unskilled }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">महिला जनशक्ति संख्या(Female)</p>
+                        <h2 class="kit-industry-content">{{ industry.female }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">स्वदेशी जनशक्ति संख्या(Indigenous)</p>
+                        <h2 class="kit-industry-content">{{ industry.indigenous }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">पुंजीको अवस्था (Capital)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row mb-4">
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">स्थिर पूँजी (Fixed Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.fixed_capital }}</h2>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">चालु पूँजी (Current Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.current_capital }}</h2>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">जम्मा पूँजी (Total Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.total_capital }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customjs %}
+    <script src="{% static '/js/locationdisplay.js' %}"></script>
+{% endblock %}

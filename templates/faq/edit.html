@@ -1,0 +1,52 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+<div class="container my-5" style="min-height: 63vh;">
+    <div class="cng-pw-title d-flex justify-content-between mt-4">
+        <p class="kit-page-heading">Add Frequently Asked Question <span>( प्रायः सोधिने प्रश्न राख्नुहोस )</span>
+        </p>
+
+        <div class="kit-text-navigation">
+            <p>Applicant Portal<span> > </span> FAQs
+            </p>
+        </div>
+    </div>
+    
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+        
+    <div class="kit-form-container">
+        <h2 class="kit-page-sm-heading">Question Details ( प्रश्नको विवरण )</h2>
+        <form action="{% url 'faq-edit' faq.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-sm-12">
+                    <label class="form-label kit-form-label">प्रश्न( Question )</label>
+                    <input type="text" class="form-control kit-form-control" placeholder="Enter question" name="question" value={{faq.question}}>
+                </div>
+            </div>
+
+
+
+            <div class="row mb-3">
+                <div class="col-sm-12">
+                    <label class="form-label kit-form-label">उत्तर ( Answer )</label>
+                    <textarea name="answer" class="form-control kit-form-control kit-form-textarea" id="" cols="30"
+                        rows="100" placeholder="Enter answer">{{faq.answer}}</textarea>
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <button class="kit-form-button">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+</div>
+{% endblock %}

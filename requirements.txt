@@ -1,0 +1,8 @@
+Django==4.1
+djangorestframework==3.14.0
+email-validator==2.0.0.post2
+Pillow==9.5.0
+gunicorn
+mysqlclient==2.1.1
+xhtml2pdf==0.2.11
+xlwt==1.3.0

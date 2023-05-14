@@ -1,0 +1,54 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec">
+        <div class="cng-pw-title d-flex justify-content-between mt-4">
+            <p>Change Password <span>
+                    ( पासवर्ड परिवर्तन् )</span>
+            </p>
+
+            <div class="kit-text-navigation">
+                <p>Applicant Portal
+                    <span> > </span> Change Password
+                </p>
+            </div>
+        </div>
+        <div class="row  mb-4 mx-1 mbl-tbl">
+           <table class="report-view-table">
+            <tr>
+                <th>S.no</th>
+                <th>USER</th>
+                <th>Report Detailes</th>
+                <th>Action</th>
+
+              </tr>
+            {% for i in report %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.user.fullname }}</td>
+                <td>{{ i.message }}</td>
+                <td>
+                    <div class="d-flex kit-action-com">
+                        <div class="action-btn-view">
+                            <a href="{% url 'report-show' report_id=i.id%}"</a>
+                            <button>
+                                View
+                            </button>
+                        </div>
+                        <div class="action-btn-dlt">
+                            <a href="{% url 'report-delete' report_id=i.id %}" onclick="return confirm('Are you sure you want to delete this report?');" class="kit-card-link">
+                            <button>
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+            {% endfor %}
+           </table>
+        </div>
+    </div>
+{% endblock %}
+
+   

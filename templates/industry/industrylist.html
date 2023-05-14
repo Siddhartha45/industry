@@ -1,0 +1,190 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec">
+        <div class="cng-pw-title d-flex justify-content-between mt-4">
+            <p>Industries List<span>
+                    ( उद्योग सूची )</span>
+            </p>
+            {% for message in messages %}
+                    {{ message }}
+            {% endfor %}
+            <div class="kit-text-navigation">
+                <p>Applicant Portal
+                    <span> > </span> Change Password
+                </p>
+            </div>
+        </div>
+
+        <div class="table-top-bar d-flex ">
+
+
+
+            <div class="kit-input-icon industry-search" style="width:450px">
+                <img src="{% static '/image/search.png' %}" alt="">
+                <form action="{% url 'industry-list'%}" method="get">
+                
+                <input type="text" name="search" class="form-control kit-form-control kit-form-location" placeholder="Search Location"
+                    id="search">
+            </form>
+
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control" aria-label="Default select example" id="investmentInput">
+                    <option value="all" selected disabled>Investment</option>
+                    <option value="MINIATURE">लघु (Miniature)</option>
+                    <option value="DOMESTIC">घरेलु (Domestic)</option>
+                    <option value="SMALL">साना (Small)</option>
+                    <option value="MEDIUM">मझौला (Medium)</option>
+                    <option value="LARGE">ठुलो (Large)</option>
+                </select>
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control" aria-label="Default select example" id="productInput">
+                    <option value="all" selected disabled>Product</option>
+                    <option value="E">उर्जामूलक (Energy)</option>
+                    <option value="MF">उत्पादनमूलक (Manufacturing)</option>
+                    <option value="AF">कृषि तथा वन पैदावारमा आधारित </option>
+                    <option value="MI">खनिज(Mineral)</option>
+                    <option value="I">पूर्वाधार(Infrastructure)</option>
+                    <option value="T">पर्यटन(Tourism)</option>
+                    <option value="IC">सूचना तथा संचार प्रविधि</option>
+                    <option value="S">सेवामूलक(Service)</option>
+                    <option value="O">अन्य(Others)</option>
+                </select>
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control" aria-label="Default select example" id="ownershipInput">
+                    <option value="all" selected disabled>Ownership</option>
+                    <option value="PRIVATE">निजी (Private)</option>
+                    <option value="PARTNERSHIP">साझेदारी (Partnership)</option>
+                </select>
+            </div>
+        
+
+            <div class="kit-input-icon d-flex justify-content-between">
+                <button class="kit-form-button m-0 me-2 px-5" id="reset">Reset</button>
+
+                <div class="dropdown">
+                    <button class="kit-form-button m-0 px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex;
+                    justify-content: center;
+                    align-items: center;">
+                        <i class="fa-solid fa-download me-3"></i> Download
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#" target="_blank">PDF</a></li>
+                      <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
+                      <li><a class="dropdown-item" onclick="EXCELFilter()" href="#' %}">EXCEL</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="row  mb-4 mbl-tbl">
+
+            <table class="report-view-table" id="industryList">
+                <thead>
+                    <tr>
+                        <th>S.no</th>
+                        <th class="d-none">Investment</th>
+                        <th class="d-none">Product</th>
+                        <th class="d-none">Ownership</th>
+                        <th>indusrty name</th>
+                        <th>industry owner</th>
+                        <th>address</th>
+                        <th>Phone no.</th>
+                        <th class="hide_md">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for i in industry %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="d-none">{{ i.investment }}</td>
+                    <td class="d-none">{{ i.industry_acc_product }}</td>
+                    <td class="d-none">{{ i.ownership }}</td>
+                    <td>{{ i.industry_name }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.address }}</td>
+                    <td>{{ i.telephone_number }}</td>
+                    <td class="hide_md">
+                        <div class="d-flex kit-action-com">
+                            <div class="action-btn-view">
+                                <a href="{% url 'industry-profile' industry_id=i.id %}" class="kit-card-link">
+                                <button>
+                                    View
+                                </button>
+                                </a>
+                            </div>                          
+                            <div class="action-btn-pen">
+                                <a href="{% url 'edit-industry' industry_id=i.id %}" class="kit-card-link">
+                                <button>
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                </a>
+                            </div>
+                            <div class="action-btn-dlt">
+                                <a href="{% url 'industry-delete' industry_id=i.id %}" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
+                                <button>
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block customjs %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" /><script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="{% static '/js/tablesearch.js' %}"></script>
+    <script>
+        $(document).ready( function () {
+            $('#industryList').DataTable({
+                "dom": 'rtip'
+            });
+        } );
+
+    function CSVFilter(){
+        var investment = $("#investmentInput").val();
+        var ownership = $("#ownershipInput").val();
+        var industry_acc_product = $("#productInput").val();
+        var url = "{% url 'download-csv' %}?";
+        if (ownership) {
+            url += "ownership=" + ownership + "&";
+        }
+        if (investment) {
+            url += "investment=" + investment + "&";
+        }
+        if (industry_acc_product) {
+            url += "industry_acc_product=" + industry_acc_product + "&";
+        }
+        url = url.slice(0, -1);
+        window.location.href = url;
+    }
+
+    function EXCELFilter(){
+        var investment = $("#investmentInput").val();
+        var ownership = $("#ownershipInput").val();
+        var industry_acc_product = $("#productInput").val();
+        var url = "{% url 'download-excel' %}?";
+        if (ownership) {
+            url += "ownership=" + ownership + "&";
+        }
+        if (investment) {
+            url += "investment=" + investment + "&";
+        }
+        if (industry_acc_product) {
+            url += "industry_acc_product=" + industry_acc_product + "&";
+        }
+        url = url.slice(0, -1);
+        window.location.href = url;
+    }
+    
+    </script>    
+{% endblock %}

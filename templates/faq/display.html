@@ -1,0 +1,29 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+<div class="container my-5" style="min-height: 63vh;">
+    <div class="cng-pw-title d-flex justify-content-between mt-4">
+        <p>Frequently asked questions <span>( प्रायः सोधिने प्रश्नहरू )</span>
+        </p>
+
+        <div class="kit-text-navigation">
+            <p>Applicant Portal<span> > </span> FAQs
+            </p>
+        </div>
+    </div>
+    {% for f in faq %}
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ f.pk }}" aria-expanded="false" aria-controls="flush-collapse{{ f.pk }}">
+            {{ f.question }}
+            </button>
+        </h2>
+        <div id="flush-collapse{{ f.pk }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">{{ f.answer }}</div>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
