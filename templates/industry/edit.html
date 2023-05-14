@@ -3,13 +3,13 @@
 {% block container %}
     <div class="container main-sec my-5">
         <div class="kit-row">
-            <h2 class="kit-page-heading">Add Industry Profile ( उद्योग जोड्नुहोस् )</h2>
+            <h2 class="kit-page-heading">Update Industry Profile ( उद्योग जोड्नुहोस् )</h2>   
+            {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
             <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt=""> Add
                 Industry Profile</div>
         </div>
-        {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
 
         <div class="kit-form-container">
             <h2 class="kit-page-heading">Industry Details ( उद्योग विवरण )</h2>
@@ -129,8 +129,8 @@
                                 <img src="{% static '/image/search.png' %}" alt="">
                                 <input type="text" class="form-control kit-form-control kit-form-location"
                                     placeholder="Search Location" id="us2-address">
-                                <input type="text" id="us2-lat"  name="latitude" value="{{industry.latitude}}"/>
-                                <input type="text" id="us2-lon"  name="longitude" value="{{industry.longitude}}"/>
+                                <input type="text" id="us2-lat" hidden name="latitude" value="{{industry.latitude}}"/>
+                                <input type="text" id="us2-lon" hidden name="longitude" value="{{industry.longitude}}"/>
                             </div>
                         </div>
                         <div class="col-sm-2 mbl-hide">
@@ -362,7 +362,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-10"></div>
                     <div class="col-sm-2">
-                        <button class="kit-form-button">Submit</button>
+                        <button class="kit-form-button">Update</button>
                     </div>
                 </div>
             </form>

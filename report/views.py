@@ -81,6 +81,16 @@ def ImportExcel(request):
             male = 1
             female = 1
             
+            current_status_choice = row['current_status']
+            if current_status_choice == "सक्रिय":
+                current_status = "A"
+            elif current_status_choice == "निष्कृय":
+                current_status = "I"
+            else:
+                current_status == "error"
+            
+            
+            
             industry_name = row['industry_name']
             address = row['address']
             ward_no = row['ward_no']
@@ -91,8 +101,8 @@ def ImportExcel(request):
             fixed_capital = row['fixed_capital']
             current_capital = row['current_capital']
             total_capital = row['total_capital']
-            current_status = row['current_status']
-            female = male
+            current_status = current_status
+            female = female
             male = male
             
             data = {

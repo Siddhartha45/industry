@@ -153,6 +153,13 @@ def edit_industry(request, industry_id):
             return redirect('industry-list')
     else:
         form = IndustryForm(instance=industry)
+        
+    if form.errors:
+        for field in form:
+            if field.errors:
+                messages.error(request, 'रोजगारीको अवस्थामा नम्बर हाल्नुहोस!')
+                break
+        
     context = {
                 'form': form, 
                 'industry': industry, 

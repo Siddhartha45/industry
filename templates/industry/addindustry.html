@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">उद्योग दर्ता नम्बर(Industry Registration No)</label>
-                        <input type="text" class="form-control kit-form-control" placeholder="Enter Industry Registration No" name="industry_reg_no" required>
+                        <input type="text" class="form-control kit-form-control" placeholder="Enter Industry Registration No" name="industry_reg_no" >
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -30,7 +30,7 @@
                         <div class="input-container">
                             <img class="login-icon-right" src="../image/dateVector.png" alt="">
                             <input type="date" class="form-control kit-form-control"
-                                placeholder="Enter Registration Date" name="reg_date" required>
+                                placeholder="Enter Registration Date" name="reg_date" >
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -41,7 +41,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">लिङ्ग (Sex)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="sex" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="sex" >
                             <option value="" selected disabled>Select Sex</option>
                             {% for key,value in data.sex %}
                                     <option value="{{key}}">{{value}}</option>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">जाती (Caste) </label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="caste" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="caste" >
                             <option value="" selected disabled>Select Caste</option>
                             {% for key,value in data.cas %}
                                     <option value="{{key}}">{{value}}</option>
@@ -62,24 +62,24 @@
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">ठेगाना (Address)</label>
                         <input type="text" class="form-control kit-form-control"
-                            placeholder="Enter Address" name="address" required>
+                            placeholder="Enter Address" name="address" >
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">फोन नं.(Telephone no.)</label>
                         <input type="text" class="form-control kit-form-control"
-                            placeholder="Enter Telephone no." name="telephone_number" required>
+                            placeholder="Enter Telephone no." name="telephone_number" >
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">सम्पर्क व्यक्ति (Contact Person)</label>
                         <input type="text" class="form-control kit-form-control"
-                            placeholder="Enter Contact Person" name="contact_person" required>
+                            placeholder="Enter Contact Person" name="contact_person" >
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">मोबाइल नं (Mobile No.)</label>
                         <input type="text" class="form-control kit-form-control"
-                            placeholder="Enter Mobile No." name="mobile_number" required>
+                            placeholder="Enter Mobile No." name="mobile_number" >
                     </div>
                 </div>
 
@@ -89,22 +89,22 @@
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">जिल्ला (District)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter District" name="district" required>
+                                placeholder="Enter District" name="district" >
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Local Body" name="local_body" required>
+                                placeholder="Enter Local Body" name="local_body" >
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">वडा नं.(Ward No.)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Ward No." name="ward_no" required>
+                                placeholder="Enter Ward No." name="ward_no" >
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">गाउँ/टोल/बस्ती (Settlement)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Settlement" name="settlement" required>
+                                placeholder="Enter Settlement" name="settlement" >
                         </div>
                     </div>
 
@@ -136,14 +136,14 @@
                     <div class="col-sm-12">
                         <label class="form-label kit-form-label">उत्पादनको नाम (Product Description)</label>
                         <textarea name="product_description" class="form-control kit-form-control kit-form-textarea" id="" cols="30"
-                            rows="100" placeholder="Enter Product Description" required></textarea>
+                            rows="100" placeholder="Enter Product Description" ></textarea>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">लगानीको प्रकृतिको आधारमा उद्योग(Industry in accordance
                             to Investment)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="investment" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="investment" >
                             <option value="" selected disabled>Select Investment Type</option>
                             {% for key,value in data.inv %}
                                     <option value="{{key}}">{{value}}</option>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">उद्योगको स्वामित्व (Ownership)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="ownership" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="ownership" >
                             <option value="" selected disabled>Select Ownership</option>
                             {% for key,value in data.own %}
                                     <option value="{{key}}">{{value}}</option>
@@ -163,7 +163,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">कच्चा पदार्थको स्रोत ( Source of Raw Materials)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="raw_material_source" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="raw_material_source" >
                             <option value="" selected disabled>Source of Raw Materials</option>
                             {% for key,value in data.raw %}
                                     <option value="{{key}}">{{value}}</option>
@@ -173,7 +173,7 @@
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance
                             to Product)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="industry_acc_product" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="industry_acc_product" >
                             <option value="" selected disabled>Select Type of Product</option>
                             {% for key,value in data.top %}
                                     <option value="{{key}}">{{value}}</option>
@@ -184,7 +184,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">उद्योगको वर्तमान अवस्था(Current Status)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_status" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_status" >
                             <option value="" selected disabled>Current Status</option>
                             {% for key,value in data.cs %}
                                     <option value="{{key}}">{{value}}</option>
@@ -193,7 +193,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">कुन क्षमतामा उद्योग संचालनमा छ? (Current Running Capacity)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_running_capacity" required>
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="current_running_capacity" >
                             <option value="" selected disabled>Current Running Capacity</option>
                             {% for key,value in data.ca %}
                                     <option value="{{key}}">{{value}}</option>
@@ -206,7 +206,7 @@
                     <div class="col-sm-12">
                         <label class="form-label kit-form-label">मेशिन औजारको विवरण (Machinery Tool)</label>
                         <textarea name="machinery_tool" class="form-control kit-form-control kit-form-textarea" id="" cols="30"
-                            rows="100" placeholder="Enter Machinery Description" required></textarea>
+                            rows="100" placeholder="Enter Machinery Description" ></textarea>
                     </div>
                 </div>
 
@@ -216,12 +216,12 @@
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">वस्तु वा सेवाको नाम(Product Service Name)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Product Service Name" name="product_service_name" required>
+                                placeholder="Product Service Name" name="product_service_name" >
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">वार्षिक उत्पादन क्षमता(Yearly Capacity)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Yearly Capacity" name="yearly_capacity" required>
+                                placeholder="Enter Yearly Capacity" name="yearly_capacity" >
                         </div>
                     </div>
                 </div>
@@ -232,43 +232,43 @@
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">जम्मा जनशक्ति संख्या (Total Manpower)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Total Manpower" name="total_manpower" required>
+                                placeholder="Enter Number of Total Manpower" name="total_manpower" >
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">विदेशी जनशक्ति संख्या(Foreign)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Foreign Manpower" name="foreign" required>
+                                placeholder="Enter Number of Foreign Manpower" name="foreign" >
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">दक्ष जनशक्ति संख्या(Skill full)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Skillfull Manpower" name="skillfull" required>
+                                placeholder="Enter Number of Skillfull Manpower" name="skillfull" >
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">पुरुष जनशक्ति संख्या(Male)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Male Manpower" name="male" required>
+                                placeholder="Enter Number of Male Manpower" name="male" >
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">अदक्ष जनशक्ति संख्या(Unskilled)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Unskilled Manpower" name="unskilled" required>
+                                placeholder="Enter Number of Unskilled Manpower" name="unskilled" >
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">महिला जनशक्ति संख्या(Female)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Female Manpower" name="female" required>
+                                placeholder="Enter Number of Female Manpower" name="female" >
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">स्वदेशी जनशक्ति संख्या(Indigenous)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Indigenous Manpower" name="indigenous" required>
+                                placeholder="Enter Number of Indigenous Manpower" name="indigenous" >
                         </div>
                     </div>
                 </div>
@@ -279,17 +279,17 @@
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">स्थिर पूँजी (Fixed Capital)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Rs." name="fixed_capital" required>
+                                placeholder="Rs." name="fixed_capital" >
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">चालु पूँजी (Current Capital)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Rs." name="current_capital" required>
+                                placeholder="Rs." name="current_capital" >
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">जम्मा पूँजी (Total Capital)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Rs." name="total_capital" required>
+                                placeholder="Rs." name="total_capital" >
                         </div>
                     </div>
                 </div>
@@ -298,7 +298,7 @@
                     <div class="col-sm-12">
                         <label class="form-label kit-form-label">Industry Photo ( उद्योग तस्विर
                             )</label>
-                        <input type="file" class="form-control kit-form-control kit-file-control" id="inputImage" accept="image/*" multiple name="photo" required >
+                        <input type="file" class="form-control kit-form-control kit-file-control" id="inputImage" accept="image/*" multiple name="photo"  >
                         <p id="kit-text-preview" class="mt-3">Image Preview</p>
                         <div class="img-thumbs img-thumbs-hidden" id="img-preview"></div>
                     </div>
