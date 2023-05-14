@@ -26,13 +26,13 @@
     </style>
 </head>
 
-<body id="industryList_whole">
+<body>
     <h1>Industry Management System</h1>
     <table class="report-view-table" id="industryList">
         <thead>
             <tr>
                 <th>S.no</th>
-                <th>indusrty name</th>
+                <th>industry name</th>
                 <th>industry owner</th>
                 <th>address</th>
                 <th>Phone no.</th>
@@ -52,15 +52,22 @@
         {% endfor %}
         </tbody>
     </table>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        var element = document.getElementById('industryList_whole');
-        var options = {
-            pagebreak: { mode: 'auto' }, // Enable page breaks using legacy mode
-            margin: [15, 10, 10, 10]
-        };
-        html2pdf().set(options).from(element).save();
-    </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js" crossorigin="anonymous"></script>
+
+
+
+    <script>
+        function generatePDF() {
+            const doc = new jsPDF();
+            doc.setFont('FreeSans');
+            doc.setFontSize(12);
+            doc.text('Industry Management System', 105, 15, { align: 'center' });
+            doc.autoTable({ html: '#industryList', startY: 25 });
+            doc.save('sample.pdf');
+        }
+
+        generatePDF();
+    </script>
 </body>
 </html>

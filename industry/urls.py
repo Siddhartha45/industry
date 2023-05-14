@@ -17,4 +17,5 @@ urlpatterns = [
     
     path('download/pdf/', views.pdf_report_create, name='download-pdf'),
     path('index/', views.index, name="index"), 
+    path('aa/', views.aa, name="aa"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

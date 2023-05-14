@@ -337,3 +337,12 @@ def index(request):
         'industry': industry,
         }
     return render(request,"industry/report.html",context)
+
+
+def aa(request):
+    industry = Industry.objects.all()
+
+    context = {
+        'industry': industry,
+        }
+    return render(request,"industry/jspdf_print.html",context)
