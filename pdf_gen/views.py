@@ -65,25 +65,25 @@ def industry_pdf(request):
 
 
 #fpdf
-from fpdf import FPDF
-from io import BytesIO
-def report_pdf(request):
-    pdf = FPDF('P', 'mm', 'Letter')
-    pdf.add_page()
+# from fpdf import FPDF
+# from io import BytesIO
+# def report_pdf(request):
+#     pdf = FPDF('P', 'mm', 'Letter')
+#     pdf.add_page()
     
-    pdf.add_font(fname='fonts/NotoSansD.ttf')
-    pdf.set_font('NotoSansD', size=16)
+#     pdf.add_font(fname='fonts/NotoSansD.ttf')
+#     pdf.set_font('NotoSansD', size=16)
     
-    pdf.cell(40, 10, 'Hello सिद्धार्थ थापा')
-    #pdf.output('report.pdf')
-    buffer = BytesIO()
-    pdf.output(buffer)
-    buffer.seek(0)
+#     pdf.cell(40, 10, 'Hello सिद्धार्थ थापा')
+#     #pdf.output('report.pdf')
+#     buffer = BytesIO()
+#     pdf.output(buffer)
+#     buffer.seek(0)
     
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="report.pdf"'
+#     response = HttpResponse(buffer, content_type='application/pdf')
+#     response['Content-Disposition'] = 'filename="report.pdf"'
     
-    return response
+#     return response
 
 
 # from pdfgen import Document
@@ -116,26 +116,26 @@ def report_pdf(request):
 
 
 
-# from django.template.loader import render_to_string
-# from weasyprint import HTML
-# import tempfile
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
 
-# def generate_print(request):
+def generate_print(request):
     
-#     response = HttpResponse(content_type='application/pdf')
-#     response ['Content-Disposition'] = 'filename=industry.pdf'
-#     response['Content-Transfer-Encoding'] = 'binary'
+    response = HttpResponse(content_type='application/pdf')
+    response ['Content-Disposition'] = 'filename=industry.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
     
-#     html_string = render_to_string('industry/print_pdf.html', {'industry': [], 'total': 0})
-#     html = HTML(string=html_string)
+    html_string = render_to_string('industry/print_pdf.html', {'industry': [], 'total': 0})
+    html = HTML(string=html_string)
     
-#     result = html.write_pdf()
+    result = html.write_pdf()
     
-#     with tempfile.NamedTemporaryFile(delete=True) as output:
-#         output.write(result)
-#         output.flush()
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
         
-#         output=open(output.name, 'rb')
-#         response.write(output.read())
+        output=open(output.name, 'rb')
+        response.write(output.read())
         
-#     return response
+    return response

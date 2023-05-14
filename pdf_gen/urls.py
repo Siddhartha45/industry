@@ -6,5 +6,5 @@ urlpatterns = [
     path('pdf/', views.report_pdf, name="report-pdf"),
     #path('generate-pdfgen/', views.generate_pdfgen),
     #path('generate-pdfkit/', views.generate_pdfkit),
-    #path('generate-pdfkit/', views.generate_print),
+    path('generate-pdfkit/', views.generate_print),
 ]
