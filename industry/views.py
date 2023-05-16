@@ -5,17 +5,10 @@ from fdip import commons
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-
 #export part
 import csv
 import datetime
 import xlwt
-#pdf
-from django.http import HttpResponse
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-import os
-from django.conf import settings
 
 
 @login_required
@@ -99,12 +92,13 @@ def add_industry(request):
         form = IndustryForm(request.POST, request.FILES)
         if form.is_valid():
             industry_data = form.cleaned_data
+            others_text = industry_data.get('others_text')
+            
+            if others_text:
+                industry_data['industry_acc_product'] = 'O' #sets the industry_acc_products choice to others if user fills the other_texts fields
+            
             photos = request.FILES.getlist('photo')
-            
-            # if Industry.objects.filter(industry_reg_no=request.industry_reg_no):
-            #     messages.error(request, f'Industry with this registration number already exists')
-            #     return redirect('add-industry')
-            
+
             industry = Industry.objects.create(**industry_data)
             for photo in photos:
                 IndustryPhoto.objects.create(industry=industry, photo=photo)
@@ -198,7 +192,6 @@ def delete_industry(request, industry_id):
 
 
 def search_industry(request):
-    
     if request.GET:
         search_data = Industry.objects.filter(industry_name__contains = request.GET["search"])
     else:
@@ -209,6 +202,7 @@ def search_industry(request):
     return render(request, 'industry/searchindustry.html', data)
 
 
+@login_required
 def industry_excel(request):
     filter_investment = request.GET.get("investment")
     filter_ownership = request.GET.get("ownership")
@@ -247,6 +241,7 @@ def industry_excel(request):
     return response
 
 
+@login_required
 def industry_csv(request):
     filter_investment = request.GET.get("investment")
     filter_ownership = request.GET.get("ownership")
@@ -276,73 +271,12 @@ def industry_csv(request):
     return response
 
 
-from django.contrib.staticfiles import finders
-
-def link_callback(uri, rel):
-    
-    result = finders.find(uri)
-    if result:
-        if not isinstance(result, (list, tuple)):
-            result = [result]
-        result = list(os.path.realpath(path) for path in result)
-        path = result[0]
-    else:
-        sUrl = settings.STATIC_URL
-        sRoot = settings.STATIC_ROOT
-        mUrl = settings.MEDIA_URL
-        mRoot = settings.MEDIA_ROOT
-        
-        if uri.startswith(mUrl):
-            path = os.path.join(mRoot, uri.replace(mUrl, ""))
-        elif uri.startswith(sUrl):
-            path = os.path.join(sRoot, uri.replace(sUrl, ""))
-        else:
-            return uri
-    
-    if not os.path.isfile(path):
-        raise Exception(
-            'media URI must start with %s or %s' % (sUrl, mUrl)
-        )
-    return path
-
-
-def pdf_report_create(request):
-    industry = Industry.objects.all()
-    
-
-    template_path = 'industry/pdf.html'
-    context = {
-        'industry': industry,
-        }
-    #return render(request,"industry/report.html",context)
-    
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="industry_report.pdf"'
-    
-    template = get_template(template_path)
-    html = template.render(context)
-    
-    pisa_status = pisa.CreatePDF(html, dest=response)
-    
-    
-    if pisa_status.err:
-        return HttpResponse('Error')
-    return response
-
-
-def index(request):
+#this is in use for downloading pdf
+@login_required
+def download_pdf(request):
     industry = Industry.objects.all()
 
     context = {
         'industry': industry,
         }
     return render(request,"industry/report.html",context)
-
-
-def aa(request):
-    industry = Industry.objects.all()
-
-    context = {
-        'industry': industry,
-        }
-    return render(request,"industry/jspdf_print.html",context)

@@ -47,7 +47,7 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#">PDF</a></li>
-                      <li><a class="dropdown-item" href="#">Excel</a></li>
+                      <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">Excel</a></li>
                       <li><a class="dropdown-item" href="#">CSV</a></li>
                     </ul>
                 </div>
@@ -121,5 +121,18 @@
             "dom": 'rtip'
         });
     } );
+
+    function EXCELFilter(){
+        var filterRole = $("#role").val();
+        var roleMapping = {
+            'Super Admin': 1,
+            'Admin': 2,
+        };
+        var url = "{% url 'account-excel' %}?";
+        if (filterRole && roleMapping.hasOwnProperty(filterRole)) {
+            url += "role=" + roleMapping[filterRole];
+        }
+        window.location.href = url;
+    }
 </script>
 {% endblock %}

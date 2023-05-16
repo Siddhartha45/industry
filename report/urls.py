@@ -7,6 +7,7 @@ urlpatterns = [
     path('report/list/', views.report_list, name="report-list"),
     path('report/show/<int:report_id>/', views.report_show, name="report-show"),
     path('report/delete/<int:report_id>/', views.report_delete, name="report-delete"),
-    
+    #urls path for import excel files into database
     path('import/', views.ImportExcel, name="import"),
+    path('convert/', views.ConvertExcel),
 ]

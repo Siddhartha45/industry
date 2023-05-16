@@ -12,10 +12,7 @@ urlpatterns = [
     path('industry/profile/<int:industry_id>/', views.view_industry_profile, name="industry-profile"),
     path('industry/list/', views.industry_list, name="industry-list"),
     path('industry/search/', views.search_industry, name="search-industry"),
-    path('download/excel/', views.industry_excel, name="download-excel"),
-    path('download/csv/', views.industry_csv, name="download-csv"),
-    
-    path('download/pdf/', views.pdf_report_create, name='download-pdf'),
-    path('index/', views.index, name="index"), 
-    path('aa/', views.aa, name="aa"),
+    path('industry/download/excel/', views.industry_excel, name="download-excel"),
+    path('industry/download/csv/', views.industry_csv, name="download-csv"),
+    path('industry/download/pdf/', views.download_pdf, name="download-pdf"), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

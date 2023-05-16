@@ -26,4 +26,3 @@ class CustomUser(AbstractUser):
             return 'Admin'
         else:
             return 'None'
-  

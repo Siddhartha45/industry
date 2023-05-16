@@ -116,8 +116,8 @@
                                 <img src="{% static '/image/search.png' %}" alt="">
                                 <input type="text" class="form-control kit-form-control kit-form-location"
                                     placeholder="Search Location" id="us2-address">
-                                <input type="text" id="us2-lat" hidden name="latitude"/>
-                                <input type="text" id="us2-lon" hidden name="longitude"/>
+                                <input type="text" id="us2-lat"  name="latitude"/>
+                                <input type="text" id="us2-lon"  name="longitude"/>
                             </div>
                         </div>
                         <div class="col-sm-2 mbl-hide">
@@ -173,12 +173,16 @@
                     <div class="col-sm-6">
                         <label class="form-label kit-form-label">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance
                             to Product)</label>
-                        <select class="form-select kit-form-control" aria-label="Default select example" name="industry_acc_product" >
+                        <select class="form-select kit-form-control" aria-label="Default select example" name="industry_acc_product" onchange="handleIndustrySelection(this)">
                             <option value="" selected disabled>Select Type of Product</option>
                             {% for key,value in data.top %}
-                                    <option value="{{key}}">{{value}}</option>
-                                {% endfor %}
+                                <option value="{{key}}">{{value}}</option>
+                            {% endfor %}
                         </select>
+                        <div id="othersTextContainer" style="display: none;">
+                            <label class="form-label kit-form-label">अन्य कृपया नमुना भर्नुहोस् (Please provide details)</label>
+                            <input class="form-control" type="text" name="others_text">
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -232,43 +236,43 @@
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">जम्मा जनशक्ति संख्या (Total Manpower)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Total Manpower" name="total_manpower" >
+                                placeholder="Enter Number of Total Manpower" name="total_manpower" id="id_total_manpower">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">विदेशी जनशक्ति संख्या(Foreign)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Foreign Manpower" name="foreign" >
+                                placeholder="Enter Number of Foreign Manpower" name="foreign" id="foreign">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
-                            <label class="form-label kit-form-label">दक्ष जनशक्ति संख्या(Skill full)</label>
+                            <label class="form-label kit-form-label">दक्ष जनशक्ति संख्या(Skilled)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Skillfull Manpower" name="skillfull" >
+                                placeholder="Enter Number of Skillfull Manpower" name="skillfull" id="skillfull">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">पुरुष जनशक्ति संख्या(Male)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Male Manpower" name="male" >
+                                placeholder="Enter Number of Male Manpower" name="male" id="male">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">अदक्ष जनशक्ति संख्या(Unskilled)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Unskilled Manpower" name="unskilled" >
+                                placeholder="Enter Number of Unskilled Manpower" name="unskilled" id="unskilled">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">महिला जनशक्ति संख्या(Female)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Female Manpower" name="female" >
+                                placeholder="Enter Number of Female Manpower" name="female" id="female">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">स्वदेशी जनशक्ति संख्या(Indigenous)</label>
                             <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Number of Indigenous Manpower" name="indigenous" >
+                                placeholder="Enter Number of Indigenous Manpower" name="indigenous" id="indi">
                         </div>
                     </div>
                 </div>
@@ -317,6 +321,106 @@
 {% block customjs %}
     <script src="{% static '/js/locationpicker.js' %}"></script>
     <script src="{% static '/js/imagepreview.js' %}"></script>
+    <script>
+        function handleIndustrySelection(selectElement) {
+            const othersTextContainer = document.getElementById('othersTextContainer');
+            if (selectElement.value === 'O') {
+                othersTextContainer.style.display = 'block';
+            } else {
+                othersTextContainer.style.display = 'none';
+            }
+        }
+    </script>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const totalManpowerInput = document.getElementById('id_total_manpower');
+            const maleInput = document.getElementById('male');
+            const femaleInput = document.getElementById('female');
+            const skillfullInput = document.getElementById('skillfull');
+            const unskilledInput = document.getElementById('unskilled');
+            const foreignInput = document.getElementById('foreign');
+            const indiInput = document.getElementById('indi');
+    
+            totalManpowerInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                
+                const maleCount = parseInt(maleInput.value) || 0;
+                const femaleCount = totalManpower - maleCount;
+                
+                const skillfullCount = parseInt(skillfullInput.value) || 0;
+                const unskilledCount = totalManpower - skillfullCount;
+
+                const foreignCount = parseInt(foreignInput.value) || 0;
+                const indiCount = totalManpower - foreignCount;
+    
+                femaleInput.value = femaleCount > 0 ? femaleCount : '';
+                maleInput.value = maleCount > 0 ? maleCount : '';
+                
+                skillfullInput.value = skillfullCount > 0 ? skillfullCount : '';
+                unskilledInput.value = unskilledCount > 0 ? unskilledCount : '';
+
+                foreignInput.value = foreignCount > 0 ? foreignCount : '';
+                indiInput.value = indiCount > 0 ? indiCount : '';
+            });
+    
+            maleInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const maleCount = parseInt(maleInput.value) || 0;
+                const femaleCount = totalManpower - maleCount;
+    
+                femaleInput.value = femaleCount > 0 ? femaleCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+    
+            femaleInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const femaleCount = parseInt(femaleInput.value) || 0;
+                const maleCount = totalManpower - femaleCount;
+    
+                maleInput.value = maleCount > 0 ? maleCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+
+            skillfullInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const skillfullCount = parseInt(skillfullInput.value) || 0;
+                const unskilledCount = totalManpower - skillfullCount;
+    
+                unskilledInput.value = unskilledCount > 0 ? unskilledCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+
+            unskilledInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const unskilledCount = parseInt(unskilledInput.value) || 0;
+                const skillfullCount = totalManpower - unskilledCount;
+    
+                skillfullInput.value = skillfullCount > 0 ? skillfullCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+
+            foreignInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const foreignCount = parseInt(foreignInput.value) || 0;
+                const indiCount = totalManpower - foreignCount;
+    
+                indiInput.value = indiCount > 0 ? indiCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+
+            indiInput.addEventListener('input', () => {
+                const totalManpower = parseInt(totalManpowerInput.value) || 0;
+                const indiCount = parseInt(indiInput.value) || 0;
+                const foreignCount = totalManpower - indiCount;
+    
+                foreignInput.value = foreignCount > 0 ? foreignCount : '';
+                totalManpowerInput.value = totalManpower > 0 ? totalManpower : '';
+            });
+        });
+    </script>
+    
+
 {% endblock %}
 
 

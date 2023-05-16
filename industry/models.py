@@ -27,27 +27,32 @@ class Industry(models.Model):
     ownership = models.CharField(max_length=11, choices=commons.OWNERSHIP_CHOICES, blank=True, null=True)
     raw_material_source = models.CharField(max_length=8, choices=commons.MATERIAL_SOURCE, blank=True, null=True)
     industry_acc_product = models.CharField(max_length=50, choices=commons.TYPE_OF_PRODUCT, blank=True, null=True)
+    others_text = models.CharField(max_length=255, blank=True, null=True)
     current_status = models.CharField(max_length=8, choices=commons.CURRENT_STATUS, blank=True, null=True)
     current_running_capacity = models.CharField(max_length=1, choices=commons.CAPACITY, blank=True, null=True)
     machinery_tool = models.TextField(max_length=600, blank=True, null=True)
     product_service_name = models.CharField(max_length=100, blank=True, null=True)
     yearly_capacity = models.CharField(max_length=100, blank=True, null=True)
     #Employment
-    total_manpower = models.IntegerField(blank=True, null=True)
-    skillfull = models.IntegerField(blank=True, null=True)
-    unskilled = models.IntegerField(blank=True, null=True)
-    indigenous = models.IntegerField(blank=True, null=True)
-    foreign = models.IntegerField(blank=True, null=True)
-    male = models.IntegerField(blank=True, null=True)
-    female = models.IntegerField(blank=True, null=True)
+    total_manpower = models.IntegerField(default=0, blank=True, null=True)
+    skillfull = models.IntegerField(default=0, blank=True, null=True)
+    unskilled = models.IntegerField(default=0, blank=True, null=True)
+    indigenous = models.IntegerField(default=0, blank=True, null=True)
+    foreign = models.IntegerField(default=0, blank=True, null=True)
+    male = models.IntegerField(default=0, blank=True, null=True)
+    female = models.IntegerField(default=0, blank=True, null=True)
     fixed_capital = models.CharField(max_length=255, blank=True, null=True)
     current_capital = models.CharField(max_length=255, blank=True, null=True)
     total_capital = models.CharField(max_length=255, blank=True, null=True)
-    #industry_photo = models.ImageField(upload_to='images', blank=True, null=True)
             
     def __str__(self):
         return self.industry_name
     
+    def save(self, *args, **kwargs):
+        if self.industry_acc_product != 'O':
+            self.others_text = None
+        super().save(*args, **kwargs)
+        
     
 class IndustryPhoto(models.Model):
     industry = models.ForeignKey(Industry, on_delete=models.CASCADE, related_name='industry_photo')

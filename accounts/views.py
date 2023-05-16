@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required, user_passes_test
 from fdip.decorators import superadmin_required
+import xlwt
 
 
 def user_login(request):
@@ -145,3 +146,56 @@ def change_password(request):
         return redirect('change-password')
             
     return render(request, 'account/changepassword.html')
+
+
+#to display the role names in excel file
+def get_role_display(role_id):
+    for role_choice in CustomUser.ROLE_CHOICES:
+        if role_choice[0] == role_id:
+            return role_choice[1]
+    return ''  # Return an empty string if the role is not found
+
+
+@login_required
+def accounts_excel(request):
+    filter_role = request.GET.get("role")
+    
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Accounts.xls'
+    
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Account')
+    
+    headers = ['username', 'fullname', 'role', 'email address', 'phone no.']
+    
+    for col_num, header in enumerate(headers):
+        ws.write(0, col_num, header)
+    
+    # accounts = CustomUser.objects.all()
+    
+    # if filter_role:
+    #     accounts = accounts.filter(role=filter_role)
+    
+    if filter_role:
+        role_mapping = {
+            'Super Admin': 1,
+            'Admin': 2,
+        }
+        role_value = role_mapping.get(filter_role)
+        if role_value:
+            accounts = CustomUser.objects.filter(role=role_value)
+        else:
+            accounts = CustomUser.objects.none()
+    else:
+        accounts = CustomUser.objects.all()
+    
+    for row_num, account in enumerate(accounts, start=1):
+        ws.write(row_num, 0, account.username)
+        ws.write(row_num, 1, account.fullname)
+        ws.write(row_num, 2, get_role_display(account.role))
+        ws.write(row_num, 3, account.email)
+        ws.write(row_num, 4, account.phone_no)
+
+    wb.save(response)
+    
+    return response

@@ -13,10 +13,8 @@ urlpatterns = [
     path('user/list/', views.view_users, name="view-users"),
     path('user/info/<int:user_id>/', views.view_user_details, name="user-info"),
     path('user/delete/<int:user_id>/', views.delete_user, name="user-delete"),
-    
-    
-    #password reset
-    #path('user/forgot-password', views.forgot_password, name="forgot-password"),
+    path('user/download/excel/', views.accounts_excel, name="account-excel"),
+    #url paths for password resetting
     path('password_reset/',auth_views.PasswordResetView.as_view(template_name='account/forgetpassword.html'), name='password_reset'),
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='account/resetpassword.html'), name='password_reset_confirm'),
