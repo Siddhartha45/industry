@@ -46,9 +46,9 @@
                         <i class="fa-solid fa-download me-3"></i> Download
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">PDF</a></li>
+                      <li><a class="dropdown-item" href="{% url 'account-pdf' %}" target="blank">PDF</a></li>
+                      <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
                       <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">Excel</a></li>
-                      <li><a class="dropdown-item" href="#">CSV</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,15 +122,38 @@
         });
     } );
 
-    function EXCELFilter(){
-        var filterRole = $("#role").val();
-        var roleMapping = {
-            'Super Admin': 1,
-            'Admin': 2,
-        };
+    function CSVFilter() {
+        var role = $("#role").val();
+        if(role == "super admin"){
+            role = "1"
+        }
+        else if(role == "admin"){
+            role = "2"
+        }
+        else{
+            role = "0"
+        }
+        var url = "{% url 'account-csv' %}?";
+        if (role) {
+            url += "role=" + role + "&";
+        }
+        window.location.href = url;
+    }
+
+    function EXCELFilter() {
+        var role = $("#role").val();
+        if(role == "super admin"){
+            role = "1"
+        }
+        else if(role == "admin"){
+            role = "2"
+        }
+        else{
+            role = "0"
+        }
         var url = "{% url 'account-excel' %}?";
-        if (filterRole && roleMapping.hasOwnProperty(filterRole)) {
-            url += "role=" + roleMapping[filterRole];
+        if (role) {
+            url += "role=" + role + "&";
         }
         window.location.href = url;
     }

@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required, user_passes_test
 from fdip.decorators import superadmin_required
 import xlwt
+import csv
 
 
 def user_login(request):
@@ -156,7 +157,7 @@ def get_role_display(role_id):
     return ''  # Return an empty string if the role is not found
 
 
-@login_required
+@superadmin_required
 def accounts_excel(request):
     filter_role = request.GET.get("role")
     
@@ -171,23 +172,12 @@ def accounts_excel(request):
     for col_num, header in enumerate(headers):
         ws.write(0, col_num, header)
     
-    # accounts = CustomUser.objects.all()
-    
-    # if filter_role:
-    #     accounts = accounts.filter(role=filter_role)
+    accounts = CustomUser.objects.all()
+    print(filter_role)
     
     if filter_role:
-        role_mapping = {
-            'Super Admin': 1,
-            'Admin': 2,
-        }
-        role_value = role_mapping.get(filter_role)
-        if role_value:
-            accounts = CustomUser.objects.filter(role=role_value)
-        else:
-            accounts = CustomUser.objects.none()
-    else:
-        accounts = CustomUser.objects.all()
+        if filter_role != "0":
+            accounts = accounts.filter(role=filter_role)
     
     for row_num, account in enumerate(accounts, start=1):
         ws.write(row_num, 0, account.username)
@@ -199,3 +189,35 @@ def accounts_excel(request):
     wb.save(response)
     
     return response
+
+
+@superadmin_required
+def accounts_csv(request):
+    filter_role = request.GET.get("role")
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Accounts.csv'
+    
+    writer = csv.writer(response)
+    writer.writerow(['username', 'fullname', 'role', 'email address', 'phone no.'])
+    
+    accounts = CustomUser.objects.all()
+    
+    if filter_role:
+        if filter_role != "0":
+            accounts = accounts.filter(role=filter_role)
+
+    for account in accounts:
+        writer.writerow([account.username, account.fullname, get_role_display(account.role), account.email, account.phone_no])
+        
+    return response
+
+
+@superadmin_required
+def accounts_pdf(request):
+    account = CustomUser.objects.all()
+
+    context = {
+        'account': account,
+        }
+    return render(request,"account/accountpdf.html",context)

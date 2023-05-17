@@ -14,6 +14,8 @@ urlpatterns = [
     path('user/info/<int:user_id>/', views.view_user_details, name="user-info"),
     path('user/delete/<int:user_id>/', views.delete_user, name="user-delete"),
     path('user/download/excel/', views.accounts_excel, name="account-excel"),
+    path('user/download/csv/', views.accounts_csv, name="account-csv"),
+    path('user/download/pdf/', views.accounts_pdf, name="account-pdf"),
     #url paths for password resetting
     path('password_reset/',auth_views.PasswordResetView.as_view(template_name='account/forgetpassword.html'), name='password_reset'),
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

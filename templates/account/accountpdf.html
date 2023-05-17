@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>PDF Industry</title>
+    <title>PDF Users</title>
     <style>
         h1 {
             text-align: center;
@@ -19,38 +19,38 @@
     </style>
 </head>
 
-<body id="industryList_whole">
-    <h1>List of Industries</h1>
-    <table class="report-view-table" id="industryList">
+<body id="userlist">
+    <h1>List of Accounts</h1>
+    <table class="report-view-table">
         <thead>
             <tr>
                 <th>S.no</th>
-                <th>indusrty name</th>
-                <th>industry owner</th>
-                <th>address</th>
-                <th>Phone no.</th>
-                <th>Ownership</th>
+                <th>Username</th>
+                <th>Fullname</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Phone No.</th>
             </tr>
         </thead>
         <tbody>
-        {% for i in industry %}
+        {% for i in account %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ i.industry_name }}</td>
-                <td>{{ i.owner_name }}</td>
-                <td>{{ i.address }}</td>
-                <td>{{ i.telephone_number }}</td>
-                <td>{{ i.get_ownership_display }}</td>
+                <td>{{ i.username }}</td>
+                <td>{{ i.fullname }}</td>
+                <td>{{ i.role }}</td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.phone_no }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var element = document.getElementById('industryList_whole');
+        var element = document.getElementById('userlist');
         var options = {
             pagebreak: { mode: 'auto' }, // Enable page breaks using legacy mode
-            margin: [18, 10, 20, 10]
+            margin: [18, 10, 27, 10]
         };
         html2pdf().set(options).from(element).save();
     </script>
