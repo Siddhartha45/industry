@@ -41,10 +41,10 @@ class Industry(models.Model):
     foreign = models.IntegerField(default=0, blank=True, null=True)
     male = models.IntegerField(default=0, blank=True, null=True)
     female = models.IntegerField(default=0, blank=True, null=True)
-    fixed_capital = models.CharField(max_length=255, blank=True, null=True)
-    current_capital = models.CharField(max_length=255, blank=True, null=True)
-    total_capital = models.CharField(max_length=255, blank=True, null=True)
-            
+    fixed_capital = models.FloatField(default=0, blank=True, null=True)
+    current_capital = models.FloatField(default=0, blank=True, null=True)
+    total_capital = models.FloatField(default=0, blank=True, null=True)
+
     def __str__(self):
         return self.industry_name
     

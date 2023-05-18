@@ -1,0 +1,13 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+
+{% for message in messages %}
+    {{message}}
+{% endfor %}
+{% endblock %}
