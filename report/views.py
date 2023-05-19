@@ -129,11 +129,11 @@ def import_file(request):
                 #for assigning product
                 if 'industry_acc_product' in df.columns:
                     industry_acc_product_choice = row['industry_acc_product']
-                    if industry_acc_product_choice == "कृषि मूलक":
+                    if industry_acc_product_choice == "कृषि मूलक" or industry_acc_product_choice == "कृषि":
                         industry_acc_product = "AF"
-                    elif industry_acc_product_choice == "उत्पादन मूलक":
+                    elif industry_acc_product_choice == "उत्पादन मूलक" or industry_acc_product_choice == "उत्पादन":
                         industry_acc_product = "MF"
-                    elif industry_acc_product_choice == "सेवा मूलक":
+                    elif industry_acc_product_choice == "सेवा मूलक" or industry_acc_product_choice == "सेवा":
                         industry_acc_product = "S"
                     else:
                         industry_acc_product = None
