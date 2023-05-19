@@ -67,13 +67,13 @@ def import_file(request):
         if form.is_valid():
             file = request.FILES['file']
             
-            file_path = os.path.join(settings.MEDIA_ROOT, 'files', file.name)
-            with open(file_path, 'wb+') as f:
-                for chunk in file.chunks():
-                    f.write(chunk)
-                f.seek(0)
+            # file_path = file#os.path.join(settings.MEDIA_ROOT, 'files', file.name)
+            # with open(file_path, 'wb+') as f:
+            #     for chunk in file.chunks():
+            #         f.write(chunk)
+            #     f.seek(0)
             
-            df = pd.read_excel(file_path)
+            df = pd.read_excel(file)
             
             for _, row in df.iterrows():
                 
@@ -209,7 +209,6 @@ def import_file(request):
                     industry.total_manpower = total_manpower
                 
                 industry.save() 
-            os.remove(file_path)
             messages.success(request, "The excel data is saved to database.")
     else:
         form = UploadFileForm()
