@@ -4,7 +4,6 @@ deployment:
     - export DEPLOYPATH=/home/kantggjb/industry/ #this is original
     - /bin/cp -r accounts $DEPLOYPATH
     - /bin/cp -r faq $DEPLOYPATH
-    - /bin/cp -r fdip $DEPLOYPATH
     - /bin/cp -r fonts $DEPLOYPATH
     - /bin/cp -r industry $DEPLOYPATH
     - /bin/cp -r pdf_gen $DEPLOYPATH
