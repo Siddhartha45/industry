@@ -135,6 +135,8 @@ def import_file(request):
                         industry_acc_product = "MF"
                     elif industry_acc_product_choice == "सेवा मूलक" or industry_acc_product_choice == "सेवा":
                         industry_acc_product = "S"
+                    elif industry_acc_product_choice == "निर्माण":
+                        industry_acc_product = "I"
                     else:
                         industry_acc_product = None
                 else:
@@ -176,9 +178,14 @@ def import_file(request):
                     industry_data['female'] = female_value
                 
                     total_manpower = female_value + male_value
-                
+                    
                 if 'yearly_capacity' in df.columns:
-                    industry_data['yearly_capacity'] = row['yearly_capacity']
+                    yearly_capacity_value = row['yearly_capacity'] if pd.notnull(row['yearly_capacity']) else 0
+                    yearly_capacity_value = str(yearly_capacity_value).replace(',', '')  # Remove commas from the number
+                    try:
+                        industry_data['yearly_capacity'] = float(yearly_capacity_value)
+                    except ValueError:
+                        industry_data['yearly_capacity'] = 0
                 
                 if 'fixed_capital' in df.columns:
                     fixed_capital_value = row['fixed_capital'] if pd.notnull(row['fixed_capital']) else 0

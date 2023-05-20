@@ -32,7 +32,7 @@ class Industry(models.Model):
     current_running_capacity = models.CharField(max_length=1, choices=commons.CAPACITY, blank=True, null=True)
     machinery_tool = models.TextField(max_length=600, blank=True, null=True)
     product_service_name = models.CharField(max_length=100, blank=True, null=True)
-    yearly_capacity = models.CharField(max_length=100, blank=True, null=True)
+    yearly_capacity = models.FloatField(default=0, blank=True, null=True)
     #Employment
     total_manpower = models.IntegerField(default=0, blank=True, null=True)
     skillfull = models.IntegerField(default=0, blank=True, null=True)
