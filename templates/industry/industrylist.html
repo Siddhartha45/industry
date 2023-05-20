@@ -136,6 +136,21 @@
                 {% endfor %}
                 </tbody>
             </table>
+            
+            <div class="pagination" style="text-align: right;">
+                {% if industry.has_previous %}
+                    <a href="?search={{ search_query }}&page=1" style="margin-right: 10px;">First</a>
+                    <a href="?search={{ search_query }}&page={{ industry.previous_page_number }}" style="margin-right: 10px;">Previous</a>
+                {% endif %}
+            
+                <span class="current-page" style="margin-right: 10px;">{{ industry.number }}</span>
+            
+                {% if industry.has_next %}
+                    <a href="?search={{ search_query }}&page={{ industry.next_page_number }}" style="margin-right: 10px;">Next</a>
+                    <a href="?search={{ search_query }}&page={{ industry.paginator.num_pages }}" style="margin-right: 10px;">Last</a>
+                {% endif %}
+            </div>
+
         </div>
     </div>
 {% endblock %}
@@ -144,11 +159,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" /><script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script src="{% static '/js/tablesearch.js' %}"></script>
     <script>
-        $(document).ready( function () {
-            $('#industryList').DataTable({
-                "dom": 'rtip'
-            });
-        } );
+
 
     function CSVFilter(){
         var investment = $("#investmentInput").val();

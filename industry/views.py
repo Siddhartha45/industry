@@ -5,6 +5,7 @@ from fdip import commons
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.core.paginator import Paginator
 #export part
 import csv
 import datetime
@@ -173,14 +174,43 @@ def view_industry_profile(request, industry_id):
 
 @login_required
 def industry_list(request):
-    if request.GET:
-        search_data = Industry.objects.filter(industry_name__contains = request.GET["search"])
+    # if request.GET:
+    #     search_data = Industry.objects.filter(industry_name__contains = request.GET["search"])
+    # else:
+    #     search_data = Industry.objects.all()
+    # data = {
+    #     'industry' : Industry.objects.all(),
+    #     'industry' : search_data
+    # }
+    
+    
+    # Apply search filter if provided in request GET parameters
+    search_query = request.GET.get('search', '')
+
+    # Fetch industries queryset based on the search filter
+    if search_query:
+        industries_queryset = Industry.objects.filter(industry_name__contains=search_query)
     else:
-        search_data = Industry.objects.all()
+        industries_queryset = Industry.objects.all()
+
+    # Configure the number of records to display per page
+    items_per_page = 10
+
+    # Create a Paginator object using the industries queryset
+    paginator = Paginator(industries_queryset, items_per_page)
+
+    # Get the current page number from the request GET parameters
+    page_number = request.GET.get('page', 1)
+
+    # Get the Page object for the current page
+    page = paginator.get_page(page_number)
+
+    # Prepare data to be passed to the template
     data = {
-        'industry' : Industry.objects.all(),
-        'industry' : search_data
+        'industry': page,
+        'search_query': search_query,
     }
+    
     return render(request, 'industry/industrylist.html', data)
 
 
