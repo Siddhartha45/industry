@@ -304,10 +304,14 @@
                             )</label>
                         <input type="file" class="form-control kit-form-control kit-file-control" id="inputImage" accept="image/*" multiple name="photo"  >
                         <p id="kit-text-preview" class="mt-3">Image Preview</p>
-                        <div class="img-thumbs img-thumbs-hidden" id="img-preview"></div>
+                        <div class="img-thumbs img-thumbs-hidden" id="img-preview" onclick="ImagePreview()"></div>
                     </div>
                 </div>
-
+                <script>
+                    function ImagePreview(){
+                        alert("clicked on remove")
+                    }
+                </script>
                 <div class="row mb-3">
                     <div class="col-sm-10"></div>
                     <div class="col-sm-2">

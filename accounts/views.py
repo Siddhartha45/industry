@@ -124,8 +124,10 @@ def change_password(request):
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
         retype_password = request.POST.get('retype_password')
-        
-        if current_password or new_password or retype_password == '':
+        print(current_password)
+        print(new_password)
+        print(retype_password)
+        if current_password == '' or new_password == '' or retype_password == '':
             messages.error(request, 'Field is left blank. Cannot change Password')
             return redirect('change-password')
             
@@ -147,7 +149,7 @@ def change_password(request):
         return redirect('change-password')
             
     return render(request, 'account/changepassword.html')
-
+    
 
 #to display the role names in excel file
 def get_role_display(role_id):

@@ -194,7 +194,7 @@ def industry_list(request):
         industries_queryset = Industry.objects.all()
 
     # Configure the number of records to display per page
-    items_per_page = 10
+    items_per_page = 100
 
     # Create a Paginator object using the industries queryset
     paginator = Paginator(industries_queryset, items_per_page)
@@ -310,3 +310,29 @@ def download_pdf(request):
         'industry': industry,
         }
     return render(request,"industry/report.html",context)
+
+def AjaxSearch(request):
+    from django.core.serializers import serialize
+    from django.http import JsonResponse
+
+    search_query = str(request.GET.get('search'))
+    field = str(request.GET.get('field'))
+    if field == "investmentInput":
+        queryset = Industry.objects.filter(investment__contains=search_query)
+    elif field == "productInput":
+        queryset = Industry.objects.filter(industry_acc_product__contains=search_query)
+    elif field == "ownershipInput":
+         queryset = Industry.objects.filter(ownership__contains=search_query)
+    else:
+        queryset = Industry.objects.filter(industry_name__contains=search_query)
+        
+        
+    # print(search_query)
+
+    # Fetch industries queryset based on the search filter
+    # print(queryset.first().pk)
+    # queryset = Industry.objects.filter(investment__contains="SMALL")
+    json_data = serialize('json', queryset)
+    # print(field)
+    # print(search_query)
+    return JsonResponse(json_data, safe=False)
