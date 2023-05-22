@@ -2,13 +2,19 @@
 {% load static %}
 {% block container %}
     <div class="container main-sec">
+
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" id="overlay" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
         <div class="cng-pw-title d-flex justify-content-between mt-4">
             <p>Industries List<span>
                     ( उद्योग सूची )</span>
             </p>
-            {% for message in messages %}
-                    {{ message }}
-            {% endfor %}
+            
             <div class="kit-text-navigation">
                 <p>Applicant Portal
                     <span> > </span> Change Password
@@ -79,9 +85,9 @@
             </div>
 
         </div>
-        <div class="row  mb-4 mbl-tbl">
+        <div class="row  mb-4 mbl-tbl d-flex justify-content-center">
 
-            <table class="report-view-table" id="industryList">
+            <table class="report-view-table " id="industryList">
                 <thead>
                     <tr>
                         <th>S.no</th>
@@ -350,5 +356,11 @@
       });
       
       
+    $( document ).ready(function() {
+        $('#overlay').fadeIn('slow');
+        setTimeout(function() {
+            $('#overlay').fadeOut('slow');
+        }, 5000);
+    })
     </script>    
 {% endblock %}

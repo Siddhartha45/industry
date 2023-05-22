@@ -414,4 +414,31 @@ $(document).ready(function () {
         lan = currentLocation.longitude;
     }, 
   });
+
+
+
+
+$('#locationreset').on('click', function() {
+    $("#us2-lat").val(29.2988);
+    $("#us2-lon").val(80.9871);
+    $("#us2-address").val('7XXP+GR Jhikrana, Nepal');
+
+    var defaultLocation = {
+      latitude: 29.2988,
+      longitude: 80.9871
+    };
+
+    var locationPicker = $('#maparea').data('locationpicker');
+    locationPicker.settings.location = defaultLocation;
+    locationPicker.settings.radius = 100;
+    locationPicker.settings.locationName = '7XXP+GR Jhikrana, Nepal';
+    locationPicker.map.setCenter(new google.maps.LatLng(defaultLocation.latitude, defaultLocation.longitude));
+    locationPicker.marker.setPosition(new google.maps.LatLng(defaultLocation.latitude, defaultLocation.longitude));
+    locationPicker.circle.setCenter(new google.maps.LatLng(defaultLocation.latitude, defaultLocation.longitude));
+    locationPicker.updateInputFields();
+
+    $(document).trigger('locationpicker:reset');
+  });
+
+
 });

@@ -21,7 +21,7 @@
                   <img class="GON-logo" src="{% static '/image/nepal-govt.png' %}" alt="">
                   <div class="mainheader-top-text">
                       <h3>Sudurpashchim Provincial Government</h3>
-                      <h3><span>Ministry of Industry, </span>Tourism, Forest & Environment</h3>
+                      <h3><span>Ministry of Industry, Tourism, Forest & Environment</span></h3>
                       <h4>Directorate of Industry, Commerce & Consumer Welfare Protection</h4>
                       <p>Dhangadhi, Kailali</p>
                   </div>
@@ -40,8 +40,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto main-ul mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{% url 'faq-display' %}">FAQ</a>
@@ -88,5 +88,18 @@
     {% block customjs %}
     {% endblock %}
 </body>
+
+<script>
+    var currentURL = window.location.href;
+    var navLinks = document.querySelectorAll('.navbar-nav>li>a');
+    for (var i = 0; i < navLinks.length; i++) {
+        var link = navLinks[i];
+        if (link.href === currentURL) {
+            link.parentNode.classList.add('active');
+        }else if (link.href != currentURL){
+            link.parentNode.classList.remove('active');
+        }
+    }
+</script>
 
 </html>

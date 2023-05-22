@@ -476,13 +476,13 @@ a {
 }
 
 .mainheader-top .GON-logo {
-  width: 117px;
+  width: 104px;
   height: max-content;
 }
 
 table#industryList{
   margin-bottom: 20px;
-  width: 100%;
+  width: 98%;
 }
 
 
@@ -514,52 +514,84 @@ table#industryList{
 }
 
 .mainheader-top-text h4 {
-  color: #A40000;
+  color: #dd0c39;
   font-size: clamp(14px, 3vw, 17px);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 25.5px;
+  margin-bottom: 0px;
 }
 
 .mainheader-top-text h3 {
   font-family: Poppins;
-  font-size: clamp(18px, 3vw, 24px);
+  font-size: clamp(16px, 3vw, 18px);
   font-weight: 500;
   line-height: 19px;
   letter-spacing: 0em;
   text-align: center;
-  color: #000000;
-  text-transform: uppercase;
+  color: #131313;
+  text-transform: capitalize;
+  margin-bottom: 4px;
 }
 
 .mainheader-top-text h3 span {
   font-weight: 700;
-  color: #1876D2;
+  color: #2460b9;
+  margin-bottom: 4px;
 }
 
 
 .mainheader-top-text p {
   font-family: Poppins;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 19px;
+  font-size: 16px;
+  font-weight: 500;
   text-transform: capitalize;
+  margin: 0;
 }
 
 
 
 .mainheader-nav {
   position: relative;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
 }
 
 .navbar>.container-fluid {
   max-width: max-content;
   margin: 0;
+  height: 100%;
+}
+.navbar>.container-fluid>.navbar-collapse {
+  height: 100%;
+}
+.navbar>.container-fluid ul{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navbar>.container-fluid ul .nav-item{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navbar>.container-fluid ul .nav-item:hover{
+  height: 100%;
+  background: #133a75;
+}
+.navbar>.container-fluid ul .nav-item.active{
+  height: 100%;
+  background: #1C4C94;
+  color: #ffffff;
 }
 
 .mainheader-nav .dropdown.me-2 {
-  position: absolute;
+  /* position: absolute;
   right: 10px;
-  top: 20px;
+  top: 20px; */
 }
 
 .main-sec {
@@ -653,7 +685,7 @@ table#industryList{
 
 .input-container .login-icon-left {
   position: absolute;
-  left: 20px;
+  left: 30px;
   top: 50%;
   transform: translate(-50%, -50%);
 }
@@ -692,15 +724,16 @@ table#industryList{
 
 
 .user-side-view {
-  background-color: #F1F5FF;
   border-radius: 0 16px 16px 0;
+  padding: 1rem;
 }
 
 .user-side-view h4 {
   font-family: Poppins;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 24px;
+  text-align: center;
 
 }
 
@@ -708,9 +741,9 @@ table#industryList{
 .user-side-view ul {
   list-style-type: number;
   font-family: Poppins;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
   margin: 1rem 0;
 }
 
@@ -1238,13 +1271,25 @@ ul.chart-list li{
 }
 
 .nav-link {
-  color: rgba(255,255,255,0.8)!important;
-  transition: 0.2s all ease-in-out;
+  color: rgba(255,255,255,1)!important;
 }
 .nav-link:hover {
-  color: rgba(255,255,255,1)!important;
+  color: rgba(255,255,255,1)!important; 
 }
 .nav-link.active {
   color: rgba(255,255,255,1)!important;
 }
 
+
+.alert-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.alert-close,.alert-close:focus{
+  box-shadow: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

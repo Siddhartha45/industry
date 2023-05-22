@@ -156,14 +156,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-#Email settings to send email to users for verification
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'dipeshthapa709@gmail.com'
-EMAIL_HOST_PASSWORD = 'xrfnvufkkdggcmlt'
-PASSWORD_RESET_SUBJECT_TEMPLATE = 'registration/password_reset_subject.txt'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
