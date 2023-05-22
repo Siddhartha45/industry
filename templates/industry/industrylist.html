@@ -30,7 +30,8 @@
             </div>
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="investmentInput">
-                    <option value="all" selected disabled>Investment</option>
+                    <option value="all" disabled>Investment</option>
+                    <option value="None" selected>None</option>
                     <option value="MINIATURE">लघु (Miniature)</option>
                     <option value="DOMESTIC">घरेलु (Domestic)</option>
                     <option value="SMALL">साना (Small)</option>
@@ -40,7 +41,9 @@
             </div>
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="productInput">
+                    
                     <option value="all" selected disabled>Product</option>
+                    <option value="None" selected >None</option>
                     <option value="E">उर्जामूलक (Energy)</option>
                     <option value="MF">उत्पादनमूलक (Manufacturing)</option>
                     <option value="AF">कृषि तथा वन पैदावारमा आधारित </option>
@@ -55,6 +58,7 @@
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="ownershipInput">
                     <option value="all" selected disabled>Ownership</option>
+                    <option value="None" selected>None</option>
                     <option value="PRIVATE">निजी (Private)</option>
                     <option value="PARTNERSHIP">साझेदारी (Partnership)</option>
                 </select>
@@ -62,6 +66,7 @@
         
 
             <div class="kit-input-icon d-flex justify-content-between">
+                {% comment %} <button class="kit-form-button m-0 me-2 px-5" id="filter">Filter</button> {% endcomment %}
                 <button class="kit-form-button m-0 me-2 px-5" id="reset">Reset</button>
 
                 <div class="dropdown">
@@ -97,8 +102,9 @@
                 </thead>
                 <tbody id = "industry_list_elements">
                 {% for i in industry %}
+                {% with serial_number=industry.start_index|add:forloop.counter0 %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td>{{ serial_number }}</td>
                     <td class="d-none">{{ i.investment }}</td>
                     <td class="d-none">{{ i.industry_acc_product }}</td>
                     <td class="d-none">{{ i.ownership }}</td>
@@ -132,11 +138,12 @@
                         </div>
                     </td>
                 </tr>
+                {% endwith %}
                 {% endfor %}
                 </tbody>
             </table>
             
-            <div class="pagination" style="text-align: right;">
+            <div class="pagination">
                 {% if industry.has_previous %}
                     <a href="?search={{ search_query }}&page=1" style="margin-right: 10px;">First</a>
                     <a href="?search={{ search_query }}&page={{ industry.previous_page_number }}" style="margin-right: 10px;">Previous</a>
@@ -202,7 +209,7 @@
             url: "{% url 'AjaxSearch' %}",
             type: 'GET',
             data: {
-                search: value,
+                type:'search',search: value,
               },
             dataType: 'json',
             success: function(response) {
@@ -266,7 +273,7 @@
             },
             error: function(xhr, status, error) {
               // Handle the error
-              alert("error")
+              
               console.log('An error occurred: ' + error);
             }
           });
@@ -277,12 +284,18 @@
         $('.md_select').change(function() {
             var value = $(this).val();
             var id = this.id;
+
+            investment_input = $("#investmentInput").val()
+            ownership_input = $("#ownershipInput").val()
+            product_input = $("#productInput").val()
+
+        
             
             $.ajax({
               url: "{% url 'AjaxSearch' %}",
               type: 'GET',
               data: {
-                  search: value,field:id,
+                  type:'option',investment_input:investment_input,ownership_input:ownership_input,product_input:product_input
                 },
               dataType: 'json',
               success: function(response) {
@@ -337,18 +350,29 @@
                         $('#industry_list_elements').append(element);
                       }
                     }
-                // Handle the successful response       
+                // Handle the successful response     
+                $('#industryList').addClass('myClassMd');
               
               },
               error: function(xhr, status, error) {
                 // Handle the error
-                alert("error")
+               
                 console.log('An error occurred: ' + error);
               }
             });
         });
       });
-      
+
+      $('#filter').click(function() {
+        // Handle the click event here
+        alert("hello")
+        console.log('Div clicked');
+        // Perform any other actions you want
+      });
+
+      $(document).ready( function () {
+        $('#industryList').DataTable();
+    } );
       
     </script>    
 {% endblock %}
