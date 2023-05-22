@@ -17,96 +17,117 @@
 <body>
     <header>
         <div class="custom-bg">
-        <div class="container ">
-            <div class="row">
-                <div class="mainheader-top">
-                    <img class="GON-logo" src="{% static '/image/nepal-govt.png' %}" alt="map of nepal">
-                    <div class="mainheader-top-text">
-                        <h3>Sudurpashchim Provincial Government</h3>
-                        <h3><span>Ministry of Industry, </span>Tourism, Forest & Environment</h3>
-                        <h4>Directorate of Industry, Commerce & Consumer Welfare Protection</h4>
-                        <p>Dhangadhi, Kailali</p>
+            <div class="container ">
+                <div class="row">
+                    <div class="mainheader-top">
+                        <img class="GON-logo" src="{% static '/image/nepal-govt.png' %}" alt="map of nepal">
+                        <div class="mainheader-top-text">
+                            <h3>Sudurpashchim Provincial Government</h3>
+                            <h3><span>Ministry of Industry, Tourism, Forest & Environment</span></h3>
+                            <h4>Directorate of Industry, Commerce & Consumer Welfare Protection</h4>
+                            <p>Dhangadhi, Kailali</p>
+                        </div>
+                        <img class="flag" src="{% static '/image/Flag_of_Nepal.svg.png' %}" alt="">
                     </div>
-                    <img class="flag" src="{% static '/image/Flag_of_Nepal.svg.png' %}" alt="">
                 </div>
             </div>
-        </div>
 
-        <div class="" style="background-color: #2460B9">
-            <nav class="navbar navbar-expand-lg navbar-dark mainheader-nav m-auto" style="max-width:1320px">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto main-ul mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{% url 'faq-display' %}">FAQ</a>
-                            </li>
-                        </ul>
+            <div class="" style="background-color: #2460B9">
+                <nav class="navbar navbar-expand-lg navbar-dark mainheader-nav m-auto" style="max-width:1320px">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto main-ul mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page"
+                                        href="{% url 'faq-display' %}">FAQ</a>
+                                </li>
+                            </ul>
+
+                        </div>
 
                     </div>
-
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
 
     </header>
 
-    <div class="custom-bg py-4">
-    <div class="container d-flex justify-content-center" style="height: 67vh;">
-        <div class="d-flex justify-content-center">
-            <div class="row user-form">
-                <div class="login-title text-center">
-                    <h3>Login to your Account</h3>
-                    <p>Please put your login credentials below.</p>
-                </div>
-                {% for message in messages %}
-                    {{message}}
-                {% endfor %}
-                <form action="{% url 'login' %}" method="post" class="user-form-main">
-                    {% csrf_token %}
-                    <label for="exampleInputEmailAddress" class="form-label">Email Address</label>
-                    <div class="input-container">
-                        <img class="login-icon-left" src="{% static '/image/user.svg' %}" alt="">
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Enter your Email Address" name="email" required>
-                    </div>
-                    <label for="exampleInputPassword" class="form-label">Password</label>
-                    <div class="input-container">
-                        <img class="login-icon-left" src="{% static '/image/lock-alt.svg' %}" alt="">
-                        <input type="password" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="passwordHelp" placeholder="Enter your Password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+    <div class="custom-bg py-4 d-flex flex-column justify-content-center align-items-center">
 
-                </form>
-                <div class="login-btm">
-                    <p class="forget-pw">
-                        <a href="{% url 'password_reset' %}">Forget your Password?</a>
-                    </p>
-                    <p>Don't have an account <a href="">Signup</a></p>
-                </div>
+        
+        {% for message in messages %}
+            <div class="alert alert-danger mt-3 w-80 alert-box" role="alert" id="alert-danger">
+                <p class="me-4 mb-0">{{message}}</p>
+                <button type="button" class="btn-close alert-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        {% endfor %}
+        
 
+        <div class="container d-flex justify-content-center" style="height: 68.2vh;">
+            <div class="d-flex justify-content-center">
+                <div class="row user-form">
+                    <div class="login-title text-center">
+                        <h3>Login to your Account</h3>
+                        <p>Please put your login credentials below.</p>
+                    </div>
+                    <form action="{% url 'login' %}" method="post" class="user-form-main">
+                        {% csrf_token %}
+                        <label for="exampleInputEmailAddress" class="form-label">Email Address</label>
+                        <div class="input-container">
+                            <img class="login-icon-left" src="{% static '/image/user.svg' %}" alt="">
+                            <input type="email" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp" placeholder="Enter your Email Address" name="email"
+                                required>
+                        </div>
+                        <label for="exampleInputPassword" class="form-label">Password</label>
+                        <div class="input-container">
+                            <img class="login-icon-left" src="{% static '/image/lock-alt.svg' %}" alt="">
+                            <input type="password" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="passwordHelp" placeholder="Enter your Password" name="password"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="login">Login</button>
+
+                    </form>
+                    <div class="login-btm">
+                        <p class="forget-pw">
+                            <a href="{% url 'password_reset' %}" style="font-weight: 600;">Forget your Password?</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 
     <footer>
         <p>© Department of Industry Management. All Right Reserved.</p>
     </footer>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
         </script>
 </body>
+
+
+<script>
+    // $(document).ready(function() {
+    // $("#alert-danger").hide();
+    // $("#login").click(function showAlert() {
+    //     $("#alert-danger").fadeTo(50000, 50000).slideUp(50000, function() {
+    //     $("#alert-danger").slideUp(50000);
+    //     });
+    // });
+    // });
+</script>
 
 </html>

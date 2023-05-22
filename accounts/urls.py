@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from django.contrib.auth import views as auth_views
+from .views import CustomPasswordResetView
 
 
 urlpatterns = [
@@ -17,7 +18,7 @@ urlpatterns = [
     path('user/download/csv/', views.accounts_csv, name="account-csv"),
     path('user/download/pdf/', views.accounts_pdf, name="account-pdf"),
     #url paths for password resetting
-    path('password_reset/',auth_views.PasswordResetView.as_view(template_name='account/forgetpassword.html'), name='password_reset'),
+    path('password_reset/',CustomPasswordResetView.as_view(template_name='account/forgetpassword.html'), name='password_reset'),
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='account/resetpassword.html'), name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),

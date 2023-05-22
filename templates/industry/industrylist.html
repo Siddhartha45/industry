@@ -2,13 +2,19 @@
 {% load static %}
 {% block container %}
     <div class="container main-sec">
+
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" id="overlay" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
         <div class="cng-pw-title d-flex justify-content-between mt-4">
             <p>Industries List<span>
                     ( उद्योग सूची )</span>
             </p>
-            {% for message in messages %}
-                    {{ message }}
-            {% endfor %}
+            
             <div class="kit-text-navigation">
                 <p>Applicant Portal
                     <span> > </span> Change Password
@@ -84,9 +90,9 @@
             </div>
 
         </div>
-        <div class="row  mb-4 mbl-tbl">
+        <div class="row  mb-4 mbl-tbl d-flex justify-content-center">
 
-            <table class="report-view-table" id="industryList">
+            <table class="report-view-table table table-hover" id="industryList">
                 <thead>
                     <tr>
                         <th>S.no</th>
@@ -117,21 +123,27 @@
                             <div class="action-btn-view">
                                 <a href="{% url 'industry-profile' industry_id=i.id %}" class="kit-card-link">
                                 <button>
-                                    View
+                                    <span class="material-symbols-outlined">
+                                        visibility
+                                        </span>
                                 </button>
                                 </a>
                             </div>                          
                             <div class="action-btn-pen">
                                 <a href="{% url 'edit-industry' industry_id=i.id %}" class="kit-card-link">
                                 <button>
-                                    <i class="fa-solid fa-pen"></i>
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                        </span>
                                 </button>
                                 </a>
                             </div>
                             <div class="action-btn-dlt">
                                 <a href="{% url 'industry-delete' industry_id=i.id %}" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
                                 <button>
-                                    <i class="fa-regular fa-trash-can"></i>
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                        </span>
                                 </button>
                                 </a>
                             </div>
@@ -143,7 +155,49 @@
                 </tbody>
             </table>
             
-            <div class="pagination">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if industry.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ industry.previous_page_number|add:-2 }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if industry.number == 1 %}
+                    {% for num in industry.paginator.page_range|slice:":3" %}
+                    {% if industry.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+    
+                    {% else %}
+                    {% for num in industry.paginator.page_range %}
+                        {% if industry.number == num %}
+                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            {% if num == industry.number|add:"-1" or num == industry.number|add:"1" %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    
+                    {% if industry.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ industry.next_page_number|add:2 }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <!--
+            <div class="pagination" style="text-align: right;">
                 {% if industry.has_previous %}
                     <a href="?search={{ search_query }}&page=1" style="margin-right: 10px;">First</a>
                     <a href="?search={{ search_query }}&page={{ industry.previous_page_number }}" style="margin-right: 10px;">Previous</a>
@@ -155,7 +209,7 @@
                     <a href="?search={{ search_query }}&page={{ industry.next_page_number }}" style="margin-right: 10px;">Next</a>
                     <a href="?search={{ search_query }}&page={{ industry.paginator.num_pages }}" style="margin-right: 10px;">Last</a>
                 {% endif %}
-            </div>
+            </div>-->
 
         </div>
     </div>
@@ -369,10 +423,12 @@
         console.log('Div clicked');
         // Perform any other actions you want
       });
-
-      $(document).ready( function () {
-        $('#industryList').DataTable();
-    } );
       
+    $( document ).ready(function() {
+        $('#overlay').fadeIn('slow');
+        setTimeout(function() {
+            $('#overlay').fadeOut('slow');
+        }, 5000);
+    })
     </script>    
 {% endblock %}

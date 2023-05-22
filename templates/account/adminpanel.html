@@ -5,7 +5,7 @@
         <h2 class="kit-page-heading">Application Portal (आवेदक पोर्टल)</h2>
 
         <div class="row row-cols-1 row-cols-md-5 g-4">
-          <div class="col">
+          <div class="col d-none">
             <a href="{% url 'search-industry' %}" class="kit-card-link">
             <div class="kit-card h-100">
               <div class="kit-icon-box"><img src="{% static '/image/searchindustry.png' %}" class="card-img-top" alt="..."></div>
@@ -16,6 +16,18 @@
             </div>
           </a>
           </div>
+
+          <div class="col">
+            <a href="{% url 'industry-list' %}" class="kit-card-link">
+            <div class="kit-card h-100">
+              <div class="kit-icon-box"><img src="{% static '/image/viewindustry.png' %}" class="card-img-top" alt="..."></div>
+              <div class="kit-card-body">
+                <h5 class="kit-card-title">View Industries <br> <span>( उद्योगहरू हेर्नुहोस् )</span></h5>
+              </div>
+            </div>
+          </a>
+          </div>
+
             <div class="col">
               <a href="{% url 'add-industry' %}" class="kit-card-link">
                 <div class="kit-card h-100">
@@ -26,16 +38,7 @@
                 </div>
               </a>
             </div>
-            <div class="col">
-              <a href="{% url 'industry-list' %}" class="kit-card-link">
-              <div class="kit-card h-100">
-                <div class="kit-icon-box"><img src="{% static '/image/viewindustry.png' %}" class="card-img-top" alt="..."></div>
-                <div class="kit-card-body">
-                  <h5 class="kit-card-title">View Industries <br> <span>( उद्योगहरू हेर्नुहोस् )</span></h5>
-                </div>
-              </div>
-            </a>
-            </div>
+            
             {% if request.user.role == 1 %}
               <div class="col">
                 <a href="{% url 'user-create' %}" class="kit-card-link">

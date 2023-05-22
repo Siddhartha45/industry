@@ -109,26 +109,41 @@
                     </div>
 
                     <div class="row mb-3 kit-location-container">
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             <label class="form-label kit-form-label">Industry Address ( उद्योगको ठेगाना
                                 )</label>
                             <div class="kit-input-icon">
                                 <img src="{% static '/image/search.png' %}" alt="">
                                 <input type="text" class="form-control kit-form-control kit-form-location"
                                     placeholder="Search Location" id="us2-address">
-                                <input type="text" id="us2-lat"  name="latitude"/>
-                                <input type="text" id="us2-lon"  name="longitude"/>
+                                
+                                <!-- <input type="text" id="us2-lat"  name="latitude"/>
+                                <input type="text" id="us2-lon"  name="longitude"/> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label kit-form-label">Latitude</label>
+                            <div class="kit-input-icon">
+                                <input type="text" class="form-control kit-form-control"
+                                id="us2-lat"  name="latitude">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label kit-form-label">Longitude</label>
+                            <div class="kit-input-icon">
+                                <input type="text" class="form-control kit-form-control"
+                                id="us2-lon"  name="longitude">
                             </div>
                         </div>
                         <div class="col-sm-2 mbl-hide">
-                            <button class="kit-form-button">Reset</button>
+                            <button class="kit-form-button" id="locationreset">Reset</button>
                         </div>
                     </div>
                     <div class="row mb-3 kit-map">
                         <div class="col-sm-12 kit-map-container" id="maparea"></div>
                     </div>
                     <div class="col-sm-2 mbl-show">
-                        <button class="kit-form-button">Reset</button>
+                        <button class="kit-form-button" id="reset">Reset</button>
                     </div>
                 </div>
 

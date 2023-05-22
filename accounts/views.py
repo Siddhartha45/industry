@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from fdip.decorators import superadmin_required
 import xlwt
 import csv
+from django.contrib.auth.views import PasswordResetView
 
 
 def user_login(request):
@@ -149,7 +150,19 @@ def change_password(request):
         return redirect('change-password')
             
     return render(request, 'account/changepassword.html')
-    
+
+
+#customizing the django default passwordresetview to check if users email exist in database before sending mail
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        # Check if the email exists in the database
+        if not CustomUser.objects.filter(email=email).exists():
+            # Display an error message
+            messages.error(self.request, 'Email does not exist.')
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
 
 #to display the role names in excel file
 def get_role_display(role_id):

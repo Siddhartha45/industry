@@ -81,16 +81,20 @@
                         <div class="d-flex kit-action-com">                  
                             <div class="action-btn-pen"> 
                                 <a href="{% url 'user-create' id=i.id %}" class="kit-card-link">                             
-                                <button>
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
+                                    <button>
+                                        <span class="material-symbols-outlined">
+                                            edit
+                                            </span>
+                                    </button>
                                 </a>
                             </div>
                             <div class="action-btn-dlt">
                                 <a href="{% url 'user-delete' user_id=i.id %}" onclick="return confirmDelete()" class="kit-card-link">
-                                <button>
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
+                                    <button>
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                            </span>
+                                    </button>
                                 </a>
                             </div>
                         </div>
