@@ -577,6 +577,7 @@ table#industryList{
   height: 100%;
   display: flex;
   align-items: center;
+  padding: 0 15px;
 }
 .navbar>.container-fluid ul .nav-item:hover{
   height: 100%;
@@ -852,52 +853,49 @@ td {
 }
 
 .kit-action-com .action-btn-view button {
-  background: none;
-  font-size: 14px;
-  font-weight: 400;
-  font-family: Poppins;
-  color: #0D68F9;
+  background-color: #E7F0F7;
+  border: transparent;
   border-radius: 5px;
-  border: 1px solid #0D68F9;
-  padding: 10px;
+  color: #58667E;
+  font-size: 1.25rem;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kit-action-com .action-btn-view button:hover{
-  background-color:#0D68F9 ;
+  background-color:#153869 ;
   color: white;
 }
 
 .kit-action-com .action-btn-pen button {
   background-color: #E7F0F7;
+  color: #58667E;
   border-radius: 5px;
   font-size: 1.25rem;
   border: transparent;
-  height: 100%;
   aspect-ratio: 1/1;
-}
-
-.kit-action-com .action-btn-pen button i{
-  color: #0D68F9;
-}
-.kit-action-com .action-btn-pen:hover button i{
-  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kit-action-com .action-btn-pen button:hover{
-  background-color:#0D68F9 ;
+  background-color:#153869 ;
   color: white;
 }
 
 .kit-action-com .action-btn-dlt button {
   background-color: #FFDBDB;
   border: transparent;
-  /* padding: 5px; */
   border-radius: 5px;
   color: red;
   font-size: 1.25rem;
-  height: 100%;
   aspect-ratio: 1/1;
-  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kit-action-com .action-btn-dlt button:hover{
@@ -909,7 +907,7 @@ td {
   background-color: #E7F0F7;
   text-align: center;
   color: #58667E;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-family: Poppins;
   font-weight: 600;
 }
@@ -1292,4 +1290,25 @@ ul.chart-list li{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+.report-view-table tbody tr{
+  line-height: 2;
+}
+.report-view-table tbody tr td{
+  line-height: 2;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.page-link{
+  color: #58667E;
+}
+.page-link:focus{
+  box-shadow: none;
+  color: #58667E;
+}
+.page-link:hover{
+  color: #131313;
 }

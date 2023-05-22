@@ -87,7 +87,7 @@
         </div>
         <div class="row  mb-4 mbl-tbl d-flex justify-content-center">
 
-            <table class="report-view-table " id="industryList">
+            <table class="report-view-table table table-hover" id="industryList">
                 <thead>
                     <tr>
                         <th>S.no</th>
@@ -117,21 +117,27 @@
                             <div class="action-btn-view">
                                 <a href="{% url 'industry-profile' industry_id=i.id %}" class="kit-card-link">
                                 <button>
-                                    View
+                                    <span class="material-symbols-outlined">
+                                        visibility
+                                        </span>
                                 </button>
                                 </a>
                             </div>                          
                             <div class="action-btn-pen">
                                 <a href="{% url 'edit-industry' industry_id=i.id %}" class="kit-card-link">
                                 <button>
-                                    <i class="fa-solid fa-pen"></i>
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                        </span>
                                 </button>
                                 </a>
                             </div>
                             <div class="action-btn-dlt">
                                 <a href="{% url 'industry-delete' industry_id=i.id %}" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
                                 <button>
-                                    <i class="fa-regular fa-trash-can"></i>
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                        </span>
                                 </button>
                                 </a>
                             </div>
@@ -142,6 +148,24 @@
                 </tbody>
             </table>
             
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
             <div class="pagination" style="text-align: right;">
                 {% if industry.has_previous %}
                     <a href="?search={{ search_query }}&page=1" style="margin-right: 10px;">First</a>
