@@ -36,8 +36,8 @@
             </div>
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="investmentInput">
-                    <option value="all" disabled>Investment</option>
-                    <option value="None" selected>None</option>
+                    
+                    <option value="None" selected>Filter Investment</option>
                     <option value="MINIATURE">लघु (Miniature)</option>
                     <option value="DOMESTIC">घरेलु (Domestic)</option>
                     <option value="SMALL">साना (Small)</option>
@@ -48,8 +48,7 @@
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="productInput">
                     
-                    <option value="all" selected disabled>Product</option>
-                    <option value="None" selected >None</option>
+                    <option value="None" selected >Filter Product</option>
                     <option value="E">उर्जामूलक (Energy)</option>
                     <option value="MF">उत्पादनमूलक (Manufacturing)</option>
                     <option value="AF">कृषि तथा वन पैदावारमा आधारित </option>
@@ -63,8 +62,8 @@
             </div>
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="ownershipInput">
-                    <option value="all" selected disabled>Ownership</option>
-                    <option value="None" selected>None</option>
+                    
+                    <option value="None" selected>Filter Owner</option>
                     <option value="PRIVATE">निजी (Private)</option>
                     <option value="PARTNERSHIP">साझेदारी (Partnership)</option>
                 </select>
@@ -73,7 +72,7 @@
 
             <div class="kit-input-icon d-flex justify-content-between">
                 {% comment %} <button class="kit-form-button m-0 me-2 px-5" id="filter">Filter</button> {% endcomment %}
-                <button class="kit-form-button m-0 me-2 px-5" id="reset">Reset</button>
+                <button class="kit-form-button m-0 me-2 px-5" id="ResetMd">Reset</button>
 
                 <div class="dropdown">
                     <button class="kit-form-button m-0 px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex;
@@ -82,7 +81,7 @@
                         <i class="fa-solid fa-download me-3"></i> Download
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{%url 'download-pdf' %}" target="blank">PDF</a></li>
+                      <li><a class="dropdown-item" href="#" onclick="PdfDownload()" target="blank">PDF</a></li>
                       <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
                       <li><a class="dropdown-item" onclick="EXCELFilter()" href="#' %}">EXCEL</a></li>
                     </ul>
@@ -295,21 +294,27 @@
                                   <div class="action-btn-view">
                                       <a href="/industry/profile/`+item.pk+`" class="kit-card-link">
                                       <button>
-                                          View
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                            </span>
                                       </button>
                                       </a>
                                   </div>                          
                                   <div class="action-btn-pen">
                                       <a href="/industry/edit/`+item.pk+`" class="kit-card-link">
                                       <button>
-                                          <i class="fa-solid fa-pen"></i>
+                                        <span class="material-symbols-outlined">
+                                            edit
+                                            </span>
                                       </button>
                                       </a>
                                   </div>
                                   <div class="action-btn-dlt">
                                       <a href="/industry/delete/`+item.pk+`" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
                                       <button>
-                                          <i class="fa-regular fa-trash-can"></i>
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                            </span>
                                       </button>
                                       </a>
                                   </div>
@@ -365,7 +370,7 @@
                           
                         // Access properties of each item
                         var element = `
-                    
+                        
                         <tr>
                             <td>`+ count +` </td>
                             <td> `+ item.fields.industry_name +` </td>
@@ -377,21 +382,27 @@
                                     <div class="action-btn-view">
                                         <a href="/industry/profile/`+item.pk+`" class="kit-card-link">
                                         <button>
-                                            View
+                                            <span class="material-symbols-outlined">
+                                                visibility
+                                                </span>
                                         </button>
                                         </a>
                                     </div>                          
                                     <div class="action-btn-pen">
                                         <a href="/industry/edit/`+item.pk+`" class="kit-card-link">
                                         <button>
-                                            <i class="fa-solid fa-pen"></i>
+                                            <span class="material-symbols-outlined">
+                                                edit
+                                                </span>
                                         </button>
                                         </a>
                                     </div>
                                     <div class="action-btn-dlt">
                                         <a href="/industry/delete/`+item.pk+`" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
                                         <button>
-                                            <i class="fa-regular fa-trash-can"></i>
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                                </span>
                                         </button>
                                         </a>
                                     </div>
@@ -430,5 +441,28 @@
             $('#overlay').fadeOut('slow');
         }, 5000);
     })
+    function PdfDownload(){
+        //href="{%url 'download-pdf' %}"
+        
+        investment_input = $("#investmentInput").val()
+        ownership_input = $("#ownershipInput").val()
+        product_input = $("#productInput").val()
+
+        var get_url = "?investment_input="+investment_input+"&ownership_input="+ownership_input+"&product_input="+product_input
+
+        window.open("{%url 'download-pdf' %}"+get_url, "_blank");
+        
+    }
+
+    document.getElementById("ResetMd").addEventListener("click", function() {
+        document.getElementById("ownershipInput").value = "None";
+        document.getElementById("ownershipInput").dispatchEvent(new Event('change'));
+
+        document.getElementById("investmentInput").value = "None";
+        document.getElementById("investmentInput").dispatchEvent(new Event('change'));
+
+        document.getElementById("productInput").value = "None";
+        document.getElementById("productInput").dispatchEvent(new Event('change'));
+    });
     </script>    
 {% endblock %}

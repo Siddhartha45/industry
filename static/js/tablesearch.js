@@ -43,17 +43,17 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   
       // Check if the row matches the investment filter
-      if (investmentValue !== "all" && investment.toLowerCase() !== investmentValue.toLowerCase()) {
+      if (investmentValue !== "None" && investment.toLowerCase() !== investmentValue.toLowerCase()) {
         match = false;
       }
   
       // Check if the row matches the ownership filter
-      if (ownershipValue !== "all" && ownership.toLowerCase() !== ownershipValue.toLowerCase()) {
+      if (ownershipValue !== "None" && ownership.toLowerCase() !== ownershipValue.toLowerCase()) {
         match = false;
       }
   
       // Check if the row matches the product filter
-      if (productValue !== "all" && product.toLowerCase() !== productValue.toLowerCase()) {
+      if (productValue !== "None" && product.toLowerCase() !== productValue.toLowerCase()) {
         match = false;
       }
   
@@ -72,9 +72,9 @@ document.addEventListener("DOMContentLoaded", function() {
   function resetFields() {
     // Reset the values of all input fields to their default values
     searchInput.value = "";
-    investmentInput.value = "all";
-    productInput.value = "all";
-    ownershipInput.value = "all";
+    investmentInput.value = "None";
+    productInput.value = "None";
+    ownershipInput.value = "None";
 
     // Trigger the filterTable function to show all rows
     filterTable();

@@ -295,11 +295,37 @@ def industry_csv(request):
 #this is in use for downloading pdf
 @login_required
 def download_pdf(request):
-    industry = Industry.objects.all()
+    investment_input = request.GET.get('investment_input')
+    ownership_input = request.GET.get('ownership_input')
+    product_input = request.GET.get('product_input')
+      
+
+    if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+
+    elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
+        queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+        
+    elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
+
+    elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
+        
+    elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input)
+        
+    elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
+        queryset = Industry.objects.filter(ownership__contains=ownership_input)
+        
+    elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+        queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
+
 
     context = {
-        'industry': industry,
+        'industry': queryset,
         }
+    
     return render(request,"industry/report.html",context)
 
 def AjaxSearch(request):
@@ -322,6 +348,9 @@ def AjaxSearch(request):
 
     elif investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
         queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+        
+    elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
+        queryset = Industry.objects.all()[:100]
 
     elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
         queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
