@@ -16,7 +16,8 @@ urlpatterns = [
     path('industry/download/csv/', views.industry_csv, name="download-csv"),
     path('industry/download/pdf/', views.download_pdf, name="download-pdf"), 
     
-    path('industry-ajax-search/', views.AjaxSearch, name="AjaxSearch"), 
+    path('industry-ajax-search/', views.AjaxSearch, name="AjaxSearch"),
+    path('session-reset/', views.session_delete, name="session-reset"),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

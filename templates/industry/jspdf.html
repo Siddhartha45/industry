@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
         }
         th, td {
             border: 1px solid black;
-        
+            padding: 8px;
         }
     </style>
 </head>
@@ -25,7 +24,7 @@
         <thead>
             <tr>
                 <th>S.no</th>
-                <th>indusrty name</th>
+                <th>industry name</th>
                 <th>industry owner</th>
                 <th>address</th>
                 <th>Phone no.</th>
@@ -45,15 +44,17 @@
         {% endfor %}
         </tbody>
     </table>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" integrity="sha512-GLcXzS6N6/DyeyChNch92W8YmMTZR0fI3n3IMjz/n74mmn/1Grs0X1JyKnusB/bBd9eQRRsGH4Q8JKPyPJoBlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js" integrity="sha512-k3TfuT8GGg/Ocxi4gu2/bMF3kBe8XBSV3pfb6IHLtGeAl8TjDLQ5y8xjLY7IgTTgr5PrpMX0vI1c8fVLROBa6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var element = document.getElementById('industryList_whole');
-        var options = {
-            pagebreak: { mode: 'auto' }, 
-            margin: [18, 10, 20, 10]
-        };
-        html2pdf().set(options).from(element).save();
-    </script>
+        function generatePDF() {
+            const doc = new jsPDF();
+            doc.autoTable({ html: '#industryList' });
+            doc.save('industry_list.pdf');
+        }
 
+        generatePDF();
+    </script>
 </body>
 </html>

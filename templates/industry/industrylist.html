@@ -16,7 +16,7 @@
             </p>
             
             <div class="kit-text-navigation">
-                <p>Applicant Portal
+                <p>Applicant Portal {{request.session.type}}
                     <span> > </span> Change Password
                 </p>
             </div>
@@ -37,7 +37,7 @@
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="investmentInput">
                     
-                    <option value="None" selected>Filter Investment</option>
+                    <option value="None" selected>Investment</option>
                     <option value="MINIATURE">लघु (Miniature)</option>
                     <option value="DOMESTIC">घरेलु (Domestic)</option>
                     <option value="SMALL">साना (Small)</option>
@@ -48,22 +48,22 @@
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="productInput">
                     
-                    <option value="None" selected >Filter Product</option>
-                    <option value="E">उर्जामूलक (Energy)</option>
-                    <option value="MF">उत्पादनमूलक (Manufacturing)</option>
-                    <option value="AF">कृषि तथा वन पैदावारमा आधारित </option>
-                    <option value="MI">खनिज(Mineral)</option>
-                    <option value="I">पूर्वाधार(Infrastructure)</option>
-                    <option value="T">पर्यटन(Tourism)</option>
-                    <option value="IC">सूचना तथा संचार प्रविधि</option>
-                    <option value="S">सेवामूलक(Service)</option>
-                    <option value="O">अन्य(Others)</option>
+                    <option value="None" selected>Product</option>
+                    <option value="E" {% if request.session.product_input == 'E' %} selected {% endif %}>उर्जामूलक (Energy)</option>
+                    <option value="MF" {% if request.session.product_input == 'MF' %} selected {% endif %}>उत्पादनमूलक (Manufacturing)</option>
+                    <option value="AF" {% if request.session.product_input == 'AF'%} selected {% endif %}>कृषि तथा वन पैदावारमा आधारित </option>
+                    <option value="MI" {% if request.session.product_input == 'MI' %} selected {% endif %}>खनिज(Mineral)</option>
+                    <option value="I" {% if request.session.product_input == 'I' %} selected {% endif %}>पूर्वाधार(Infrastructure)</option>
+                    <option value="T" {% if request.session.product_input == 'T' %} selected {% endif %}>पर्यटन(Tourism)</option>
+                    <option value="IC" {% if request.session.product_input == 'IC' %} selected {% endif %}>सूचना तथा संचार प्रविधि</option>
+                    <option value="S" {% if request.session.product_input == 'S' %} selected {% endif %}>सेवामूलक(Service)</option>
+                    <option value="O" {% if request.session.product_input == 'O' %} selected {% endif %}>अन्य(Others)</option>
                 </select>
             </div>
             <div class="kit-input-icon industry-search">
                 <select class="form-select kit-form-control md_select" aria-label="Default select example" id="ownershipInput">
                     
-                    <option value="None" selected>Filter Owner</option>
+                    <option value="None" selected>Owner</option>
                     <option value="PRIVATE">निजी (Private)</option>
                     <option value="PARTNERSHIP">साझेदारी (Partnership)</option>
                 </select>
@@ -90,7 +90,6 @@
 
         </div>
         <div class="row  mb-4 mbl-tbl d-flex justify-content-center">
-
             <table class="report-view-table table table-hover" id="industryList">
                 <thead>
                     <tr>
@@ -169,7 +168,7 @@
                     {% if industry.number == num %}
                         <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                     {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
                     {% endif %}
                     {% endfor %}
     
@@ -179,7 +178,7 @@
                             <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                         {% else %}
                             {% if num == industry.number|add:"-1" or num == industry.number|add:"1" %}
-                                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
@@ -187,7 +186,7 @@
                     
                     {% if industry.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ industry.next_page_number|add:2 }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+                        <a class="page-link" href="?page={{ industry.next_page_number|add:2 }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -255,6 +254,7 @@
         url = url.slice(0, -1);
         window.location.href = url;
     }
+    
     $(document).ready(function() {
         $('#search').on('input', function() {
           var value = $(this).val();
@@ -455,14 +455,17 @@
     }
 
     document.getElementById("ResetMd").addEventListener("click", function() {
-        document.getElementById("ownershipInput").value = "None";
-        document.getElementById("ownershipInput").dispatchEvent(new Event('change'));
+        //document.getElementById("ownershipInput").value = "None";
+        //document.getElementById("ownershipInput").dispatchEvent(new Event('change'));
 
-        document.getElementById("investmentInput").value = "None";
-        document.getElementById("investmentInput").dispatchEvent(new Event('change'));
+        //document.getElementById("investmentInput").value = "None";
+        //document.getElementById("investmentInput").dispatchEvent(new Event('change'));
 
-        document.getElementById("productInput").value = "None";
-        document.getElementById("productInput").dispatchEvent(new Event('change'));
+        //document.getElementById("productInput").value = "None";
+        //document.getElementById("productInput").dispatchEvent(new Event('change'));
+
+        window.open("{% url 'session-reset' %}","_self"); 
     });
+    
     </script>    
 {% endblock %}

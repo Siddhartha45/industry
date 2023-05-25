@@ -14,6 +14,8 @@ import xlwt
 
 @login_required
 def home(request):
+    session_local_delete(request)
+    
     total_industry = Industry.objects.count()
     #for showing chart acc to investment
     miniature = Industry.objects.filter(investment='MINIATURE').count()
@@ -175,13 +177,50 @@ def view_industry_profile(request, industry_id):
 @login_required
 def industry_list(request):
     # Apply search filter if provided in request GET parameters
-    search_query = request.GET.get('search', '')
+    # print(request.session.get("type"))
+    # investment_input = request.session.get('investment_input')
+    # if request.session.has_key('type'):
+    #   username = request.session['type']
+    #   return HttpResponse(username+"sad")
+    # else:
+        # HttpResponse("session not seted")
+   
+            
+    if 'type' in request.session:
+        investment_input = request.session.get('investment_input')
+        ownership_input = request.session.get('ownership_input')
+        product_input = request.session.get('product_input')
+        print("session")
+        if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+            
+        elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
+            industries_queryset = Industry.objects.all()[:100]
 
-    # Fetch industries queryset based on the search filter
-    if search_query:
-        industries_queryset = Industry.objects.filter(industry_name__contains=search_query)
+        elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
+            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+            
+        elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
+
+        elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
+            
+        elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input)
+            
+        elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
+            industries_queryset = Industry.objects.filter(ownership__contains=ownership_input)
+            
+        elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
     else:
+        print("not session....")
         industries_queryset = Industry.objects.all()
+        
+        
+    # Fetch industries queryset based on the search filter
+  
 
     # Configure the number of records to display per page
     items_per_page = 100
@@ -198,7 +237,7 @@ def industry_list(request):
     # Prepare data to be passed to the template
     data = {
         'industry': page,
-        'search_query': search_query,
+        'request':request
     }
     
     return render(request, 'industry/industrylist.html', data)
@@ -213,6 +252,7 @@ def delete_industry(request, industry_id):
 
 
 def search_industry(request):
+    session_local_delete(request)
     if request.GET:
         search_data = Industry.objects.filter(industry_name__contains = request.GET["search"])
     else:
@@ -339,43 +379,69 @@ def AjaxSearch(request):
     investment_input = request.GET.get('investment_input')
     ownership_input = request.GET.get('ownership_input')
     product_input = request.GET.get('product_input')
+    page = int(request.GET.get('page', 1)) #lazy loading
     
 
     if request.GET.get('type') == "search":
-        print("search in")
+        #print("search in")
+        session_local_delete(request)
+        
         search_query = str(request.GET.get('search'))
         queryset = Industry.objects.filter(industry_name__contains=search_query)   
+    else:
+        request.session['investment_input'] = investment_input
+        request.session['ownership_input'] = ownership_input
+        request.session['product_input'] = product_input
+        request.session['type'] = 'option'
+        if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+            
+        elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
+            queryset = Industry.objects.all()[:100]
 
-    elif investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-        
-    elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
-        queryset = Industry.objects.all()[:100]
+        elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
+            queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
+            
+        elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
 
-    elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-        
-    elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
-
-    elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
-        
-    elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input)
-        
-    elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(ownership__contains=ownership_input)
-        
-    elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
-        
-    # print(search_query)
-
-    # Fetch industries queryset based on the search filter
-    # print(queryset.first().pk)
-    # queryset = Industry.objects.filter(investment__contains="SMALL")
-    json_data = serialize('json', queryset)
-    # print(field)
-    # print(search_query)
+        elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
+            
+        elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input)
+            
+        elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
+            queryset = Industry.objects.filter(ownership__contains=ownership_input)
+            
+        elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+            queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
+    
+    
+    items_per_page = 100
+    paginator = Paginator(queryset, items_per_page)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+    
+    json_data = serialize('json', page)
     return JsonResponse(json_data, safe=False)
+
+
+def session_delete(request):
+    if 'type' in request.session:
+        del request.session['type']
+        del request.session['product_input']
+        del request.session['ownership_input']
+        del request.session['investment_input']
+
+        #return HttpResponse("session delete")
+    #return HttpResponse("session are not delete")
+    return redirect('industry-list')
+
+def session_local_delete(request):
+    if 'type' in request.session:
+        del request.session['type']
+        del request.session['product_input']
+        del request.session['ownership_input']
+        del request.session['investment_input']
+    
