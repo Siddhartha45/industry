@@ -265,6 +265,7 @@ def search_industry(request):
 
 @login_required
 def industry_excel(request):
+    # return HttpResponse(request.get().items())
     filter_investment = request.GET.get("investment")
     filter_ownership = request.GET.get("ownership")
     filter_industry_acc_product = request.GET.get("industry_acc_product")
@@ -282,13 +283,13 @@ def industry_excel(request):
     
     industries = Industry.objects.all()
     
-    if filter_ownership:
+    if filter_ownership != 'None':
         industries = industries.filter(ownership=filter_ownership)
     
-    if filter_investment:
+    if filter_investment != 'None':
         industries = industries.filter(investment=filter_investment)
     
-    if filter_industry_acc_product:
+    if filter_industry_acc_product != 'None':
         industries = industries.filter(industry_acc_product=filter_industry_acc_product)
     
     for row_num, industry in enumerate(industries, start=1):
@@ -317,13 +318,13 @@ def industry_csv(request):
     
     industries = Industry.objects.all()
     
-    if filter_ownership:
+    if filter_ownership != 'None':
         industries = industries.filter(ownership=filter_ownership)
     
-    if filter_investment:
+    if filter_investment != 'None':
         industries = industries.filter(investment=filter_investment)
     
-    if filter_industry_acc_product:
+    if filter_industry_acc_product != 'None':
         industries = industries.filter(industry_acc_product=filter_industry_acc_product)
     
     for industry in industries:
@@ -360,6 +361,8 @@ def download_pdf(request):
         
     elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
         queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
+    else:
+        queryset = None
 
 
     context = {
