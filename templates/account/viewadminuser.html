@@ -46,7 +46,7 @@
                         <i class="fa-solid fa-download me-3"></i> Download
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url 'account-pdf' %}" target="blank">PDF</a></li>
+                      <li><a class="dropdown-item" href="#" onclick="PdfDownload()">PDF</a></li>
                       <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
                       <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">Excel</a></li>
                     </ul>
@@ -160,6 +160,17 @@
             url += "role=" + role + "&";
         }
         window.location.href = url;
+    }
+
+    function PdfDownload(){
+        //href="{%url 'download-pdf' %}"
+        
+        filter_role = $("#role").val()
+        
+        var get_url = "?filter_role="+filter_role
+
+        window.open("{%url 'account-pdf' %}"+get_url, "_blank");
+        
     }
 </script>
 {% endblock %}

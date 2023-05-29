@@ -247,9 +247,22 @@ def accounts_csv(request):
 
 @superadmin_required
 def accounts_pdf(request):
-    account = CustomUser.objects.all()
+    filter_role = request.GET.get("filter_role")
+    if filter_role:
+        if filter_role == "admin":
+            filter_role = 2
+        elif filter_role == "super admin":
+            filter_role = 1
+        else:
+            filter_role == 0
 
+    accounts = CustomUser.objects.all()
+    if filter_role == 1 or filter_role ==2:
+        if filter_role != "0":
+            accounts = accounts.filter(role=filter_role)
+    
+    
     context = {
-        'account': account,
+        'account': accounts,
         }
     return render(request,"account/accountpdf.html",context)

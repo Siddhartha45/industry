@@ -65,7 +65,7 @@
                     
                     <option value="None" selected>Owner</option>
                     <option value="PRIVATE" {% if request.session.ownership_input == 'PRIVATE' %} selected {% endif %}>निजी (Private)</option>
-                    <option value="PARTNERSHIP" {% if request.session.ownership_input == 'PARTNERSHIP' %}>साझेदारी (Partnership)</option>
+                    <option value="PARTNERSHIP" {% if request.session.ownership_input == 'PARTNERSHIP' %} selected {% endif %}>साझेदारी (Partnership)</option>
                 </select>
             </div>
         
