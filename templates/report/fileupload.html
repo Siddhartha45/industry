@@ -4,24 +4,36 @@
 <style>
     form {
         max-width: 400px;
-        margin-top: 40px;
-        margin-bottom: 190px;
-        margin-left: 30px;
+        margin-top: 30px;
+        margin-bottom: 217px;
+        margin-left: 550px;
         padding: 50px;
         background-color: #f7f7f7;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-    h3 {
-        margin-top: 20px;
-        margin-left: 30px;
+    .headp {
+        margin-top: 50px;
+        margin-left: 630px;
     }
+    .button {
+        width: 25%;
+        height: 40px;
+        margin-top: 20px;
+        border-radius: 6px;
+        background: #2460B9;
+        color: #ffffff;
+        border: none;
+        transition: 0.1s all ease-in-out;
+      }
 </style>
-<h3>Enter your Excel File</h3>
-<form method="post" enctype="multipart/form-data">
+<div class="headp">
+    <h2 class="kit-page-heading">Enter your Excel File</h2>
+</div>
+<form class="kit-form-container" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Upload</button>
+    <button class="button" type="submit">Upload</button>
 </form>
 {% for message in messages %}
     {{message}}
