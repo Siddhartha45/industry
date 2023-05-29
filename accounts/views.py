@@ -10,6 +10,7 @@ from fdip.decorators import superadmin_required
 import xlwt
 import csv
 from django.contrib.auth.views import PasswordResetView
+from django.core.exceptions import ValidationError
 
 
 def user_login(request):
@@ -32,6 +33,20 @@ def user_logout(request):
     return redirect('login')
 
 
+def normalize_email(email):
+    """for normalizing email of users so that multiple users cant have same email with different case"""
+    email = email
+    try:
+        email_name, domain_part = email.strip().rsplit('@', 1)
+    except ValueError:
+        pass
+    else:
+        email_name = email_name.lower()
+        domain_part = domain_part.lower()
+        email = '@'.join([email_name, domain_part])
+    return email
+
+
 @superadmin_required
 def user_create(request,id=None):
     data = {
@@ -42,9 +57,11 @@ def user_create(request,id=None):
         form = CustomUserForm(request.POST)
         
         if form.is_valid():
+            email = form.cleaned_data.get('email')
+            normalized_email = normalize_email(email)
             data = {
                 'username': form.cleaned_data.get('username', 'default_username'),
-                'email': form.cleaned_data.get('email', 'default_email'),
+                'email': normalized_email,
                 'fullname': form.cleaned_data.get('fullname', 'default_fullname'),
                 'phone_no': form.cleaned_data.get('phone_no', 'default_phone_no'),             
                 'role': form.cleaned_data.get('role', 'default_role'),
