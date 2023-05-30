@@ -362,7 +362,7 @@ def download_pdf(request):
     elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
         queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
     else:
-        queryset = None
+        queryset = Industry.objects.all()
 
 
     context = {
