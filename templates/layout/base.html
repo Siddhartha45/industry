@@ -93,6 +93,14 @@
         })
     </script>
 
+    <script>
+        setTimeout(function() {
+            var Message = document.getElementById('message');
+            if (Message) {
+                Message.style.display = 'none';
+            }
+        }, 4000);
+    </script>
     
     {% block customjs %}
     {% endblock %}

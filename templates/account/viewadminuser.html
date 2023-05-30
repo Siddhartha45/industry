@@ -7,9 +7,15 @@
                 ( प्रयोगकर्ताहरू )</span>
             </p>
             
+            {% if messages %}
             {% for message in messages %}
-                {{message}}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success" id="message">{{ message }}</div>
+                {% elif message.tags == 'info' %}
+                    <div class="alert alert-warning" id="message">{{ message }}</div>
+                {% endif %}
             {% endfor %}
+            {% endif %}
                 
             <div class="kit-text-navigation">
                 <p>Applicant Portal

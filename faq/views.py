@@ -46,7 +46,7 @@ def faq_edit(request, faq_id):
         form = FaqForm(request.POST, instance=faq)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Updated!')
+            messages.success(request, 'FAQ Updated')
             return redirect('faq-list')
     else:
         form = FaqForm(instance=faq)
@@ -58,5 +58,6 @@ def faq_edit(request, faq_id):
 def faq_delete(request, faq_id):
     faq = get_object_or_404(Faq, id=faq_id)
     faq.delete()
+    messages.info(request, "FAQ deleted")
     return redirect('faq-list')
     

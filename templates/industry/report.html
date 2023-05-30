@@ -2,58 +2,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>PDF Industry</title>
-    <style>
-        h1 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-        
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-
-<body id="industryList_whole">
-    <h1>List of Industries</h1>
-    <table class="report-view-table" id="industryList">
-        <thead>
-            <tr>
-                <th>S.no</th>
-                <th>indusrty name</th>
-                <th>industry owner</th>
-                <th>address</th>
-                <th>Phone no.</th>
-                <th>Ownership</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for i in industry %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ i.industry_name }}</td>
-                <td>{{ i.owner_name }}</td>
-                <td>{{ i.address }}</td>
-                <td>{{ i.telephone_number }}</td>
-                <td>{{ i.get_ownership_display }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<body>
+    <div class="container">
+        <table class="table" id="industryList_whole">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Industry Name</th>
+                    <th>Owner Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Ownership</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in industry %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.industry_name }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.address }}</td>
+                    <td>{{ i.telephone_number }}</td>
+                    <td>{{ i.get_ownership_display }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var element = document.getElementById('industryList_whole');
-        var options = {
-            pagebreak: { mode: 'auto' }, 
-            margin: [18, 10, 20, 10]
-        };
-        html2pdf().set(options).from(element).save();
+    let element = document.getElementById('industryList_whole')
+    setTimeout(function() {
+    html2pdf(industryList_whole,{
+    margin:10,
+    filename:'industry_list.pdf',
+    html2canvas:{scale:2,dpi:192,letterRendering:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+    })
     </script>
-
-</body>
 </html>

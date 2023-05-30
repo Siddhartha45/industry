@@ -7,6 +7,10 @@
                     ( पासवर्ड परिवर्तन् )</span>
             </p>
 
+            {% for message in messages %}
+                <div class="alert alert-warning" id="message">{{message}}</div>
+            {% endfor %}
+
             <div class="kit-text-navigation">
                 <p>Applicant Portal
                     <span> > </span> Change Password
@@ -33,7 +37,7 @@
                             <a href="{% url 'report-show' report_id=i.id%}">
                                 <button>
                                     <span class="material-symbols-outlined">
-                                        edit
+                                        visibility
                                         </span>
                                 </button>
                             </a>

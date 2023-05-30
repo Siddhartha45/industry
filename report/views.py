@@ -14,7 +14,7 @@ def report_problem(request):
             report = form.save(commit=False)
             report.user = request.user
             report.save()
-            messages.success(request, 'Report Sent!')
+            messages.success(request, 'Report Sent')
             return redirect('report')
     else:
         form = ReportForm()
@@ -39,6 +39,7 @@ def report_list(request):
 def report_delete(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.delete()
+    messages.info(request, "Report deleted")
     return redirect('report-list')
 
 

@@ -10,9 +10,17 @@
             </p>
         </div>
     </div>
-    {% for message in messages %}
-            {{message}}
-        {% endfor %}
+    
+    {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success" id="message">{{ message }}</div>
+                {% elif message.tags == 'info' %}
+                    <div class="alert alert-warning" id="message">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+
     <div class="row mb-4">
       <div class="col-md-10"></div>
       <div class="col-md-2">

@@ -88,9 +88,9 @@ def user_create(request,id=None):
             user_obj, created = CustomUser.objects.update_or_create(id=id, defaults=data)
             
             if created:
-                messages.success(request, 'User created successfully!')
+                messages.success(request, 'User created successfully')
             else:
-                messages.success(request, 'User updated successfully!')
+                messages.success(request, 'User updated successfully')
             
             return redirect('view-users')    
     else: 
@@ -99,7 +99,7 @@ def user_create(request,id=None):
     if form.errors:
         for field in form:
             if field.errors:
-                messages.error(request, 'Error! Please fill all the fields with correct data.')
+                messages.error(request, 'Error! Please fill all the fields with correct data')
                 break
     
     if id !=None:
@@ -115,6 +115,7 @@ def user_create(request,id=None):
 def view_users(request):
     data = {
         'users' : CustomUser.objects.all(),
+        'messages': messages.get_messages(request),
     }
     return render(request, 'account/viewadminuser.html', data)
 
@@ -132,6 +133,7 @@ def view_user_details(request, user_id):
 def delete_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user.delete()
+    messages.info(request, "User deleted")
     return redirect('view-users')
 
 
@@ -162,7 +164,7 @@ def change_password(request):
         user.set_password(new_password)
         user.save()
         #update_session_auth_hash(request, user)    #user is not logged out after changing password
-        messages.success(request, 'Password changed successfully.')
+        messages.success(request, 'Password changed successfully. Login with your new password')
 
         return redirect('change-password')
             

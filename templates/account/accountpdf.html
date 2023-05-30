@@ -2,57 +2,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>PDF Users</title>
-    <style>
-        h1 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body id="userlist">
-    <h1>List of Accounts</h1>
-    <table class="report-view-table">
-        <thead>
-            <tr>
-                <th>S.no</th>
-                <th>Username</th>
-                <th>Fullname</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Phone No.</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for i in account %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ i.username }}</td>
-                <td>{{ i.fullname }}</td>
-                <td>{{ i.getRoleName }}</td>
-                <td>{{ i.email }}</td>
-                <td>{{ i.phone_no }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<body>
+    <div class="container">
+        <table class="table" id="userlist">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Username</th>
+                    <th>Fullname</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in account %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.username }}</td>
+                    <td>{{ i.fullname }}</td>
+                    <td>{{ i.getRoleName }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.phone_no }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var element = document.getElementById('userlist');
-        var options = {
-            pagebreak: { mode: 'auto' }, // Enable page breaks using legacy mode
-            margin: [18, 10, 27, 10]
-        };
-        html2pdf().set(options).from(element).save();
+    let element = document.getElementById('userlist')
+    html2pdf(userlist,{
+    margin:10,
+    filename:'industry_list.pdf',
+    html2canvas:{scale:2,logging:true,dpi:192,letterRendering:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+    })
     </script>
 
 </body>
