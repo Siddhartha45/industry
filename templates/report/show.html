@@ -21,7 +21,11 @@
         </div>
 
         <div class="row report-img">
-            <img src="{{ report.issue_image.url }}" alt="">
+            {% if report.issue_image %}
+                <img src="{{ report.issue_image.url }}" alt="">
+            {% else %}
+                <p>No image selected</p>
+            {% endif %}
         </div>
 
     </div>

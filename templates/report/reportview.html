@@ -2,14 +2,15 @@
 {% load static %}
 {% block container %}
     <div class="container main-sec">
+
+        {% for message in messages %}
+                <div class="alert alert-warning mt-3" id="message">{{message}}</div>
+            {% endfor %}
+
         <div class="cng-pw-title d-flex justify-content-between mt-4">
             <p>Change Password <span>
                     ( पासवर्ड परिवर्तन् )</span>
             </p>
-
-            {% for message in messages %}
-                <div class="alert alert-warning" id="message">{{message}}</div>
-            {% endfor %}
 
             <div class="kit-text-navigation">
                 <p>Applicant Portal

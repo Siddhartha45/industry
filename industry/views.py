@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, HttpResponseRedirect
 from .models import Industry, IndustryPhoto
 from .forms import IndustryForm
 from fdip import commons
@@ -154,7 +154,7 @@ def edit_industry(request, industry_id):
     if form.errors:
         for field in form:
             if field.errors:
-                messages.error(request, 'रोजगारीको अवस्थामा नम्बर हाल्नुहोस!')
+                messages.error(request, 'Please fill the fields with correct data')
                 break
         
     context = {
@@ -190,13 +190,13 @@ def industry_list(request):
         investment_input = request.session.get('investment_input')
         ownership_input = request.session.get('ownership_input')
         product_input = request.session.get('product_input')
-        print("session")
+
         if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
             industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
             
         elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
-            industries_queryset = Industry.objects.all()[:100]
-
+            industries_queryset = Industry.objects.all().order_by('-id')[:100]
+            
         elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
             industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
             
@@ -215,8 +215,7 @@ def industry_list(request):
         elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
             industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
     else:
-        print("not session....")
-        industries_queryset = Industry.objects.all()
+        industries_queryset = Industry.objects.all().order_by('-id')
         
         
     # Fetch industries queryset based on the search filter
@@ -237,7 +236,8 @@ def industry_list(request):
     # Prepare data to be passed to the template
     data = {
         'industry': page,
-        'request':request
+        'request':request,
+        'messages': messages.get_messages(request),
     }
     
     return render(request, 'industry/industrylist.html', data)
@@ -247,9 +247,8 @@ def industry_list(request):
 def delete_industry(request, industry_id):
     industry = get_object_or_404(Industry, id=industry_id)
     industry.delete()
-    messages.success(request, "Industry is deleted!")
-    return redirect('industry-list')
-
+    messages.info(request, "Industry deleted!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   #redirects user to same page after deleting
 
 def search_industry(request):
     session_local_delete(request)
@@ -400,7 +399,7 @@ def AjaxSearch(request):
             queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
             
         elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
-            queryset = Industry.objects.all()[:100]
+            queryset = Industry.objects.all().order_by('-id')[:100]
 
         elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
             queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)

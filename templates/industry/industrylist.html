@@ -4,10 +4,17 @@
     <div class="container main-sec">
 
         {% for message in messages %}
-            <div class="alert alert-warning alert-dismissible fade show mt-3" id="overlay" role="alert">
+        {% if message.tags == "success"%}
+            <div class="alert alert-success alert-dismissible fade show mt-3" id="message" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        {% elif message.tags == "info" %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" id="message" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
         {% endfor %}
 
         <div class="cng-pw-title d-flex justify-content-between mt-4">

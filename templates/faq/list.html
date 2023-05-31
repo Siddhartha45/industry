@@ -1,7 +1,18 @@
 {% extends "layout/base.html" %}
 {% load static %}
 {% block container %}
-<div class="container my-5" style="min-height: 63vh;">
+<div class="container main-sec">
+
+  {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success mt-3" id="message">{{ message }}</div>
+                {% elif message.tags == 'info' %}
+                    <div class="alert alert-warning mt-3" id="message">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+
     <div class="cng-pw-title d-flex justify-content-between mt-4">
         <p class="kit-page-heading">Frequently asked questions <span>( प्रायः सोधिने प्रश्नहरू )</span>
         </p>
@@ -10,16 +21,6 @@
             </p>
         </div>
     </div>
-    
-    {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    <div class="alert alert-success" id="message">{{ message }}</div>
-                {% elif message.tags == 'info' %}
-                    <div class="alert alert-warning" id="message">{{ message }}</div>
-                {% endif %}
-            {% endfor %}
-            {% endif %}
 
     <div class="row mb-4">
       <div class="col-md-10"></div>
