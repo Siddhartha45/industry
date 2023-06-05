@@ -47,6 +47,7 @@
             <div class="kit-row">
                 <h2 class="kit-smpage-heading">Industry Details ( उद्योग विवरण )</h2>
                 <div class="kit-btn-container">
+                    <a href="{% url 'industry-profile-pdf' industry_id=industry.id %}" class="kit-btn kit-info-btn">Download Pdf</a>
                     <a href="{% url 'edit-industry' industry_id=industry.id %}" class="kit-btn kit-info-btn"><img src="{% static '/image/edit.png' %}" alt="">Update Info</a>
                 </div>
             </div>

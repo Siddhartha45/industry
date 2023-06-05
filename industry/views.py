@@ -175,6 +175,13 @@ def view_industry_profile(request, industry_id):
 
 
 @login_required
+def industry_profile_pdf(request, industry_id):
+    industry = get_object_or_404(Industry, id=industry_id)
+    context = {'industry': industry}
+    return render(request, 'industry/industrydetail_pdf.html', context)
+
+
+@login_required
 def industry_list(request):
     # Apply search filter if provided in request GET parameters
     # print(request.session.get("type"))

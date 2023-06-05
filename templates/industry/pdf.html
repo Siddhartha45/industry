@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* .form-container {
+        display: flex;
+        flex-wrap: wrap;
+      } */
+​
+      /* .column {
+        flex-basis: 50%;
+        padding: 10px;
+      } */
+    </style>
+  </head>
+  <body>
+    <div id="industry">
+    <div class="form-container">
+      <!-- <div style="width: 100%">
+        <div style="display: inline; width: 50%">asdasd</div>
+        <div style="display: inline; float: right">uiop</div>
+      </div> -->
+      <h3>Industry Details of <span style="color: #2460B9;">{{industry.industry_name}}</span></h3>
+      <div class="column">
+        <p>
+          <span style="font-weight: bold">Industry Name: </span>
+          <span>{{industry.industry_name}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Industry Registration No.: </span>
+          <span>{{industry.industry_reg_no}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Registration Date: </span>
+          <span>{{industry.reg_date}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Owner's Name: </span>
+          <span>{{industry.owner_name}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Sex: </span>
+          <span>{{industry.get_sex_display}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Caste:</span>
+          <span>{{get_caste_display}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Address: </span>
+          <span>{{industry.address}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Telephone No.: </span>
+          <span>{{industry.telephone_number}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Contact Person: </span>
+          <span>{{industry.contact_person}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Mobile No.: </span>
+          <span>{{industry.mobile_number}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">District: </span>
+          <span>{{industry.district}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Local Body: </span>
+          <span>{{industry.local_body}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Ward No.: </span>
+          <span>{{industry.ward_no}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Product description: </span>
+          <span>{{industry.product_description}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold"
+            >Industry in accordance to investment:
+          </span>
+          <span>{{industry.get_investment_display}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold"
+            >Industry in accordance to product:
+          </span>
+          <span>{{industry.get_industry_acc_product_display}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Current Status: </span>
+          <span>{{industry.get_current_status_display}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Total manpower: </span>
+          <span>{{industry.total_manpower}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Male: </span>
+          <span>{{industry.male}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Female: </span>
+          <span>{{industry.female}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Fixed capital: </span>
+          <span>{{industry.fixed_capital}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Current capital: </span>
+          <span>{{industry.current_capital}}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Total Capital: </span>
+          <span>{{industry.total_capital}}</span>
+        </p>
+      </div>
+    </div>
+    </div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>
+    let element = document.getElementById('industry')
+    html2pdf(industry,{
+    margin:10,
+    filename:'industry_detail.pdf',
+    html2canvas:{scale:2,logging:true,dpi:192,letterRendering:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    })
+  </script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Weasy</title>
+    <style>
+        @page{
+            size: "A4";
+            margin: 2.5cm 1.5cm 3.5cm 1.5cm;
+
+            @top-center{
+                content: "Industry Lists सिद्धार्थ थापा मगर";
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table" id="industryList_whole">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Industry Name</th>
+                <th>Owner Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Ownership</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in industry %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.industry_name }}</td>
+                <td>{{ i.owner_name }}</td>
+                <td>{{ i.address }}</td>
+                <td>{{ i.telephone_number }}</td>
+                <td>{{ i.get_ownership_display }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
