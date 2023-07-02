@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'report',
     'faq',
+    'pdf_gen',
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser" 

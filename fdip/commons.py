@@ -14,7 +14,7 @@ DISTRICT = (
 #choices for selecting nature of investment
 INVESTMENT_CHOICES = (
     ('MINIATURE', 'लघु (Miniature)'),
-    ('DOMESTIC', 'घरेलु (Domestic)'),
+    ('DOMESTIC', 'घरेलु (Cottage Industry)'),
     ('SMALL', 'साना (Small)'),
     ('MEDIUM', 'मझौला (Medium)'),
     ('LARGE', 'ठुलो (Large)'),

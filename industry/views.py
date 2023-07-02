@@ -191,7 +191,7 @@ def industry_list(request):
     #   return HttpResponse(username+"sad")
     # else:
         # HttpResponse("session not seted")
-   
+
             
     if 'type' in request.session:
         investment_input = request.session.get('investment_input')
@@ -226,7 +226,7 @@ def industry_list(request):
         
         
     # Fetch industries queryset based on the search filter
-  
+
 
     # Configure the number of records to display per page
     items_per_page = 100
@@ -345,7 +345,7 @@ def download_pdf(request):
     investment_input = request.GET.get('investment_input')
     ownership_input = request.GET.get('ownership_input')
     product_input = request.GET.get('product_input')
-      
+    
 
     if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
         queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
@@ -392,11 +392,11 @@ def AjaxSearch(request):
     
 
     if request.GET.get('type') == "search":
-        #print("search in")
+    
         session_local_delete(request)
         
         search_query = str(request.GET.get('search'))
-        queryset = Industry.objects.filter(industry_name__contains=search_query)   
+        queryset = Industry.objects.filter(industry_name__contains=search_query) or Industry.objects.filter(district__contains=search_query)
     else:
         request.session['investment_input'] = investment_input
         request.session['ownership_input'] = ownership_input
