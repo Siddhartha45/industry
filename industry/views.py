@@ -396,7 +396,7 @@ def AjaxSearch(request):
         session_local_delete(request)
         
         search_query = str(request.GET.get('search'))
-        queryset = Industry.objects.filter(industry_name__contains=search_query) or Industry.objects.filter(district__contains=search_query)
+        queryset = Industry.objects.filter(industry_name__contains=search_query) or Industry.objects.filter(district__contains=search_query) or Industry.objects.filter(address__contains=search_query)
     else:
         request.session['investment_input'] = investment_input
         request.session['ownership_input'] = ownership_input
