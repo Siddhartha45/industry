@@ -245,10 +245,15 @@
     }
 
     function EXCELFilter(){
+        var searchQuery = $("#search").val();
         var investment = $("#investmentInput").val();
         var ownership = $("#ownershipInput").val();
         var industry_acc_product = $("#productInput").val();
+        
         var url = "{% url 'download-excel' %}?";
+        if (searchQuery) {
+            url += "search=" + encodeURIComponent(searchQuery) + "&";
+        }
         if (ownership) {
             url += "ownership=" + ownership + "&";
         }
