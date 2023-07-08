@@ -12,6 +12,9 @@ urlpatterns = [
     path('industry/profile/<int:industry_id>/', views.view_industry_profile, name="industry-profile"),
     path('industry/list/', views.industry_list, name="industry-list"),
     path('industry/search/', views.search_industry, name="search-industry"),
+    
+    #path('search/', views.industry_search, name="search"),
+    
     path('industry/download/excel/', views.industry_excel, name="download-excel"),
     path('industry/download/csv/', views.industry_csv, name="download-csv"),
     path('industry/download/pdf/', views.download_pdf, name="download-pdf"), 

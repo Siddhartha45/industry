@@ -107,14 +107,16 @@ def import_file(request):
                 if 'product_description' in df.columns:
                     industry_data['product_description'] = row['product_description']
                 
+                industry_data['district'] = 'बैतडी'
+                
                 #for assigning investment
                 if 'investment' in df.columns:
                     investment_choice = row['investment']
                     if investment_choice == "साना" or investment_choice == "साना प्रा.फ.":
                         investment = "SMALL"
-                    elif investment_choice == "लघु" or investment_choice == "लघु प्रा.फ":
+                    elif investment_choice == "लघु" or investment_choice == "लघु प्रा.फ" or investment_choice == "ल३ू":
                         investment = "MINIATURE"
-                    elif investment_choice == "घरेलु" or investment_choice == "घरेलु  प्रा.फ.":
+                    elif investment_choice == "घरेलु" or investment_choice == "घरेलु  प्रा.फ." or investment_choice == "३रेलू":
                         investment = "DOMESTIC"
                     elif investment_choice == "मझौला":
                         investment = "MEDIUM"

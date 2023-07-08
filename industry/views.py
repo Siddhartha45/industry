@@ -269,6 +269,18 @@ def search_industry(request):
     return render(request, 'industry/searchindustry.html', data)
 
 
+# def industry_search(request):
+#     if 'search' in request.GET:
+#         district = request.GET['search']
+#         industries = Industry.objects.filter(district__icontains=district)
+#     else:
+#         industries = Industry.objects.all()
+#     context = {
+#         'industries': industries
+#     }
+#     return render(request, 'industry/industrylist.html', context)
+
+
 @login_required
 def industry_excel(request):
     # return HttpResponse(request.get().items())

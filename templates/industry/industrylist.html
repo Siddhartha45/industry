@@ -39,6 +39,7 @@
                 
                 <input type="text" name="search" class="form-control kit-form-control kit-form-location" placeholder="Search Industry Name" id="search" autocomplete="off">
             </form>
+    
 
             </div>
             <div class="kit-input-icon industry-search">
@@ -88,9 +89,9 @@
                         <i class="fa-solid fa-download me-3"></i> Download
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#" onclick="PdfDownload()" >PDF</a></li>
-                      <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
-                      <li><a class="dropdown-item" onclick="EXCELFilter()" href="#' %}">EXCEL</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="PdfDownload()" >PDF</a></li>
+                        <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
+                        <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">EXCEL</a></li>
                     </ul>
                 </div>
             </div>
@@ -107,7 +108,7 @@
                         <th>indusrty name</th>
                         <th>industry owner</th>
                         <th>address</th>
-                        <th>Phone no.</th>
+                        <th>District</th>
                         <th class="hide_md">Action</th>
                     </tr>
                 </thead>
@@ -122,7 +123,7 @@
                     <td>{{ i.industry_name }}</td>
                     <td>{{ i.owner_name }}</td>
                     <td>{{ i.address }}</td>
-                    <td>{{ i.telephone_number }}</td>
+                    <td>{{ i.district }}</td>
                     <td class="hide_md">
                         <div class="d-flex kit-action-com">
                             <div class="action-btn-view">

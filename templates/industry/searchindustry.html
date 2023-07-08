@@ -68,9 +68,9 @@
                         <i class="fa-solid fa-download me-3"></i> Download
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">PDF</a></li>
-                      <li><a class="dropdown-item" href="#">Excel</a></li>
-                      <li><a class="dropdown-item" href="#">CSV</a></li>
+                        <li><a class="dropdown-item" href="#">PDF</a></li>
+                        <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">Excel</a></li>
+                        <li><a class="dropdown-item" href="#">CSV</a></li>
                     </ul>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                         <th>indusrty name</th>
                         <th>industry owner</th>
                         <th>address</th>
-                        <th>Phone no.</th>
+                        <th>District</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -103,7 +103,7 @@
                     <td>{{ i.industry_name }}</td>
                     <td>{{ i.owner_name }}</td>
                     <td>{{ i.address }}</td>
-                    <td>{{ i.telephone_number }}</td>
+                    <td>{{ i.district }}</td>
                     <td>
                         <div class="d-flex kit-action-com">
                             <div class="action-btn-view">
@@ -132,5 +132,17 @@
                 "dom": 'rtip'
             });
         } );
+
+
+        function EXCELFilter(){
+            var searchQuery = $("#search").val();
+            
+            var url = "{% url 'download-excel' %}?";
+            if (searchQuery) {
+                url += "search=" + encodeURIComponent(searchQuery) + "&";
+            }
+            url = url.slice(0, -1);
+            window.location.href = url;
+        }
     </script>
 {% endblock %}
