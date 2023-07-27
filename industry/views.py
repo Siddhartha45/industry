@@ -10,45 +10,69 @@ from django.core.paginator import Paginator
 import csv
 import datetime
 import xlwt
+from django.db.models import Count
 
 
 @login_required
 def home(request):
     session_local_delete(request)
     
-    total_industry = Industry.objects.count()
+    
+    district_filter = request.GET.get('district')
+    
+    if district_filter:
+        data_filter = Industry.objects.filter(district=district_filter)
+    else:
+        data_filter = Industry.objects.all()
+    
+    
+    unique_districts = Industry.objects.values_list('district', flat=True).distinct()
+    
+    try:
+        district_dict = {district['district']: district['count'] for district in Industry.objects.values('district').annotate(count=Count('district'))}
+    except:
+        district_dict = {}
+   
+    
+    district_count = unique_districts.count()
+    
+    total_industry = data_filter.count()
     #for showing chart acc to investment
-    miniature = Industry.objects.filter(investment='MINIATURE').count()
-    domestic = Industry.objects.filter(investment='DOMESTIC').count()
-    small = Industry.objects.filter(investment='SMALL').count()
-    medium = Industry.objects.filter(investment='MEDIUM').count()
-    large = Industry.objects.filter(investment='LARGE').count()
+    miniature = data_filter.filter(investment='MINIATURE').count()
+    domestic = data_filter.filter(investment='DOMESTIC').count()
+    small = data_filter.filter(investment='SMALL').count()
+    medium = data_filter.filter(investment='MEDIUM').count()
+    large = data_filter.filter(investment='LARGE').count()
     #for showing chart acc to ownership
-    private = Industry.objects.filter(ownership='PRIVATE').count()
-    partnership = Industry.objects.filter(ownership='PARTNERSHIP').count()
+    private = data_filter.filter(ownership='PRIVATE').count()
+    partnership = data_filter.filter(ownership='PARTNERSHIP').count()
     #for showing chart acc to current status
-    active = Industry.objects.filter(current_status='A').count()
-    inactive = Industry.objects.filter(current_status='I').count()
+    active = data_filter.filter(current_status='A').count()
+    inactive = data_filter.filter(current_status='I').count()
     #for showing chart acc to type of product
-    energy = Industry.objects.filter(industry_acc_product='E').count()
-    manufacturing = Industry.objects.filter(industry_acc_product='MF').count()
-    ag = Industry.objects.filter(industry_acc_product='AF').count()
-    mineral = Industry.objects.filter(industry_acc_product='MI').count()
-    infra = Industry.objects.filter(industry_acc_product='I').count()
-    tourism = Industry.objects.filter(industry_acc_product='T').count()
-    it = Industry.objects.filter(industry_acc_product='IC').count()
-    service = Industry.objects.filter(industry_acc_product='S').count()
-    others = Industry.objects.filter(industry_acc_product='O').count()
+    energy = data_filter.filter(industry_acc_product='E').count()
+    manufacturing = data_filter.filter(industry_acc_product='MF').count()
+    ag = data_filter.filter(industry_acc_product='AF').count()
+    mineral = data_filter.filter(industry_acc_product='MI').count()
+    infra = data_filter.filter(industry_acc_product='I').count()
+    tourism = data_filter.filter(industry_acc_product='T').count()
+    it = data_filter.filter(industry_acc_product='IC').count()
+    service = data_filter.filter(industry_acc_product='S').count()
+    others = data_filter.filter(industry_acc_product='O').count()
     #for showing chart acc to employment
-    total_manpower = Industry.objects.aggregate(total=Sum('total_manpower'))['total']
-    skilled = Industry.objects.aggregate(total=Sum('skillfull'))['total']
-    unskilled = Industry.objects.aggregate(total=Sum('unskilled'))['total']
-    indigenous = Industry.objects.aggregate(total=Sum('indigenous'))['total']
-    foreign = Industry.objects.aggregate(total=Sum('foreign'))['total']
-    male = Industry.objects.aggregate(total=Sum('male'))['total']
-    female = Industry.objects.aggregate(total=Sum('female'))['total']
+    total_manpower = data_filter.aggregate(total=Sum('total_manpower'))['total']
+    skilled = data_filter.aggregate(total=Sum('skillfull'))['total']
+    unskilled = data_filter.aggregate(total=Sum('unskilled'))['total']
+    indigenous = data_filter.aggregate(total=Sum('indigenous'))['total']
+    foreign = data_filter.aggregate(total=Sum('foreign'))['total']
+    male = data_filter.aggregate(total=Sum('male'))['total']
+    female = data_filter.aggregate(total=Sum('female'))['total']
 
     context = {
+                'unique_districts':unique_districts,
+                'district_count':district_count,
+                'district_dict':district_dict,
+                
                 'total_industry': total_industry,
                 'miniature': miniature,
                 'domestic': domestic,
@@ -408,7 +432,7 @@ def AjaxSearch(request):
         session_local_delete(request)
         
         search_query = str(request.GET.get('search'))
-        queryset = Industry.objects.filter(district__contains=search_query) or Industry.objects.filter(address__contains=search_query)
+        queryset = Industry.objects.filter(district__contains=search_query)
     else:
         request.session['investment_input'] = investment_input
         request.session['ownership_input'] = ownership_input

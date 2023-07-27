@@ -84,8 +84,8 @@ def import_file(request):
                     industry_data['industry_name'] = row['industry_name']
                 if 'industry_reg_no' in df.columns:
                     industry_data['industry_reg_no'] = row['industry_reg_no']
-                # if 'reg_date' in df.columns:
-                #     industry_data['reg_date'] = row['reg_date']
+                if 'reg_date' in df.columns:
+                    industry_data['reg_date'] = row['reg_date']
                 if 'owner_name' in df.columns:
                     industry_data['owner_name'] = row['owner_name']
                 if 'address' in df.columns:
@@ -107,7 +107,7 @@ def import_file(request):
                 if 'product_description' in df.columns:
                     industry_data['product_description'] = row['product_description']
                 
-                industry_data['district'] = 'बैतडी'
+                industry_data['district'] = 'दार्चुला'
                 
                 #for assigning investment
                 if 'investment' in df.columns:

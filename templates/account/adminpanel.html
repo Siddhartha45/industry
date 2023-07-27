@@ -128,6 +128,21 @@
       <h2 class="kit-page-heading">View Industries on Map (नक्सामा उद्योगहरू हेर्नुहोस्)</h2>
       <div id="map"></div>
     </div>
+    <center>
+            <select class="form-select" aria-label="Default select example" id="mySelect"  onchange="DistrictFilter(this.value)">
+              <option selected >select district</option>
+                {% for district in unique_districts %}
+                    <option value="{{district}}">{{district}}</option>
+                {% endfor %}
+            </select>
+    </center>
+        <style>
+            #mySelect {
+          width: 150px; /* Set your desired width value */
+        }
+        
+        </style>
+    
 
     <div class="container-fluid mt-5 py-1 infographics">
       <div class="container">
@@ -170,6 +185,8 @@
             </div>
           </div>
         </div>
+        
+    
 
         <div class="col-md-12">
           <div class="InvestmentChart">
@@ -178,11 +195,11 @@
               <div class="col-md-5 chart-info-list">
                 <h2 class="kit-page-heading mb-3 chart-heading"><span>Total Industries ( कुल उद्योगहरु )</span><span class="badge text-bg">{{total_industry}}</span></h2>
                 <ul class="chart-list">
-                  <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>लघु (Miniature)</span> <span class="badge text-bg">{{miniature}}</span></li>
-                  <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>घरेलु (Domestic)</span> <span class="badge text-bg">{{domestic}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>लघु (Micro)</span> <span class="badge text-bg">{{miniature}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>घरेलु (Cottage)</span> <span class="badge text-bg">{{domestic}}</span></li>
                   <li><span><i class="fa-solid fa-circle me-2" style="color: #5281ce;"></i>साना (Small)</span><span class="badge text-bg">{{small}}</span></li>
                   <li><span><i class="fa-solid fa-circle me-2" style="color: #9ef5ff;"></i>मझौला (Medium)</span><span class="badge text-bg">{{medium}}</span></li>
-                  <li><span><i class="fa-solid fa-circle me-2" style="color: #998ceb;"></i>ठुलो (Large)</span><span class="badge text-bg">{{large}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #998ceb;"></i>ठुला (Large)</span><span class="badge text-bg">{{large}}</span></li>
                 </ul>
               </div>
               <div class="col-md-7">
@@ -246,7 +263,26 @@
             </div>
           </div>
         </div>
-
+        
+        <!--     <div class="col-md-12">-->
+        <!--  <div class="InvestmentChart">-->
+        <!--    <h2 class="chart-title">Industry in accordance to District</h2>-->
+        <!--    <div class="row">-->
+        <!--      <div class="col-md-5 chart-info-list">-->
+        <!--        <h2 class="kit-page-heading mb-3 chart-heading"><span>Total District ( कुल जिल्ला)</span><span class="badge text-bg">{{district_count}}</span></h2>-->
+        <!--        <ul class="chart-list">-->
+        <!--            {% for dist,count in district_dict.items %}-->
+        <!--                <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>{{dist}}</span> <span class="badge text-bg">{{count}}</span></li>-->
+        <!--            {% endfor %}-->
+        <!--        </ul>-->
+        <!--      </div>-->
+        <!--      <div class="col-md-7">-->
+        <!--        <canvas id="InvestmentChart" style="width:100%;"></canvas>-->
+        <!--      </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--</div>-->
+        
         <div class="col-md-12 my-5">
           <div class="InvestmentChart">
             <h2 class="chart-title">Industry in accordance to Product</h2>
@@ -273,10 +309,34 @@
         </div>
      </div>
     </div>
+    
+    
 
 {% endblock %}
 
 {% block customjs %}
+    <script>
+        function DistrictFilter(value){
+                        var currentURL = window.location.href;
+
+        // Check if the URL already has query parameters
+        var url = new URL(currentURL);
+        var params = new URLSearchParams(url.search);
+
+        // Update or add the district query parameter
+        params.set('district', value);
+
+        // Construct the updated URL
+        url.search = params.toString();
+        var newURL = url.toString();
+
+        // Navigate to the updated URL
+        window.location.href = newURL;
+                
+        }
+
+        </script>
+        
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
   <script>
