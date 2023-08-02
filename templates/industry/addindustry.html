@@ -47,8 +47,8 @@
                         <select class="form-select kit-form-control" aria-label="Default select example" name="sex" >
                             <option value="" selected disabled>Select Sex</option>
                             {% for key,value in data.sex %}
-                                    <option value="{{key}}">{{value}}</option>
-                                {% endfor %}
+                                <option value="{{key}}">{{value}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-sm-6">
@@ -91,14 +91,24 @@
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">जिल्ला (District)</label>
-                            <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter District" name="district" >
+                            <select class="form-select kit-form-control" aria-label="Default select example" name="district" id="districtSelect">
+                                <option value="" selected disabled>Select District</option>
+                                {% for key,value in data.district %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
+
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>
-                            <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Local Body" name="local_body" >
+                            <select class="form-select kit-form-control" aria-label="Default select example" name="local_body" id="localBodySelect">
+                                <option value="" selected disabled>Select Local Body</option>
+                                {% comment %} {% for key,value in data.local_body %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %} {% endcomment %}
+                            </select>
                         </div>
+
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">वडा नं.(Ward No.)</label>
                             <input type="text" class="form-control kit-form-control"
@@ -345,6 +355,8 @@
 
     <script src="{% static '/js/locationpicker.js' %}"></script>
     <script src="{% static '/js/imagepreview.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         function handleIndustrySelection(selectElement) {
             const othersTextContainer = document.getElementById('othersTextContainer');
@@ -443,7 +455,38 @@
             });
         });
     </script>
-    
+
+    <script>
+        $(document).ready(function() {
+            $('#districtSelect').change(function() {
+                var selectedDistrict = $(this).val();
+                console.log('Selected District:', selectedDistrict);
+
+                if (selectedDistrict) {
+                    var url = '/get_local_bodies/' + encodeURIComponent(selectedDistrict) + '/';
+                    console.log('AJAX Request URL:', url);
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(data) {
+                            var localBodySelect = $('#localBodySelect');
+                            localBodySelect.empty();
+                            localBodySelect.append('<option value="">Select Local Body</option>');
+                            $.each(data.localbody_choices, function(index, choice) {
+                                localBodySelect.append('<option value="' + choice[0] + '">' + choice[1] + '</option>');
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log('AJAX Request Error:', errorThrown);
+                        }
+                    });
+                } else {
+                    // Clear the local body select options if no district is selected
+                    $('#localBodySelect').empty();
+                }
+            });
+        });
+    </script>
 
 {% endblock %}
 

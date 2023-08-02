@@ -16,8 +16,8 @@ class Industry(models.Model):
     contact_person = models.CharField(max_length=100, blank=True, null=True)
     mobile_number = models.CharField(max_length=15, blank=True, null=True)
     #Industry Address
-    district = models.CharField(max_length=100, blank=True, null=True)
-    local_body = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=20, choices=commons.DISTRICT_CHOICES, blank=True, null=True)
+    local_body = models.CharField(max_length=100, choices=commons.ALL_LOCALBODY_CHOICES, blank=True, null=True)
     ward_no = models.CharField(max_length=100, blank=True, null=True)
     settlement = models.CharField(max_length=100, blank=True, null=True)
     #map

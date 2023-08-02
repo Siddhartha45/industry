@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 #export part
 import csv
 import datetime
@@ -32,7 +33,7 @@ def home(request):
         district_dict = {district['district']: district['count'] for district in Industry.objects.values('district').annotate(count=Count('district'))}
     except:
         district_dict = {}
-   
+
     
     district_count = unique_districts.count()
     
@@ -103,6 +104,30 @@ def home(request):
     return render(request, 'account/adminpanel.html', context)
 
 
+def get_local_bodies(request, district):
+    if district == 'KAILALI':
+        localbody_choices = commons.KAILALI_LOCALBODY_CHOICES
+    elif district == 'KANCHANPUR':
+        localbody_choices = commons.KANCHANPUR_LOCALBODY_CHOICES
+    elif district == 'DADELDHURA':
+        localbody_choices = commons.DADELDHURA_LOCALBODY_CHOICES
+    elif district == 'DOTI':
+        localbody_choices = commons.DOTI_LOCALBODY_CHOICES
+    elif district == 'ACHHAM':
+        localbody_choices = commons.ACHHAM_LOCALBODY_CHOICES
+    elif district == 'BAJURA':
+        localbody_choices = commons.BAJURA_LOCALBODY_CHOICES
+    elif district == 'BAJHANG':
+        localbody_choices = commons.BAJHANG_LOCALBODY_CHOICES
+    elif district == 'BAITADI':
+        localbody_choices = commons.BAITADI_LOCALBODY_CHOICES
+    elif district == 'DARCHULA':
+        localbody_choices = commons.DARCHULA_LOCALBODY_CHOICES
+    else:
+        return JsonResponse({'localbody_choices': []})
+    
+    return JsonResponse({'localbody_choices': localbody_choices})
+
 @login_required
 def add_industry(request):
     data = {
@@ -114,6 +139,19 @@ def add_industry(request):
         'top' : commons.TYPE_OF_PRODUCT,
         'cs' : commons.CURRENT_STATUS,
         'ca' : commons.CAPACITY,
+        'district': commons.DISTRICT_CHOICES,
+        
+        'dadeldhura': commons.DADELDHURA_LOCALBODY_CHOICES,
+        'darchula': commons.DARCHULA_LOCALBODY_CHOICES,
+        'baitadi': commons.BAITADI_LOCALBODY_CHOICES,
+        'achham': commons.ACHHAM_LOCALBODY_CHOICES,
+        'doti': commons.DOTI_LOCALBODY_CHOICES,
+        'kailali': commons.KAILALI_LOCALBODY_CHOICES,
+        'bajura': commons.BAJURA_LOCALBODY_CHOICES,
+        'kanchanpur': commons.KANCHANPUR_LOCALBODY_CHOICES,
+        'bajhang': commons.BAJHANG_LOCALBODY_CHOICES,
+        
+        'local_body': commons.ALL_LOCALBODY_CHOICES,
     }
     if request.method == "POST":
         form = IndustryForm(request.POST, request.FILES)

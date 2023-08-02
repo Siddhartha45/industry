@@ -22,6 +22,7 @@ urlpatterns = [
     
     path('industry-ajax-search/', views.AjaxSearch, name="AjaxSearch"),
     path('session-reset/', views.session_delete, name="session-reset"),
+    path('get_local_bodies/<str:district>/', views.get_local_bodies, name='get_local_bodies'),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

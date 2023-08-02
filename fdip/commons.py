@@ -1,15 +1,134 @@
 #choices for selecting districts
-DISTRICT = (
-    ('KAILALI', 'KAILALI'),
-    ('KANCHANPUR', 'KANCHANPUR'),
-    ('DADELDHURA', 'DADELDHURA'),
-    ('DOTI', 'DOTI'),
-    ('ACHHAM', 'ACHHAM'),
-    ('BAJURA', 'BAJURA'),
-    ('BAJHANG', 'BAJHANG'),
-    ('BAITADI', 'BAITADI'),
-    ('DARCHULA', 'DARCHULA'),
+DISTRICT_CHOICES = (
+    ('KAILALI', 'कैलाली'),
+    ('KANCHANPUR', 'कञ्चनपुर'),
+    ('DADELDHURA', 'डडेल्धुरा'),
+    ('DOTI', 'डोटी'),
+    ('ACHHAM', 'अछाम'),
+    ('BAJURA', 'बाजुरा'),
+    ('BAJHANG', 'बझाङ'),
+    ('BAITADI', 'बैतडी'),
+    ('DARCHULA', 'दार्चुला'),
 )
+
+DADELDHURA_LOCALBODY_CHOICES = (
+    ('AMARGADHI', 'अमरगढी नगरपालिका'),
+    ('PARSURAM', 'परशुराम नगरपालिका'),
+    ('ALITAL', 'आलिताल गाउँपालिका'),
+    ('BHAGYASWOR', 'भागेश्वर गाउँपालिका'),
+    ('NAVADURGA', 'नवदुर्गा गाउँपालिका'),
+    ('AJAYMERU', 'अजयमेरु गाउँपालिका'),
+    ('GANYAPDHURA', 'गन्यापधुरा गाउँपालिका'),
+)
+
+DARCHULA_LOCALBODY_CHOICES = (
+    ('MAHAKALI', 'महाकाली नगरपालिका'),
+    ('SALYASIKHAR', 'शैल्यशिखर नगरपालिका'),
+    ('MALIKARJUN', 'मालिकार्जुन गाउँपालिका'),
+    ('APIHIMAL', 'अपिहिमाल गाउँपालिका'),
+    ('DUNHU', 'दुहुँ गाउँपालिका'),
+    ('NAUGADH', 'नौगाड गाउँपालिका'),
+    ('MARMA', 'मार्मा गाउँपालिका'),
+    ('LEKAM', 'लेकम गाउँपालिका'),
+    ('BYAS', 'ब्याँस गाउँपालिका'),
+)
+
+BAITADI_LOCALBODY_CHOICES = (
+    ('DASHRATHCHAND', 'दशरथचन्द नगरपालिका'),
+    ('PATAN', 'पाटन नगरपालिका'),
+    ('MELAULI', 'मेलौली नगरपालिका'),
+    ('PURCHAUDI', 'पुर्चौडी नगरपालिका'),
+    ('SUNARYA', 'सुर्नया गाउँपालिका'),
+    ('SIGAS', 'सिगास गाउँपालिका'),
+    ('SHIVNATH', 'शिवनाथ गाउँपालिका'),
+    ('PARBESHWOR', 'पञ्चेश्वर गाउँपालिका'),
+    ('DOGDAKEDAR', 'दोगडाकेदार गाउँपालिका'),
+    ('DILASAINI', 'डीलासैनी गाउँपालिका'),
+)
+
+ACHHAM_LOCALBODY_CHOICES = (
+    ('MANGALSENA', 'मंगलसेन नगरपालिका'),
+    ('KAMALBAJAR', 'कमलबजार नगरपालिका'),
+    ('SANFEBAGAR', 'साँफेबगर नगरपालिका'),
+    ('PANCHADEBAL', 'पन्चदेवल विनायक नगरपालिका'),
+    ('CHAURPATI', 'चौरपाटी गाउँपालिका'),
+    ('MELLEKH', 'मेल्लेख गाउँपालिका'),
+    ('BATRIGADHI', 'बान्निगढी जयगढ गाउँपालिका'),
+    ('RAMAROSAN', 'रामारोशन गाउँपालिका'),
+    ('DHAKARI', 'ढकारी गाउँपालिका'),
+    ('TURMAKHAND', 'तुर्माखाँद गाउँपालिका'),
+)
+
+DOTI_LOCALBODY_CHOICES = (
+    ('DIPAYAL', 'दिपायल सिलगढी नगरपालिका'),
+    ('SHIKHAR', 'शिखर नगरपालिका'),
+    ('PURBICHAUKI', 'पूर्वीचौकी गाउँपालिका'),
+    ('BADIKEDAR', 'बडीकेदार गाउँपालिका'),
+    ('JORAYAL', 'जोरायल गाउँपालिका'),
+    ('SAYAL', 'सायल गाउँपालिका'),
+    ('AADARSH', 'आदर्श गाउँपालिका'),
+    ('KIC', 'के.आई.सिं. गाउँपालिका'),
+    ('BOGTAN', 'बोगटान फुड्सिल गाउँपालिका'),
+)
+
+KAILALI_LOCALBODY_CHOICES = (
+    ('DHANGADI', 'धनगढी उपमहानगरपालिका'),
+    ('TIKAPUR', 'टिकापुर नगरपालिका'),
+    ('GHODAGHODI', 'घोडाघोडी नगरपालिका'),
+    ('LAMKICHUHA', 'लम्कीचुहा नगरपालिका'),
+    ('VAJANI', 'भजनी नगरपालिका'),
+    ('GODAWARI', 'गोदावरी नगरपालिका'),
+    ('GAURIGANGA', 'गौरीगंगा नगरपालिका'),
+    ('JANAKI', 'जानकी गाउँपालिका'),
+    ('BARDAGORIYA', 'बर्दगोरिया गाउँपालिका'),
+    ('MOHANYAL', 'मोहन्याल गाउँपालिका'),
+    ('KAULARI', 'कैलारी गाउँपालिका'),
+    ('JOSHIPUR', 'जोशीपुर गाउँपालिका'),
+    ('CHURE', 'चुरे गाउँपालिका'),
+)
+
+BAJURA_LOCALBODY_CHOICES = (
+    ('BADIMALIKA', 'बडीमालिका नगरपालिका'),
+    ('TRIBENI', 'त्रिवेणी नगरपालिका'),
+    ('BUDHIGANGA', 'बुढीगंगा नगरपालिका'),
+    ('BUDHINANDA', 'बुढीनन्दा नगरपालिका'),
+    ('GAUMUL', 'गौमुल गाउँपालिका'),
+    ('JAGANNATH', 'जगन्‍नाथ गाउँपालिका'),
+    ('SWAMIKARTIK', 'स्वामीकार्तिक खापर गाउँपालिका'),
+    ('KHAPTAD', 'खप्तड छेडेदह गाउँपालिका'),
+    ('HIMALI', 'हिमाली गाउँपालिका'),
+)
+
+KANCHANPUR_LOCALBODY_CHOICES = (
+    ('BHIMDATTA', 'भीमदत्त नगरपालिका'),
+    ('PURNABAS', 'पुर्नवास नगरपालिका'),
+    ('BEDKOT', 'वेदकोट नगरपालिका'),
+    ('DODHARA', 'दोधारा चादँनी नगरपालिका'),
+    ('SUKLAPHATA', 'शुक्लाफाँटा नगरपालिका'),
+    ('BELAURI', 'बेलौरी नगरपालिका'),
+    ('KRISHNAPUR', 'कृष्णपुर नगरपालिका'),
+    ('BELDADI', 'बेलडाडी गाउँपालिका'),
+    ('LALJHADI', 'लालझाडी गाउँपालिका'),
+)
+
+BAJHANG_LOCALBODY_CHOICES = (
+    ('JAYPRITHVI', 'जयपृथ्वी नगरपालिका'),
+    ('BUNGAL', 'बुंगल नगरपालिका'),
+    ('TALKOT', 'तलकोट गाउँपालिका'),
+    ('MASTA', 'मष्टा गाउँपालिका'),
+    ('KHAPTADCHATRA', 'खप्तडछान्ना गाउँपालिका'),
+    ('THALARA', 'थलारा गाउँपालिका'),
+    ('BITTADCHIR', 'वित्थडचिर गाउँपालिका'),
+    ('SURMA', 'सूर्मा गाउँपालिका'),
+    ('CHABBISPATHIVERA', 'छबिसपाथिभेरा गाउँपालिका'),
+    ('DURGATHALI', 'दुर्गाथली गाउँपालिका'),
+    ('KEDARSU', 'केदारस्युँ गाउँपालिका'),
+    ('SAIPAL', 'साइपाल गाउँपालिका'),
+)
+
+ALL_LOCALBODY_CHOICES = (DADELDHURA_LOCALBODY_CHOICES + DARCHULA_LOCALBODY_CHOICES + BAITADI_LOCALBODY_CHOICES +
+                        ACHHAM_LOCALBODY_CHOICES + DOTI_LOCALBODY_CHOICES + KAILALI_LOCALBODY_CHOICES +
+                        BAJURA_LOCALBODY_CHOICES + KANCHANPUR_LOCALBODY_CHOICES + BAJHANG_LOCALBODY_CHOICES)
 
 #choices for selecting nature of investment
 INVESTMENT_CHOICES = (
