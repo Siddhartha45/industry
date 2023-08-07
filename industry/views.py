@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+import json
 #export part
 import csv
 import datetime
@@ -18,15 +19,13 @@ from django.db.models import Count
 def home(request):
     session_local_delete(request)
     
+    selected_district = request.GET.get('district')
     
-    district_filter = request.GET.get('district')
-    
-    if district_filter:
-        data_filter = Industry.objects.filter(district=district_filter)
+    if selected_district:
+        data_filter = Industry.objects.filter(district=selected_district)
     else:
         data_filter = Industry.objects.all()
-    
-    
+
     unique_districts = Industry.objects.values_list('district', flat=True).distinct()
     
     try:
@@ -34,7 +33,7 @@ def home(request):
     except:
         district_dict = {}
 
-    
+
     district_count = unique_districts.count()
     
     total_industry = data_filter.count()
@@ -105,6 +104,7 @@ def home(request):
 
 
 def get_local_bodies(request, district):
+    """Returns Json Response of localbody_choices acc to district selected"""
     if district == 'KAILALI':
         localbody_choices = commons.KAILALI_LOCALBODY_CHOICES
     elif district == 'KANCHANPUR':
@@ -124,12 +124,14 @@ def get_local_bodies(request, district):
     elif district == 'DARCHULA':
         localbody_choices = commons.DARCHULA_LOCALBODY_CHOICES
     else:
-        return JsonResponse({'localbody_choices': []})
-    
+        localbody_choices = []
     return JsonResponse({'localbody_choices': localbody_choices})
+
 
 @login_required
 def add_industry(request):
+    """For adding the industry details"""
+    
     data = {
         'sex' : commons.SEX_CHOICES,
         'cas' : commons.CASTE_CHOICES,
@@ -140,22 +142,13 @@ def add_industry(request):
         'cs' : commons.CURRENT_STATUS,
         'ca' : commons.CAPACITY,
         'district': commons.DISTRICT_CHOICES,
-        
-        'dadeldhura': commons.DADELDHURA_LOCALBODY_CHOICES,
-        'darchula': commons.DARCHULA_LOCALBODY_CHOICES,
-        'baitadi': commons.BAITADI_LOCALBODY_CHOICES,
-        'achham': commons.ACHHAM_LOCALBODY_CHOICES,
-        'doti': commons.DOTI_LOCALBODY_CHOICES,
-        'kailali': commons.KAILALI_LOCALBODY_CHOICES,
-        'bajura': commons.BAJURA_LOCALBODY_CHOICES,
-        'kanchanpur': commons.KANCHANPUR_LOCALBODY_CHOICES,
-        'bajhang': commons.BAJHANG_LOCALBODY_CHOICES,
-        
-        'local_body': commons.ALL_LOCALBODY_CHOICES,
     }
     if request.method == "POST":
         form = IndustryForm(request.POST, request.FILES)
-        if form.is_valid():
+        formatted_data = json.dumps(form.data, indent=4)
+        print(formatted_data)
+        # print(form.errors)
+        if form.is_valid(): 
             industry_data = form.cleaned_data
             others_text = industry_data.get('others_text')
             
@@ -198,6 +191,7 @@ def edit_industry(request, industry_id):
         'top' : commons.TYPE_OF_PRODUCT,
         'cs' : commons.CURRENT_STATUS,
         'ca' : commons.CAPACITY,
+        'district': commons.DISTRICT_CHOICES,
     }
     industry = get_object_or_404(Industry, id=industry_id)
     industry_photos = IndustryPhoto.objects.filter(industry=industry)
@@ -245,44 +239,80 @@ def industry_profile_pdf(request, industry_id):
 
 @login_required
 def industry_list(request):
-    # Apply search filter if provided in request GET parameters
-    # print(request.session.get("type"))
-    # investment_input = request.session.get('investment_input')
-    # if request.session.has_key('type'):
-    #   username = request.session['type']
-    #   return HttpResponse(username+"sad")
-    # else:
-        # HttpResponse("session not seted")
+    
+    all_localbody = commons.ALL_LOCALBODY_CHOICES
 
-            
     if 'type' in request.session:
         investment_input = request.session.get('investment_input')
-        ownership_input = request.session.get('ownership_input')
         product_input = request.session.get('product_input')
+        district_input = request.session.get('district_input')
+        local_input = request.session.get('local_input')
 
-        if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
-            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-            
-        elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
+        if investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
+        
+        elif investment_input == 'None' and product_input == 'None' and district_input == 'None' and local_input == 'None':
             industries_queryset = Industry.objects.all().order_by('-id')[:100]
-            
-        elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
-            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-            
-        elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
-            industries_queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
-
-        elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
-            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
-            
-        elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
-            industries_queryset = Industry.objects.filter(investment__contains=investment_input)
-            
-        elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
-            industries_queryset = Industry.objects.filter(ownership__contains=ownership_input)
-            
-        elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+        
+        elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input) 
+        
+        elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
             industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
+            
+        elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(district__contains=district_input)
+        
+        elif investment_input == 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(local_body__contains=local_input)
+        
+        elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input, local_body__contains=local_input)
+            
+        elif investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input, district__contains=district_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input, local_body__contains=local_input)
+            
+        elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, local_body__contains=local_input)
+        
+        elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input)
+            
+        elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, local_body__contains=local_input)
+            
+        elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(district__contains=district_input, local_body__contains=local_input)
+            
+        elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+            industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
+            
+        # elif investment_input == 'None' and product_input == 'None' and district_input == 'None':
+        #     industries_queryset = Industry.objects.all().order_by('-id')[:100]
+            
+        # elif investment_input == 'None' and product_input != 'None' and district_input != 'None':
+        #     industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input)
+            
+        # elif investment_input != 'None' and product_input == 'None' and district_input != 'None':
+        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input)
+
+        # elif investment_input != 'None' and product_input != 'None':
+        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
+            
+        # elif investment_input != 'None' and product_input == 'None':
+        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input)
+            
+        # elif investment_input == 'None' and product_input != 'None':
+        #     industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
     else:
         industries_queryset = Industry.objects.all().order_by('-id')
         
@@ -307,6 +337,7 @@ def industry_list(request):
         'industry': page,
         'request':request,
         'messages': messages.get_messages(request),
+        'all_localbody': all_localbody,
     }
     
     return render(request, 'industry/industrylist.html', data)
@@ -347,11 +378,12 @@ def search_industry(request):
 def industry_excel(request):
     # return HttpResponse(request.get().items())
     filter_investment = request.GET.get("investment")
-    filter_ownership = request.GET.get("ownership")
     filter_industry_acc_product = request.GET.get("industry_acc_product")
+    filter_district = request.GET.get("district")
+    filter_localbody = request.GET.get("localbody")
     
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=Industry'+ str(datetime.datetime.now()) + '.xls'
+    response['Content-Disposition'] = 'attachment; filename=Industry'+ 'industry_data' + '.xls'
     
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Industry')
@@ -363,20 +395,24 @@ def industry_excel(request):
     
     industries = Industry.objects.all()
     
-    if filter_ownership != 'None':
-        industries = industries.filter(ownership=filter_ownership)
-    
     if filter_investment != 'None':
         industries = industries.filter(investment=filter_investment)
     
     if filter_industry_acc_product != 'None':
         industries = industries.filter(industry_acc_product=filter_industry_acc_product)
+        
+    if filter_district != 'None':
+        industries = industries.filter(district=filter_district)
+        
+    if filter_localbody != 'None':
+        industries = industries.filter(investment=filter_localbody)
     
     for row_num, industry in enumerate(industries, start=1):
         ws.write(row_num, 0, industry.industry_name)
         ws.write(row_num, 1, industry.owner_name)
         ws.write(row_num, 2, industry.address)
         ws.write(row_num, 3, industry.telephone_number)
+        ws.write(row_num, 4, industry.industry_reg_no)
 
     wb.save(response)
     
@@ -386,11 +422,12 @@ def industry_excel(request):
 @login_required
 def industry_csv(request):
     filter_investment = request.GET.get("investment")
-    filter_ownership = request.GET.get("ownership")
     filter_industry_acc_product = request.GET.get("industry_acc_product")
+    filter_district = request.GET.get("district")
+    filter_localbody = request.GET.get("localbody")
     
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=Industry'+ str(datetime.datetime.now()) + '.csv'
+    response['Content-Disposition'] = 'attachment; filename=Industry'+ 'industry_data' + '.csv'
     response.write(u'\ufeff'.encode('utf8'))
     
     writer = csv.writer(response)
@@ -398,17 +435,20 @@ def industry_csv(request):
     
     industries = Industry.objects.all()
     
-    if filter_ownership != 'None':
-        industries = industries.filter(ownership=filter_ownership)
-    
     if filter_investment != 'None':
         industries = industries.filter(investment=filter_investment)
     
     if filter_industry_acc_product != 'None':
         industries = industries.filter(industry_acc_product=filter_industry_acc_product)
+        
+    if filter_district != 'None':
+        industries = industries.filter(ownership=filter_district)
+        
+    if filter_localbody != 'None':
+        industries = industries.filter(ownership=filter_localbody)
     
     for industry in industries:
-        writer.writerow([industry.industry_name, industry.owner_name, industry.address, industry.telephone_number])
+        writer.writerow([industry.industry_name, industry.owner_name, industry.address, industry.telephone_number, industry.industry_reg_no])
         
     return response
 
@@ -417,33 +457,58 @@ def industry_csv(request):
 @login_required
 def download_pdf(request):
     investment_input = request.GET.get('investment_input')
-    ownership_input = request.GET.get('ownership_input')
     product_input = request.GET.get('product_input')
+    district_input = request.GET.get("district_input")
+    local_input = request.GET.get("local_input")
     
 
-    if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-
-    elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-        
-    elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
-
-    elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
-        
-    elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(investment__contains=investment_input)
-        
-    elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
-        queryset = Industry.objects.filter(ownership__contains=ownership_input)
-        
-    elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+    if investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
+    
+    elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input) 
+    
+    elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
         queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
+        
+    elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(district__contains=district_input)
+    
+    elif investment_input == 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(local_body__contains=local_input)
+    
+    elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input)
+        
+    elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input)
+        
+    elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input, local_body__contains=local_input)
+        
+    elif investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input, district__contains=district_input)
+        
+    elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input, local_body__contains=local_input)
+        
+    elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, local_body__contains=local_input)
+    
+    elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+        queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input)
+        
+    elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(industry_acc_product__contains=product_input, local_body__contains=local_input)
+        
+    elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(district__contains=district_input, local_body__contains=local_input)
+        
+    elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+        queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
+    
     else:
-        queryset = Industry.objects.all()
-
+        queryset = []
 
     context = {
         'industry': queryset,
@@ -452,7 +517,6 @@ def download_pdf(request):
     return render(request,"industry/report.html",context)
 
 def AjaxSearch(request):
-    # return HttpResponse(request.GET.items())
     from django.core.serializers import serialize
     from django.http import JsonResponse
     from django.db.models import Q
@@ -460,46 +524,70 @@ def AjaxSearch(request):
 
     
     investment_input = request.GET.get('investment_input')
-    ownership_input = request.GET.get('ownership_input')
     product_input = request.GET.get('product_input')
-    page = int(request.GET.get('page', 1)) #lazy loading
+    district_input = request.GET.get('district_input')
+    local_input = request.GET.get('local_input')
     
+    page = int(request.GET.get('page', 1)) #lazy loading
 
     if request.GET.get('type') == "search":
-    
         session_local_delete(request)
-        
         search_query = str(request.GET.get('search'))
-        queryset = Industry.objects.filter(district__contains=search_query)
+        queryset = Industry.objects.filter(industry_name__contains=search_query)
     else:
         request.session['investment_input'] = investment_input
-        request.session['ownership_input'] = ownership_input
         request.session['product_input'] = product_input
+        request.session['district_input'] = district_input
+        request.session['local_input'] = local_input
         request.session['type'] = 'option'
-        if investment_input != 'None' and ownership_input != 'None' and product_input != 'None':
-            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-            
-        elif investment_input == 'None' and ownership_input == 'None' and product_input == 'None':
+        
+        if investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
+        
+        elif investment_input == 'None' and product_input == 'None' and district_input == 'None' and local_input == 'None':
             queryset = Industry.objects.all().order_by('-id')[:100]
-
-        elif investment_input == 'None' and ownership_input != 'None' and product_input != 'None':
-            queryset = Industry.objects.filter(industry_acc_product__contains=product_input,ownership__contains=ownership_input)
-            
-        elif investment_input != 'None' and ownership_input != 'None' and product_input == 'None':
-            queryset = Industry.objects.filter(investment__contains=investment_input,ownership__contains=ownership_input)
-
-        elif investment_input != 'None' and ownership_input == 'None' and product_input != 'None':
-            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
-            
-        elif investment_input != 'None' and ownership_input == 'None' and product_input == 'None':
-            queryset = Industry.objects.filter(investment__contains=investment_input)
-            
-        elif investment_input == 'None' and ownership_input != 'None' and product_input == 'None':
-            queryset = Industry.objects.filter(ownership__contains=ownership_input)
-            
-        elif investment_input == 'None' and ownership_input == 'None' and product_input != 'None':
+        
+        elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input) 
+        
+        elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
             queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
-    
+            
+        elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(district__contains=district_input)
+        
+        elif investment_input == 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(local_body__contains=local_input)
+        
+        elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input == 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input, local_body__contains=local_input)
+            
+        elif investment_input != 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input, industry_acc_product__contains=product_input, district__contains=district_input)
+            
+        elif investment_input != 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input, local_body__contains=local_input)
+            
+        elif investment_input != 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input, local_body__contains=local_input)
+        
+        elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input == 'None':
+            queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input)
+            
+        elif investment_input == 'None' and product_input != 'None' and district_input == 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(industry_acc_product__contains=product_input, local_body__contains=local_input)
+            
+        elif investment_input == 'None' and product_input == 'None' and district_input != 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(district__contains=district_input, local_body__contains=local_input)
+            
+        elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
+            queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
     
     items_per_page = 100
     paginator = Paginator(queryset, items_per_page)
@@ -514,8 +602,9 @@ def session_delete(request):
     if 'type' in request.session:
         del request.session['type']
         del request.session['product_input']
-        del request.session['ownership_input']
         del request.session['investment_input']
+        del request.session['district_input']
+        del request.session['local_input']
 
         #return HttpResponse("session delete")
     #return HttpResponse("session are not delete")
@@ -525,6 +614,11 @@ def session_local_delete(request):
     if 'type' in request.session:
         del request.session['type']
         del request.session['product_input']
-        del request.session['ownership_input']
         del request.session['investment_input']
+        del request.session['district_input']
+        del request.session['local_input']
+
+
+# def district_filter(request, district):
     
+

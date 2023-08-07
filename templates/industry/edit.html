@@ -101,8 +101,18 @@
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">जिल्ला (District)</label>
-                            <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter District" name="district" value="{{industry.district}}">
+                            <select class="form-select kit-form-control" aria-label="Default select example" name="district" id="districtSelect">
+                                {% if industry.district %}
+                                    <option value="{{industry.district}}" selected>{{industry.get_district_display}}</option>
+                                {% else %}
+                                    <option value="" selected disabled>Select District</option>
+                                {% endif %}
+                                {% for key, value in data.district %}
+                                    {% if key != industry.district %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>

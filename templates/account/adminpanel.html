@@ -128,21 +128,40 @@
       <h2 class="kit-page-heading">View Industries on Map (नक्सामा उद्योगहरू हेर्नुहोस्)</h2>
       <div id="map"></div>
     </div>
+
+    <div class="container">
+      <center>
+          <div class="row d-flex justify-content-center my-3">
+              <div class="col-md-4">
+                  <select class="form-select" aria-label="Default select example" id="districtSelect">
+                    <option value="" disabled>Select District</option>
+                    <option value="KAILALI" data-district-name="कैलाली">कैलाली</option>
+                    <option value="KANCHANPUR" data-district-name="कञ्चनपुर">कञ्चनपुर</option>
+                    <option value="DADELDHURA" data-district-name="डडेल्धुरा">डडेल्धुरा</option>
+                    <option value="DOTI" data-district-name="डोटी">डोटी</option>
+                    <option value="ACHHAM" data-district-name="अछाम">अछाम</option>
+                    <option value="BAJURA" data-district-name="बाजुरा">बाजुरा</option>
+                    <option value="BAJHANG" data-district-name="बझाङ">बझाङ</option>
+                    <option value="BAITADI" data-district-name="बैतडी">बैतडी</option>
+                    <option value="DARCHULA" data-district-name="दार्चुला">दार्चुला</option>
+                  </select>
+              </div>
+              <div class="col-md-4">
+                <a href="{% url 'home' %}"><button class="btn btn-primary">Reset</button></a>
+              </div>
+          </div>
+      </center>
+    </div>
+
+    <style>
+        #districtSelect {
+      width: 200px; /* Set your desired width value */
+    }
+    </style>
+
     <center>
-            <select class="form-select" aria-label="Default select example" id="mySelect"  onchange="DistrictFilter(this.value)">
-              <option selected >select district</option>
-                {% for district in unique_districts %}
-                    <option value="{{district}}">{{district}}</option>
-                {% endfor %}
-            </select>
+      <h5 id="selectedDistrictDisplay" style="display: none;">District: None Selected</h5>
     </center>
-        <style>
-            #mySelect {
-          width: 150px; /* Set your desired width value */
-        }
-        
-        </style>
-    
 
     <div class="container-fluid mt-5 py-1 infographics">
       <div class="container">
@@ -307,36 +326,46 @@
             </div>
           </div>
         </div>
-     </div>
     </div>
-    
-    
+    </div>
 
 {% endblock %}
 
 {% block customjs %}
-    <script>
-        function DistrictFilter(value){
-                        var currentURL = window.location.href;
 
-        // Check if the URL already has query parameters
-        var url = new URL(currentURL);
-        var params = new URLSearchParams(url.search);
+  <script>
+    //Sends the selected district value to the url in district variable
 
-        // Update or add the district query parameter
-        params.set('district', value);
+    $(document).ready(function() {
 
-        // Construct the updated URL
-        url.search = params.toString();
-        var newURL = url.toString();
+      // Get the 'district' query parameter from the URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var district = urlParams.get('district');
 
-        // Navigate to the updated URL
-        window.location.href = newURL;
-                
-        }
+      // Set the selected option in the <select> element based on the 'district' value
+      
+      $('#districtSelect').val(district)
 
-        </script>
-        
+      $('#districtSelect').change(function() {
+        var selectedDistrict = $(this).val();        
+        var url = '?district=' +  selectedDistrict;
+        window.location.href = url;
+      });
+
+      // Update the display when the page loads
+      var selectedDistrictName = $('#districtSelect').find(':selected').data('district-name');
+      if (selectedDistrictName) {
+          $('#selectedDistrictDisplay').text('District: ' + selectedDistrictName);
+          $('#selectedDistrictDisplay').show();
+      } else {
+          $('#selectedDistrictDisplay').hide();
+      }
+
+    });
+
+  </script>
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
   <script>

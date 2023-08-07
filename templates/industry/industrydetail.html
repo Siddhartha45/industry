@@ -109,11 +109,11 @@
                 <div class="row mb-4">
                     <div class="col-sm-3">
                         <p class="kit-industry-title">जिल्ला (District)</p>
-                        <h2 class="kit-industry-content">{{ industry.district }}</h2>
+                        <h2 class="kit-industry-content">{{ industry.get_district_display }}</h2>
                     </div>
                     <div class="col-sm-3">
                         <p class="kit-industry-title">स्थानिय तह (Local Body)</p>
-                        <h2 class="kit-industry-content">{{ industry.local_body }}</h2>
+                        <h2 class="kit-industry-content">{{ industry.get_local_body_display }}</h2>
                     </div>
                     <div class="col-sm-3">
                         <p class="kit-industry-title">वडा नं.(Ward No.)</p>

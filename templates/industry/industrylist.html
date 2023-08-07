@@ -69,11 +69,26 @@
                 </select>
             </div>
             <div class="kit-input-icon industry-search">
-                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="ownershipInput">
-                    
-                    <option value="None" selected>Owner</option>
-                    <option value="PRIVATE" {% if request.session.ownership_input == 'PRIVATE' %} selected {% endif %}>निजी (Private)</option>
-                    <option value="PARTNERSHIP" {% if request.session.ownership_input == 'PARTNERSHIP' %} selected {% endif %}>साझेदारी (Partnership)</option>
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="districtInput">
+                    <option value="None" selected>District</option>
+                    <option value="KAILALI">कैलाली</option>
+                    <option value="KANCHANPUR">कञ्चनपुर</option>
+                    <option value="DADELDHURA">डडेल्धुरा</option>
+                    <option value="DOTI">डोटी</option>
+                    <option value="ACHHAM">अछाम</option>
+                    <option value="BAJURA">बाजुरा</option>
+                    <option value="BAJHANG">बझाङ</option>
+                    <option value="BAITADI">बैतडी</option>
+                    <option value="DARCHULA">दार्चुला</option>
+                </select>
+            </div>
+
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="localInput">
+                    <option value="None" selected>Local Body</option>
+                    {% for key, value in all_localbody %}
+                        <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
                 </select>
             </div>
         
@@ -105,10 +120,10 @@
                         <th class="d-none">Investment</th>
                         <th class="d-none">Product</th>
                         <th class="d-none">Ownership</th>
-                        <th>indusrty name</th>
-                        <th>industry owner</th>
-                        <th>address</th>
+                        <th>Indusrty Name</th>
+                        <th>Industry Owner</th>
                         <th>District</th>
+                        <th>Local Body</th>
                         <th class="hide_md">Action</th>
                     </tr>
                 </thead>
@@ -122,8 +137,8 @@
                     <td class="d-none">{{ i.ownership }}</td>
                     <td>{{ i.industry_name }}</td>
                     <td>{{ i.owner_name }}</td>
-                    <td>{{ i.address }}</td>
-                    <td>{{ i.district }}</td>
+                    <td>{{ i.get_district_display }}</td>
+                    <td>{{ i.get_local_body_display }}</td>
                     <td class="hide_md">
                         <div class="d-flex kit-action-com">
                             <div class="action-btn-view">
@@ -225,22 +240,27 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" /><script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script src="{% static '/js/tablesearch.js' %}"></script>
     <script>
-
-
     function CSVFilter(){
         var investment = $("#investmentInput").val();
-        var ownership = $("#ownershipInput").val();
         var industry_acc_product = $("#productInput").val();
+        var district = $("#districtInput").val();
+        var localbody = $("#localInput").val();
+        
         var url = "{% url 'download-csv' %}?";
-        if (ownership) {
-            url += "ownership=" + ownership + "&";
-        }
+
         if (investment) {
             url += "investment=" + investment + "&";
         }
         if (industry_acc_product) {
             url += "industry_acc_product=" + industry_acc_product + "&";
         }
+        if (district) {
+            url += "district=" + district + "&";
+        }
+        if (localbody) {
+            url += "localbody=" + localbody + "&";
+        }
+
         url = url.slice(0, -1);
         window.location.href = url;
     }
@@ -248,15 +268,13 @@
     function EXCELFilter(){
         var searchQuery = $("#search").val();
         var investment = $("#investmentInput").val();
-        var ownership = $("#ownershipInput").val();
         var industry_acc_product = $("#productInput").val();
+        var district = $("#districtInput").val();
+        var localbody = $("#localInput").val();
         
         var url = "{% url 'download-excel' %}?";
         if (searchQuery) {
             url += "search=" + encodeURIComponent(searchQuery) + "&";
-        }
-        if (ownership) {
-            url += "ownership=" + ownership + "&";
         }
         if (investment) {
             url += "investment=" + investment + "&";
@@ -264,8 +282,130 @@
         if (industry_acc_product) {
             url += "industry_acc_product=" + industry_acc_product + "&";
         }
+        if (district) {
+            url += "district=" + district + "&";
+        }
+        if (localbody) {
+            url += "localbody=" + localbody + "&";
+        }
         url = url.slice(0, -1);
         window.location.href = url;
+    }
+
+    // Function to get the human-readable district
+    function getReadableDistrict(district) {
+        // You can implement the logic to convert district to its display name here
+        // For example, assuming you have a dictionary mapping district codes to display names
+        const districtMapping = {
+        'KAILALI': 'कैलाली',
+        'KANCHANPUR': 'कञ्चनपुर',
+        'DADELDHURA': 'डडेल्धुरा',
+        'DOTI': 'डोटी',
+        'ACHHAM': 'अछाम',
+        'BAJURA': 'बाजुरा',
+        'BAJHANG': 'बझाङ',
+        'BAITADI': 'बैतडी',
+        'DARCHULA': 'दार्चुला',
+        };
+
+        // If the district is in the mapping, return its display name; otherwise, return the original value
+        return districtMapping[district] || district;
+    }
+
+    function getReadableLocalBody(localbody) {
+        const localbodyMapping = {
+        'AMARGADHI': 'अमरगढी नगरपालिका',
+        'PARSURAM': 'परशुराम नगरपालिका',
+        'ALITAL': 'आलिताल गाउँपालिका',
+        'BHAGYASWOR': 'भागेश्वर गाउँपालिका',
+        'NAVADURGA': 'नवदुर्गा गाउँपालिका',
+        'AJAYMERU': 'अजयमेरु गाउँपालिका',
+        'GANYAPDHURA': 'गन्यापधुरा गाउँपालिका',
+        'MAHAKALI': 'महाकाली नगरपालिका',
+        'SALYASIKHAR': 'शैल्यशिखर नगरपालिका',
+        'MALIKARJUN': 'मालिकार्जुन गाउँपालिका',
+        'APIHIMAL': 'अपिहिमाल गाउँपालिका',
+        'DUNHU': 'दुहुँ गाउँपालिका',
+        'NAUGADH': 'नौगाड गाउँपालिका',
+        'MARMA': 'मार्मा गाउँपालिका',
+        'LEKAM': 'लेकम गाउँपालिका',
+        'BYAS': 'ब्याँस गाउँपालिका',
+        'DASHRATHCHAND': 'दशरथचन्द नगरपालिका',
+        'PATAN': 'पाटन नगरपालिका',
+        'MELAULI': 'मेलौली नगरपालिका',
+        'PURCHAUDI': 'पुर्चौडी नगरपालिका',
+        'SUNARYA': 'सुर्नया गाउँपालिका',
+        'SIGAS': 'सिगास गाउँपालिका',
+        'SHIVNATH': 'शिवनाथ गाउँपालिका',
+        'PARBESHWOR': 'पञ्चेश्वर गाउँपालिका',
+        'DOGDAKEDAR': 'दोगडाकेदार गाउँपालिका',
+        'DILASAINI': 'डीलासैनी गाउँपालिका',
+        'MANGALSENA': 'मंगलसेन नगरपालिका',
+        'KAMALBAJAR': 'कमलबजार नगरपालिका',
+        'SANFEBAGAR': 'साँफेबगर नगरपालिका',
+        'PANCHADEBAL': 'पन्चदेवल विनायक नगरपालिका',
+        'CHAURPATI': 'चौरपाटी गाउँपालिका',
+        'MELLEKH': 'मेल्लेख गाउँपालिका',
+        'BATRIGADHI': 'बान्निगढी जयगढ गाउँपालिका',
+        'RAMAROSAN': 'रामारोशन गाउँपालिका',
+        'DHAKARI': 'ढकारी गाउँपालिका',
+        'TURMAKHAND': 'तुर्माखाँद गाउँपालिका',
+        'DIPAYAL': 'दिपायल सिलगढी नगरपालिका',
+        'SHIKHAR': 'शिखर नगरपालिका',
+        'PURBICHAUKI': 'पूर्वीचौकी गाउँपालिका',
+        'BADIKEDAR': 'बडीकेदार गाउँपालिका',
+        'JORAYAL': 'जोरायल गाउँपालिका',
+        'SAYAL': 'सायल गाउँपालिका',
+        'AADARSH': 'आदर्श गाउँपालिका',
+        'KIC': 'के.आई.सिं. गाउँपालिका',
+        'BOGTAN': 'बोगटान फुड्सिल गाउँपालिका',
+        'DHANGADI': 'धनगढी उपमहानगरपालिका',
+        'TIKAPUR': 'टिकापुर नगरपालिका',
+        'GHODAGHODI': 'घोडाघोडी नगरपालिका',
+        'LAMKICHUHA': 'लम्कीचुहा नगरपालिका',
+        'VAJANI': 'भजनी नगरपालिका',
+        'GODAWARI': 'गोदावरी नगरपालिका',
+        'GAURIGANGA': 'गौरीगंगा नगरपालिका',
+        'JANAKI': 'जानकी गाउँपालिका',
+        'BARDAGORIYA': 'बर्दगोरिया गाउँपालिका',
+        'MOHANYAL': 'मोहन्याल गाउँपालिका',
+        'KAULARI': 'कैलारी गाउँपालिका',
+        'JOSHIPUR': 'जोशीपुर गाउँपालिका',
+        'CHURE': 'चुरे गाउँपालिका',
+        'BADIMALIKA': 'बडीमालिका नगरपालिका',
+        'TRIBENI': 'त्रिवेणी नगरपालिका',
+        'BUDHIGANGA': 'बुढीगंगा नगरपालिका',
+        'BUDHINANDA': 'बुढीनन्दा नगरपालिका',
+        'GAUMUL': 'गौमुल गाउँपालिका',
+        'JAGANNATH': 'जगन्‍नाथ गाउँपालिका',
+        'SWAMIKARTIK': 'स्वामीकार्तिक खापर गाउँपालिका',
+        'KHAPTAD': 'खप्तड छेडेदह गाउँपालिका',
+        'HIMALI': 'हिमाली गाउँपालिका',
+        'BHIMDATTA': 'भीमदत्त नगरपालिका',
+        'PURNABAS': 'पुर्नवास नगरपालिका',
+        'BEDKOT': 'वेदकोट नगरपालिका',
+        'DODHARA': 'दोधारा चादँनी नगरपालिका',
+        'SUKLAPHATA': 'शुक्लाफाँटा नगरपालिका',
+        'BELAURI': 'बेलौरी नगरपालिका',
+        'KRISHNAPUR': 'कृष्णपुर नगरपालिका',
+        'BELDADI': 'बेलडाडी गाउँपालिका',
+        'LALJHADI': 'लालझाडी गाउँपालिका',
+        'JAYPRITHVI': 'जयपृथ्वी नगरपालिका',
+        'BUNGAL': 'बुंगल नगरपालिका',
+        'TALKOT': 'तलकोट गाउँपालिका',
+        'MASTA': 'मष्टा गाउँपालिका',
+        'KHAPTADCHATRA': 'खप्तडछान्ना गाउँपालिका',
+        'THALARA': 'थलारा गाउँपालिका',
+        'BITTADCHIR': 'वित्थडचिर गाउँपालिका',
+        'SURMA': 'सूर्मा गाउँपालिका',
+        'CHABBISPATHIVERA': 'छबिसपाथिभेरा गाउँपालिका',
+        'DURGATHALI': 'दुर्गाथली गाउँपालिका',
+        'KEDARSU': 'केदारस्युँ गाउँपालिका',
+        'SAIPAL': 'साइपाल गाउँपालिका',
+        };
+
+        // If the district is in the mapping, return its display name; otherwise, return the original value
+        return localbodyMapping[localbody] || localbody;
     }
     
     $(document).ready(function() {
@@ -300,8 +440,8 @@
         
                           <td> `+ item.fields.industry_name +` </td>
                           <td> `+ item.fields.owner_name +` </td>
-                          <td> `+ item.fields.address +` </td>
-                          <td> `+ item.fields.district +` </td>
+                          <td> `+ getReadableDistrict(item.fields.district) +` </td>
+                          <td> `+ getReadableLocalBody(item.fields.local_body) +` </td>
                           <td class="hide_md">
                               <div class="d-flex kit-action-com">
                                   <div class="action-btn-view">
@@ -358,8 +498,9 @@
             var id = this.id;
 
             investment_input = $("#investmentInput").val()
-            ownership_input = $("#ownershipInput").val()
             product_input = $("#productInput").val()
+            district_input = $("#districtInput").val()
+            local_input = $("#localInput").val()
 
         
             
@@ -367,7 +508,7 @@
               url: "{% url 'AjaxSearch' %}",
               type: 'GET',
               data: {
-                  type:'option',investment_input:investment_input,ownership_input:ownership_input,product_input:product_input
+                  type:'option',investment_input:investment_input,product_input:product_input,district_input:district_input,local_input:local_input
                 },
               dataType: 'json',
               success: function(response) {
@@ -380,7 +521,7 @@
                         var item = jsonData[index];
                         
                         var industryName = item.fields.industry_name;
-                          
+                        
                         // Access properties of each item
                         var element = `
                         
@@ -388,8 +529,8 @@
                             <td>`+ count +` </td>
                             <td> `+ item.fields.industry_name +` </td>
                             <td> `+ item.fields.owner_name +` </td>
-                            <td> `+ item.fields.address +` </td>
-                            <td> `+ item.fields.district +` </td>
+                            <td> `+ getReadableDistrict(item.fields.district) +` </td>
+                            <td> `+ getReadableLocalBody(item.fields.local_body) +` </td>
                             <td class="hide_md">
                                 <div class="d-flex kit-action-com">
                                     <div class="action-btn-view">
@@ -454,14 +595,16 @@
             $('#overlay').fadeOut('slow');
         }, 5000);
     })
+    
     function PdfDownload(){
         //href="{%url 'download-pdf' %}"
         
         investment_input = $("#investmentInput").val()
-        ownership_input = $("#ownershipInput").val()
         product_input = $("#productInput").val()
+        district_input = $("#districtInput").val()
+        local_input = $("#localInput").val()
 
-        var get_url = "?investment_input="+investment_input+"&ownership_input="+ownership_input+"&product_input="+product_input
+        var get_url = "?investment_input="+investment_input+"&product_input="+product_input+"&district_input="+district_input+"&local_input="+local_input
 
         window.open("{%url 'download-pdf' %}"+get_url, "_blank");
         
@@ -480,5 +623,6 @@
         window.open("{% url 'session-reset' %}","_self"); 
     });
     
-    </script>    
+    </script>
+    
 {% endblock %}

@@ -103,9 +103,6 @@
                             <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>
                             <select class="form-select kit-form-control" aria-label="Default select example" name="local_body" id="localBodySelect">
                                 <option value="" selected disabled>Select Local Body</option>
-                                {% comment %} {% for key,value in data.local_body %}
-                                    <option value="{{key}}">{{value}}</option>
-                                {% endfor %} {% endcomment %}
                             </select>
                         </div>
 
@@ -252,7 +249,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">वार्षिक उत्पादन क्षमता(Yearly Capacity)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Yearly Capacity" name="yearly_capacity" >
                         </div>
                     </div>
@@ -263,43 +260,43 @@
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">जम्मा जनशक्ति संख्या (Total Manpower)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Total Manpower" name="total_manpower" id="id_total_manpower">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">विदेशी जनशक्ति संख्या(Foreign)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Foreign Manpower" name="foreign" id="foreign">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">दक्ष जनशक्ति संख्या(Skilled)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Skillfull Manpower" name="skillfull" id="skillfull">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">पुरुष जनशक्ति संख्या(Male)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Male Manpower" name="male" id="male">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">अदक्ष जनशक्ति संख्या(Unskilled)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Unskilled Manpower" name="unskilled" id="unskilled">
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">महिला जनशक्ति संख्या(Female)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Female Manpower" name="female" id="female">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label class="form-label kit-form-label">स्वदेशी जनशक्ति संख्या(Indigenous)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Enter Number of Indigenous Manpower" name="indigenous" id="indi">
                         </div>
                     </div>
@@ -310,17 +307,17 @@
                     <div class="row mb-3">
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">स्थिर पूँजी (Fixed Capital)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Rs." name="fixed_capital" >
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">चालु पूँजी (Current Capital)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Rs." name="current_capital" >
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label kit-form-label">जम्मा पूँजी (Total Capital)</label>
-                            <input type="text" class="form-control kit-form-control"
+                            <input type="number" min="0" class="form-control kit-form-control"
                                 placeholder="Rs." name="total_capital" >
                         </div>
                     </div>
@@ -456,6 +453,7 @@
         });
     </script>
 
+    <!-- Fetches local_body_options of selected district-->
     <script>
         $(document).ready(function() {
             $('#districtSelect').change(function() {
@@ -471,7 +469,7 @@
                         success: function(data) {
                             var localBodySelect = $('#localBodySelect');
                             localBodySelect.empty();
-                            localBodySelect.append('<option value="">Select Local Body</option>');
+                            localBodySelect.append('\<option value="" selected disabled>Select Local Body</option>');
                             $.each(data.localbody_choices, function(index, choice) {
                                 localBodySelect.append('<option value="' + choice[0] + '">' + choice[1] + '</option>');
                             });

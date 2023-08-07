@@ -4,6 +4,8 @@ from .validators import nepali_date_validator
 
 
 class Industry(models.Model):
+    """Model for Industry"""
+    
     #Industry Details
     industry_name = models.CharField(max_length=150)
     industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
