@@ -133,7 +133,7 @@ ALL_LOCALBODY_CHOICES = (DADELDHURA_LOCALBODY_CHOICES + DARCHULA_LOCALBODY_CHOIC
 
 #choices for selecting nature of investment
 INVESTMENT_CHOICES = (
-    ('MINIATURE', 'लघु (Miniature)'),
+    ('MINIATURE', 'लघु (Micro)'),
     ('DOMESTIC', 'घरेलु (Cottage Industry)'),
     ('SMALL', 'साना (Small)'),
     ('MEDIUM', 'मझौला (Medium)'),
