@@ -116,8 +116,11 @@
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">स्थानिय तह (Local Body)</label>
-                            <input type="text" class="form-control kit-form-control"
-                                placeholder="Enter Local Body" name="local_body" value="{{industry.local_body}}">
+                            <select class="form-select kit-form-control" aria-label="Default select example" name="local_body" id="localBodySelect">
+                        
+                                <option value="{{ industry.local_body }}">{{industry.get_local_body_display}}</option>
+                        
+                            </select>
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label kit-form-label">वडा नं.(Ward No.)</label>
@@ -388,8 +391,11 @@
         </div>
     </div>
 {% endblock %}
+
 {% block customjs %}
+
     <script src="{% static '/js/locationpicker.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var imgUpload = document.getElementById('inputImage')
   , imgPreview = document.getElementById('img-preview')
@@ -442,6 +448,60 @@ function previewImgs(event) {
     var industrySelectElement = document.querySelector('select[name="industry_acc_product"]');
     handleIndustrySelection(industrySelectElement);
 </script>
+
+<script>
+    $(document).ready(function() {
+
+        // Initial capture when the page loads
+        captureDistrictValue();
+
+        $('#districtSelect').change(function() {
+            captureDistrictValue();
+        });
+
+        // Function to capture the selected district value
+        function captureDistrictValue() {
+            var selectedDistrict = $('#districtSelect').val();
+            // Do something with the selectedDistrict value
+            //console.log('Selected District:', selectedDistrict);
+
+            if (selectedDistrict) {
+                var url = '/get_local_bodies/' + encodeURIComponent(selectedDistrict) + '/';
+                //console.log('AJAX Request URL:', url);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        var localBodySelect = $('#localBodySelect');
+                        var selectedLocalBody = localBodySelect.val(); // Get the selected local body from the dropdown
+                        
+                        console.log(selectedLocalBody)
+
+                        // Clear previous options and add the default option
+                        localBodySelect.empty();
+                        localBodySelect.append('<option value="" selected disabled>Select Local Body</option>');
+                        // Populate with new local body options, excluding any duplicate options
+                        $.each(data.localbody_choices, function(index, choice) {
+                            
+                            localBodySelect.append('<option value="' + choice[0] + '">' + choice[1] + '</option>');
+                            
+                        });
+                        
+                        // Set the default selected local body
+                        localBodySelect.val(selectedLocalBody);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('AJAX Request Error:', errorThrown);
+                    }
+                });
+            } else {
+                // Clear the local body select options if no district is selected
+                $('#localBodySelect').empty();
+            }
+        }
+    });
+</script>
+
 {% endblock %}
 
 
