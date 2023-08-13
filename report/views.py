@@ -86,22 +86,22 @@ def import_file(request):
                 #sex
                 if 'sex' in df.columns:
                     sex_choice = row['sex']
-                    if sex_choice == "Others":
+                    if sex_choice == "Other":
                         industry_data['sex'] = "OTHERS"
-                    elif sex_choice == "Dalit":
-                        industry_data['sex'] = "DALIT"
-                    elif sex_choice == "Janajati":
-                        industry_data['sex'] = "JANAJATI"
+                    elif sex_choice == "Male":
+                        industry_data['sex'] = "MALE"
+                    elif sex_choice == "Female":
+                        industry_data['sex'] = "FEMALE"
                     else:
                         industry_data['sex'] = None
                 
                 #caste
                 if 'caste' in df.columns:
                     caste_choice = row['caste']
-                    if caste_choice == "Male":
-                        industry_data['caste'] = "MALE"
-                    elif caste_choice == "Female":
-                        industry_data['caste'] = "FEMALE"
+                    if caste_choice == "Dalit":
+                        industry_data['caste'] = "DALIT"
+                    elif caste_choice == "Janajati":
+                        industry_data['caste'] = "JANAJATI"
                     elif caste_choice == "Others":
                         industry_data['caste'] = "OTHERS"
                     else:
@@ -157,21 +157,57 @@ def import_file(request):
                         industry_data['local_body'] = "APIHIMAL"
                     elif local__body_choice == "Kedarseu":
                         industry_data['local_body'] = "KEDARSU"
+                    elif local__body_choice == "Bhimdatta":
+                        industry_data['local_body'] = "BHIMDATTA"
+                    elif local__body_choice == "Bithadchir":
+                        industry_data['local_body'] = "BITTADCHIR"
+                    elif local__body_choice == "Bungal":
+                        industry_data['local_body'] = "BUNGAL"
+                    elif local__body_choice == "Chabispathivera":
+                        industry_data['local_body'] = "CHABBISPATHIVERA"
+                    elif local__body_choice == "Chaurpati":
+                        industry_data['local_body'] = "CHAURPATI"
+                    elif local__body_choice == "Dhakari":
+                        industry_data['local_body'] = "DHAKARI"
+                    elif local__body_choice == "Dhangadhi":
+                        industry_data['local_body'] = "DHANGADI"
+                    elif local__body_choice == "Durgathali":
+                        industry_data['local_body'] = "DURGATHALI"
+                    elif local__body_choice == "JayaPrithivi":
+                        industry_data['local_body'] = "JAYPRITHVI"
+                    elif local__body_choice == "Khaptadchhanna":
+                        industry_data['local_body'] = "KHAPTADCHATRA"
+                    elif local__body_choice == "Laljhadi":
+                        industry_data['local_body'] = "LALJHADI"
+                    elif local__body_choice == "Lamkichuha":
+                        industry_data['local_body'] = "LAMKICHUHA"
+                    elif local__body_choice == "Masta":
+                        industry_data['local_body'] = "MASTA"
+                    elif local__body_choice == "SaiPaal":
+                        industry_data['local_body'] = "SAIPAL"
+                    elif local__body_choice == "Shuklaphanta":
+                        industry_data['local_body'] = "SUKLAPHATA"
+                    elif local__body_choice == "Surma":
+                        industry_data['local_body'] = "SURMA"
+                    elif local__body_choice == "Talkot":
+                        industry_data['local_body'] = "TALKOT"
+                    elif local__body_choice == "Thalara":
+                        industry_data['local_body'] = "THALARA"
                     else:
                         industry_data['local_body'] = None
                 
                 #for assigning investment
                 if 'investment' in df.columns:
                     investment_choice = row['investment']
-                    if investment_choice == "small":
+                    if investment_choice == "Small":
                         industry_data['investment'] = "SMALL"
-                    elif investment_choice == "micro":
+                    elif investment_choice == "Micro":
                         industry_data['investment'] = "MINIATURE"
-                    elif investment_choice == "domestic":
+                    elif investment_choice == "Cottage":
                         industry_data['investment'] = "DOMESTIC"
-                    elif investment_choice == "medium":
+                    elif investment_choice == "Medium":
                         industry_data['investment'] = "MEDIUM"
-                    elif investment_choice == "large":
+                    elif investment_choice == "Large":
                         industry_data['investment'] = "LARGE"
                     else:
                         industry_data['investment'] = None
@@ -181,23 +217,23 @@ def import_file(request):
                 #for assigning product
                 if 'industry_acc_product' in df.columns:
                     industry_acc_product_choice = row['industry_acc_product']
-                    if industry_acc_product_choice == "energy":
+                    if industry_acc_product_choice == "Energy":
                         industry_data['industry_acc_product'] = "E"
-                    elif industry_acc_product_choice == "manufacturing":
+                    elif industry_acc_product_choice == "Manufacturing":
                         industry_data['industry_acc_product'] = "MF"
-                    elif industry_acc_product_choice == "agriculture":
+                    elif industry_acc_product_choice == "Agricultural":
                         industry_data['industry_acc_product'] = "AF"
-                    elif industry_acc_product_choice == "mineral":
+                    elif industry_acc_product_choice == "Mineral":
                         industry_data['industry_acc_product'] = "MI"
-                    elif industry_acc_product_choice == "infrastructure":
+                    elif industry_acc_product_choice == "Infrastructure":
                         industry_data['industry_acc_product'] = "I"
-                    elif industry_acc_product_choice == "tourism":
+                    elif industry_acc_product_choice == "Tourism":
                         industry_data['industry_acc_product'] = "T"
                     elif industry_acc_product_choice == "IC":
                         industry_data['industry_acc_product'] = "Ic"
-                    elif industry_acc_product_choice == "service":
+                    elif industry_acc_product_choice == "Service":
                         industry_data['industry_acc_product'] = "S"
-                    elif industry_acc_product_choice == "others":
+                    elif industry_acc_product_choice == "Others":
                         industry_data['industry_acc_product'] = "O"
                     else:
                         industry_data['industry_acc_product'] = None
@@ -207,9 +243,9 @@ def import_file(request):
                 #for assigning status   
                 if 'current_status' in df.columns:
                     current_status_choice = row['current_status']
-                    if current_status_choice == "active":
+                    if current_status_choice == "Active":
                         industry_data['current_status'] = "A"
-                    elif current_status_choice == "inactive":
+                    elif current_status_choice == "Inactive":
                         industry_data['current_status'] = "I"
                     else:
                         industry_data['current_status'] = None
@@ -257,6 +293,9 @@ def import_file(request):
             
                 if 'product_service_name' in df.columns:
                     industry_data['product_service_name'] = row['product_service_name']
+                    
+                if 'machinery_tool' in df.columns:
+                    industry_data['machinery_tool'] = row['machinery_tool']
                 
                 if 'male' in df.columns:
                     male_value = row['male'] if pd.notnull(row['male']) else 0
@@ -276,6 +315,38 @@ def import_file(request):
                     industry_data['female'] = female_value
                 
                     total_manpower = female_value + male_value
+                    
+                if 'skilled' in df.columns:
+                    skilled_value = row['skilled'] if pd.notnull(row['skilled']) else 0
+                    try:
+                        skilled_value = int(skilled_value)
+                    except ValueError:
+                        skilled_value = 0
+                    industry_data['skillfull'] = skilled_value
+                    
+                if 'unskilled' in df.columns:
+                    unskilled_value = row['unskilled'] if pd.notnull(row['unskilled']) else 0
+                    try:
+                        unskilled_value = int(unskilled_value)
+                    except ValueError:
+                        unskilled_value = 0
+                    industry_data['unskilled'] = unskilled_value
+                    
+                if 'foreign' in df.columns:
+                    foreign_value = row['foreign'] if pd.notnull(row['foreign']) else 0
+                    try:
+                        foreign_value = int(foreign_value)
+                    except ValueError:
+                        foreign_value = 0
+                    industry_data['foreign'] = foreign_value
+                    
+                if 'domestic' in df.columns:
+                    domestic_value = row['domestic'] if pd.notnull(row['domestic']) else 0
+                    try:
+                        domestic_value = int(domestic_value)
+                    except ValueError:
+                        domestic_value = 0
+                    industry_data['indigenous'] = domestic_value
                     
                 if 'yearly_capacity' in df.columns:
                     yearly_capacity_value = row['yearly_capacity'] if pd.notnull(row['yearly_capacity']) else 0
