@@ -13,6 +13,7 @@
                     <div class="kit-user-icon">{{ user.fullname|first }}</div>
                     <div class="kit-user-detail">
                         <h2>{{ user.fullname }}</h2>
+                        <p class="kit-user-info"><span>Role:</span>{{ user.get_role_display }}</p>
                         <p class="kit-user-info"><span>Username:</span>{{ user.username }}</p>
                         <p class="kit-user-info mbl-kit-user-info">
                             <span>Email:  {{ user.email }}</span>

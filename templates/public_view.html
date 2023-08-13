@@ -1,0 +1,537 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container my-5">
+        <h2 class="kit-page-heading">Application Portal (आवेदक पोर्टल)</h2>
+
+    </div>
+
+    <div class="container my-5">
+      <h2 class="kit-page-heading">View Industries on Map (नक्सामा उद्योगहरू हेर्नुहोस्)</h2>
+      <div id="map"></div>
+    </div>
+
+    <div class="container">
+      <center>
+          <div class="row d-flex justify-content-center my-3">
+              <div class="col-md-4">
+                  <select class="form-select" aria-label="Default select example" id="districtSelect">
+                    <option value="" disabled>Select District</option>
+                    <option value="KAILALI" data-district-name="कैलाली">कैलाली</option>
+                    <option value="KANCHANPUR" data-district-name="कञ्चनपुर">कञ्चनपुर</option>
+                    <option value="DADELDHURA" data-district-name="डडेल्धुरा">डडेल्धुरा</option>
+                    <option value="DOTI" data-district-name="डोटी">डोटी</option>
+                    <option value="ACHHAM" data-district-name="अछाम">अछाम</option>
+                    <option value="BAJURA" data-district-name="बाजुरा">बाजुरा</option>
+                    <option value="BAJHANG" data-district-name="बझाङ">बझाङ</option>
+                    <option value="BAITADI" data-district-name="बैतडी">बैतडी</option>
+                    <option value="DARCHULA" data-district-name="दार्चुला">दार्चुला</option>
+                  </select>
+              </div>
+              <div class="col-md-4">
+                <a href="{% url 'home' %}"><button class="btn btn-primary">Reset</button></a>
+              </div>
+          </div>
+      </center>
+    </div>
+
+    <style>
+        #districtSelect {
+      width: 200px; /* Set your desired width value */
+    }
+    </style>
+
+    <center>
+      <h5 id="selectedDistrictDisplay" style="display: none;">District: None Selected</h5>
+    </center>
+
+    <div class="container-fluid mt-5 py-1 infographics">
+      <div class="container">
+
+        <div class="row my-5 row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="kit-card-db h-100">
+              <div class="card-body">
+                <p class="date">Thu 20 Apr, 2023</p>
+                <h5>Total Industries</h5>
+                <h1>{{total_industry}}</h1>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="kit-card-db h-100">
+              <div class="card-body">
+                <p class="date">Thu 20 Apr, 2023</p>
+                <h5>Total Active Industries</h5>
+                <h1>{{active}}</h1>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="kit-card-db h-100">
+              <div class="card-body">
+                <p class="date">Thu 20 Apr, 2023</p>
+                <h5>Total Inactive Industries</h5>
+                <h1>{{inactive}}</h1>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="kit-card-db h-100">
+              <div class="card-body">
+                <p class="date">Thu 20 Apr, 2023</p>
+                <h5>Total Private Industries</h5>
+                <h1>{{private}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+    
+
+        <div class="col-md-12">
+          <div class="InvestmentChart">
+            <h2 class="chart-title">Industry in accordance to Investment</h2>
+            <div class="row">
+              <div class="col-md-5 chart-info-list">
+                <h2 class="kit-page-heading mb-3 chart-heading"><span>Total Industries ( कुल उद्योगहरु )</span><span class="badge text-bg">{{total_industry}}</span></h2>
+                <ul class="chart-list">
+                  <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>लघु (Micro)</span> <span class="badge text-bg">{{miniature}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>घरेलु (Cottage)</span> <span class="badge text-bg">{{domestic}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #5281ce;"></i>साना (Small)</span><span class="badge text-bg">{{small}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #9ef5ff;"></i>मझौला (Medium)</span><span class="badge text-bg">{{medium}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #998ceb;"></i>ठुला (Large)</span><span class="badge text-bg">{{large}}</span></li>
+                </ul>
+              </div>
+              <div class="col-md-7">
+                <canvas id="InvestmentChart" style="width:100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row my-5">
+          <div class="col-md-6">
+            <div class="InvestmentChart">
+              <h2 class="chart-title">Industry in accordance to Ownership</h2>
+              <div class="row">
+                <div class="col-md-5 chart-info-list">
+                  <h2 class="kit-page-heading mb-3 Ownership-chart-heading"><span>Ownership ( स्वामित्व )</span><span class="badge text-bg">{{total_industry}}</span></h2>
+                  <ul class="chart-list">
+                    <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>निजी (Private)</span> <span class="badge text-bg">{{private}}</span></li>
+                    <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>साझेदारी (Partnership)</span> <span class="badge text-bg">{{partnership}}</span></li>
+                  </ul>
+                </div>
+                <div class="col-md-7"><canvas id="ownershipChart" style="width:100%;"></canvas></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="InvestmentChart">
+              <h2 class="chart-title">Industry in accordance to Current Status</h2>
+              <div class="row">
+                <div class="col-md-5 chart-info-list">
+                  <h2 class="kit-page-heading mb-3 Ownership-chart-heading"><span>अवस्था (Status)</span><span class="badge text-bg">{{total_industry}}</span></h2>
+                  <ul class="chart-list">
+                    <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>चालु(Active)</span> <span class="badge text-bg">{{active}}</span></li>
+                    <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>निष्कृय(Inactive)</span> <span class="badge text-bg">{{inactive}}</span></li>
+                  </ul>
+                </div>
+                <div class="col-md-7"><canvas id="ststusChart" style="width:100%;"></canvas></div>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <div class="col-md-12">
+          <div class="InvestmentChart">
+            <h2 class="chart-title">Industry in accordance to Employment</h2>
+            <div class="row">
+              <div class="col-md-5 chart-info-list">
+                <h2 class="kit-page-heading mb-3 chart-heading"><span>Total Manpower ( कुल जनशक्ति )</span><span class="badge text-bg">{{total_manpower}}</span></h2>
+                <ul class="chart-list">
+                  <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>दक्ष जनशक्ति संख्या(Skilled)</span> <span class="badge text-bg">{{skilled}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>अदक्ष जनशक्ति संख्या(Unskilled)</span> <span class="badge text-bg">{{unskilled}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #5281ce;"></i>स्वदेशी जनशक्ति संख्या(Indigenous)</span><span class="badge text-bg">{{indigenous}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #9ef5ff;"></i>विदेशी जनशक्ति संख्या(Foreign)</span><span class="badge text-bg">{{foreign}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #998ceb;"></i>पुरुष जनशक्ति संख्या(Male)</span><span class="badge text-bg">{{male}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #4b85e2;"></i>महिला जनशक्ति संख्या(Female)</span><span class="badge text-bg">{{female}}</span></li>
+                </ul>
+              </div>
+              <div class="col-md-7">
+                <canvas id="employment" style="width:100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--     <div class="col-md-12">-->
+        <!--  <div class="InvestmentChart">-->
+        <!--    <h2 class="chart-title">Industry in accordance to District</h2>-->
+        <!--    <div class="row">-->
+        <!--      <div class="col-md-5 chart-info-list">-->
+        <!--        <h2 class="kit-page-heading mb-3 chart-heading"><span>Total District ( कुल जिल्ला)</span><span class="badge text-bg">{{district_count}}</span></h2>-->
+        <!--        <ul class="chart-list">-->
+        <!--            {% for dist,count in district_dict.items %}-->
+        <!--                <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>{{dist}}</span> <span class="badge text-bg">{{count}}</span></li>-->
+        <!--            {% endfor %}-->
+        <!--        </ul>-->
+        <!--      </div>-->
+        <!--      <div class="col-md-7">-->
+        <!--        <canvas id="InvestmentChart" style="width:100%;"></canvas>-->
+        <!--      </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--</div>-->
+        
+        <div class="col-md-12 my-5">
+          <div class="InvestmentChart">
+            <h2 class="chart-title">Industry in accordance to Product</h2>
+            <div class="row">
+              <div class="col-md-5 chart-info-list mt-3">
+                <h2 class="kit-page-heading mb-3 chart-heading"><span>Total Industries ( कुल उद्योगहरु )</span><span class="badge text-bg">{{total_industry}}</span></h2>
+                <ul class="chart-list">
+                  <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>उर्जामूलक (Energy)</span> <span class="badge text-bg">{{energy}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #ff8110;"></i>उत्पादनमूलक (Manufacturing)</span> <span class="badge text-bg">{{manufacturing}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #5281ce;"></i>कृषि तथा वन पैदावारमा आधारित (Agricultural or Forestry)</span><span class="badge text-bg">{{ag}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #9ef5ff;"></i>खनिज(Mineral)</span><span class="badge text-bg">{{mineral}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #998ceb;"></i>पूर्वाधार(Infrastructure)</span><span class="badge text-bg">{{infra}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #1c417c;"></i>पर्यटन(Tourism)</span><span class="badge text-bg">{{tourism}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #4b85e2;"></i>सूचना तथा संचार प्रविधि(Information and Communication)</span><span class="badge text-bg">{{it}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #f5c02f;"></i>सेवामूलक(Service)</span><span class="badge text-bg">{{service}}</span></li>
+                  <li><span><i class="fa-solid fa-circle me-2" style="color: #88b1f5;"></i>अन्य( Others)</span><span class="badge text-bg">{{others}}</span></li>
+                </ul>
+              </div>
+              <div class="col-md-7">
+                <canvas id="product" style="width:100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block customjs %}
+
+  <script>
+    //Sends the selected district value to the url in district variable
+
+    $(document).ready(function() {
+
+      // Get the 'district' query parameter from the URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var district = urlParams.get('district');
+
+      // Set the selected option in the <select> element based on the 'district' value
+      
+      $('#districtSelect').val(district)
+
+      $('#districtSelect').change(function() {
+        var selectedDistrict = $(this).val();        
+        var url = '?district=' +  selectedDistrict;
+        window.location.href = url;
+      });
+
+      // Update the display when the page loads
+      var selectedDistrictName = $('#districtSelect').find(':selected').data('district-name');
+      if (selectedDistrictName) {
+          $('#selectedDistrictDisplay').text('District: ' + selectedDistrictName);
+          $('#selectedDistrictDisplay').show();
+      } else {
+          $('#selectedDistrictDisplay').hide();
+      }
+
+    });
+
+  </script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+  <script>
+    let map;
+    
+
+    async function initMap() {
+    //@ts-ignore
+    const { Map } = await google.maps.importLibrary("maps");
+
+    map = new Map(document.getElementById("map"), {
+        center: { lat: 28.3949, lng: 84.1240 },
+        zoom: 7.4,
+    });
+
+    addMarker({lat: 28.2096, lng: 83.9856}, 'Pokhara');
+    addMarker({lat: 27.0449, lng: 84.8672}, 'Birgunj');
+    addMarker({lat: 28.9873, lng: 80.1652}, 'Mahendranagar');
+    addMarker({lat: 27.354712, lng: 87.667488}, 'Taplejung');
+    addMarker({lat: 28.683359, lng: 80.608063}, 'Dhangadi');
+    addMarker({lat: 29.5239, lng: 82.0788}, 'Rara Lake');
+    addMarker({lat: 27.6866, lng: 83.4323}, 'Butwal');
+    addMarker({lat: 27.429071, lng: 85.029716}, 'Hetauda');
+    addMarker({lat: 27.700001, lng: 85.333336}, 'Kathmandu');
+    addMarker({lat: 27.005915, lng: 84.859085}, 'Biratnagar');
+
+    function addMarker(coordinates, content){
+        let marker = new google.maps.Marker({
+        position: coordinates,
+        map: map,
+        icon: '/static/image/factory.png'
+    });
+
+    let infoWindow = new google.maps.InfoWindow({
+        content: content
+    });
+
+    marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+    });
+
+    marker.addListener('mouseout', () => {
+        infoWindow.close();
+    });
+    }
+    }
+
+    
+
+    initMap();
+  </script>
+
+  <script>
+    var xValues = ["Miniature", "Domestic", "Small", "Medium", "Large"];
+    var yValues = [{{miniature}}, {{domestic}}, {{small}}, {{medium}}, {{large}}];
+    var barColors = [
+      "#01b7f9",
+      "#ff8110",
+      "#5281ce",
+      "#9ef5ff",
+      "#998ceb"
+    ];
+    
+    new Chart("InvestmentChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {
+          display: true,
+          labels: {
+            fontFamily: "Poppins, sans-serif" 
+          }
+        },
+        title: {
+          display: false,
+          text: "Investment",
+          fontFamily: "Poppins, sans-serif" 
+        },
+        tooltips: {
+          titleFontFamily: "Poppins, sans-serif",
+          bodyFontFamily: "Poppins, sans-serif" 
+        }
+      }
+    });
+
+  </script>
+
+  <script>
+    var xValues = ["Private", "Partnership"];
+    var yValues = [{{private}}, {{partnership}}];
+    var barColors = [
+      "#01b7f9",
+      "#ff8110",
+    ];
+    
+    new Chart("ownershipChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {
+          display: true,
+          labels: {
+            fontFamily: "Poppins, sans-serif" 
+          }
+        },
+        title: {
+          display: false,
+          text: "Investment",
+          fontFamily: "Poppins, sans-serif" 
+        },
+        tooltips: {
+          titleFontFamily: "Poppins, sans-serif",
+          bodyFontFamily: "Poppins, sans-serif" 
+        }
+      }
+    });
+  </script>
+
+  <script>
+    var xValues = ["Active", "Inactive"];
+    var yValues = [{{active}}, {{inactive}}];
+    var barColors = [
+      "#01b7f9",
+      "#ff8110",
+    ];
+    
+    new Chart("ststusChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {
+          display: true,
+          labels: {
+            fontFamily: "Poppins, sans-serif" 
+          }
+        },
+        title: {
+          display: false,
+          text: "Investment",
+          fontFamily: "Poppins, sans-serif" 
+        },
+        tooltips: {
+          titleFontFamily: "Poppins, sans-serif",
+          bodyFontFamily: "Poppins, sans-serif" 
+        }
+      }
+    });
+  </script>
+
+  <script>
+    var xValues = ["Skilled", "Unskilled", "Indigenous", "Foreign", "Male", "Female"];
+    var yValues = [{{skilled}}, {{unskilled}}, {{indigenous}}, {{foreign}}, {{male}}, {{female}}];
+    var barColors = [
+      "#01b7f9",
+      "#ff8110",
+      "#5281ce",
+      "#9ef5ff",
+      "#998ceb",
+      "#4b85e2",
+    ];
+    
+    new Chart("employment", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+      legend: {
+        display: false,
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            fontFamily: "Poppins, sans-serif" 
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Employment",
+            fontFamily: "Poppins, sans-serif" 
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            min: 0,
+            fontFamily: "Poppins, sans-serif" 
+          }
+        }]
+      },
+      tooltips: {
+        titleFontFamily: "Poppins, sans-serif",
+        bodyFontFamily: "Poppins, sans-serif" 
+      }
+    }
+  });
+
+
+
+  </script>
+
+  <script>
+    var xValues = ["Energy", "Manufacturing", "Agricultural", "Mineral", "Infrastructure", "Tourism", "Information", "Service", "Others"];
+    var yValues = [{{energy}}, {{manufacturing}}, {{ag}}, {{mineral}}, {{infra}}, {{tourism}}, {{it}}, {{service}}, {{others}}];
+    var barColors = [
+      "#01b7f9",
+      "#ff8110",
+      "#5281ce",
+      "#9ef5ff",
+      "#998ceb",
+      "#1c417c",
+      "#4b85e2",
+      "#f5c02f",
+      "#88b1f5",
+    ];
+    
+    new Chart("product", {
+        type: "horizontalBar",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: false,
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                min: 0,
+                fontFamily: "Poppins, sans-serif" 
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Products",
+                fontFamily: "Poppins, sans-serif" 
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                fontFamily: "Poppins, sans-serif" 
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Products",
+                fontFamily: "Poppins, sans-serif" 
+              }
+            }]
+          },
+          tooltips: {
+            titleFontFamily: "Poppins, sans-serif",
+            bodyFontFamily: "Poppins, sans-serif" 
+          }
+        }
+      });
+
+
+  </script>
+
+{% endblock %}
+  

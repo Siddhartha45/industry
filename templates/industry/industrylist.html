@@ -159,15 +159,18 @@
                                 </button>
                                 </a>
                             </div>
-                            <div class="action-btn-dlt">
-                                <a href="{% url 'industry-delete' industry_id=i.id %}" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
-                                <button>
-                                    <span class="material-symbols-outlined">
-                                        delete
-                                        </span>
-                                </button>
-                                </a>
-                            </div>
+                            
+                            {% if request.user.role != 2 %}
+                                <div class="action-btn-dlt">
+                                    <a href="{% url 'industry-delete' industry_id=i.id %}" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
+                                    <button>
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                            </span>
+                                    </button>
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

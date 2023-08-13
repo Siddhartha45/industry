@@ -1,0 +1,596 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container main-sec">
+
+        {% for message in messages %}
+        {% if message.tags == "success"%}
+            <div class="alert alert-success alert-dismissible fade show mt-3" id="message" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% elif message.tags == "info" %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" id="message" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="cng-pw-title d-flex justify-content-between mt-4">
+            <p>Industries List<span>
+                    ( उद्योग सूची )</span>
+            </p>
+            
+            <div class="kit-text-navigation">
+                <p>Applicant Portal {{request.session.type}}
+                    <span> > </span> Industries List
+                </p>
+            </div>
+        </div>
+
+        <div class="table-top-bar d-flex ">
+
+
+
+            <div class="kit-input-icon industry-search" style="width:450px">
+                <img src="{% static '/image/search.png' %}" alt="">
+                <form action="{% url 'industry-list'%}" method="get">
+                
+                <input type="text" name="search" class="form-control kit-form-control kit-form-location" placeholder="Search Industry Name" id="search" autocomplete="off">
+            </form>
+    
+
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="investmentInput">
+                    
+                    <option value="None" selected>Investment</option>
+                    <option value="MINIATURE" {% if request.session.product_input == 'MINIATURE' %} selected {% endif %}>लघु (Miniature)</option>
+                    <option value="DOMESTIC" {% if request.session.product_input == 'DOMESTIC' %} selected {% endif %}>घरेलु (Domestic)</option>
+                    <option value="SMALL" {% if request.session.product_input == 'SMALL' %} selected {% endif %}>साना (Small)</option>
+                    <option value="MEDIUM" {% if request.session.product_input == 'MEDIUM' %} selected {% endif %}>मझौला (Medium)</option>
+                    <option value="LARGE" {% if request.session.product_input == 'LARGE' %} selected {% endif %}>ठुलो (Large)</option>
+                </select>
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="productInput">
+                    
+                    <option value="None" selected>Product</option>
+                    <option value="E" {% if request.session.product_input == 'E' %} selected {% endif %}>उर्जामूलक (Energy)</option>
+                    <option value="MF" {% if request.session.product_input == 'MF' %} selected {% endif %}>उत्पादनमूलक (Manufacturing)</option>
+                    <option value="AF" {% if request.session.product_input == 'AF'%} selected {% endif %}>कृषि तथा वन पैदावारमा आधारित </option>
+                    <option value="MI" {% if request.session.product_input == 'MI' %} selected {% endif %}>खनिज(Mineral)</option>
+                    <option value="I" {% if request.session.product_input == 'I' %} selected {% endif %}>पूर्वाधार(Infrastructure)</option>
+                    <option value="T" {% if request.session.product_input == 'T' %} selected {% endif %}>पर्यटन(Tourism)</option>
+                    <option value="IC" {% if request.session.product_input == 'IC' %} selected {% endif %}>सूचना तथा संचार प्रविधि</option>
+                    <option value="S" {% if request.session.product_input == 'S' %} selected {% endif %}>सेवामूलक(Service)</option>
+                    <option value="O" {% if request.session.product_input == 'O' %} selected {% endif %}>अन्य(Others)</option>
+                </select>
+            </div>
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="districtInput">
+                    <option value="None" selected>District</option>
+                    <option value="KAILALI">कैलाली</option>
+                    <option value="KANCHANPUR">कञ्चनपुर</option>
+                    <option value="DADELDHURA">डडेल्धुरा</option>
+                    <option value="DOTI">डोटी</option>
+                    <option value="ACHHAM">अछाम</option>
+                    <option value="BAJURA">बाजुरा</option>
+                    <option value="BAJHANG">बझाङ</option>
+                    <option value="BAITADI">बैतडी</option>
+                    <option value="DARCHULA">दार्चुला</option>
+                </select>
+            </div>
+
+            <div class="kit-input-icon industry-search">
+                <select class="form-select kit-form-control md_select" aria-label="Default select example" id="localInput">
+                    <option value="None" selected>Local Body</option>
+                    {% for key, value in all_localbody %}
+                        <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+
+            <div class="kit-input-icon d-flex justify-content-between">
+                {% comment %} <button class="kit-form-button m-0 me-2 px-5" id="filter">Filter</button> {% endcomment %}
+                <button class="kit-form-button m-0 me-2 px-5" id="ResetMd">Reset</button>
+
+                <div class="dropdown">
+                    <button class="kit-form-button m-0 px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex;
+                    justify-content: center;
+                    align-items: center;">
+                        <i class="fa-solid fa-download me-3"></i> Download
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="PdfDownload()" >PDF</a></li>
+                        <li><a class="dropdown-item" onclick="CSVFilter()" href="#">CSV</a></li>
+                        <li><a class="dropdown-item" onclick="EXCELFilter()" href="#">EXCEL</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="row  mb-4 mbl-tbl d-flex justify-content-center">
+            <table class="report-view-table table table-hover" id="industryList">
+                <thead>
+                    <tr>
+                        <th>S.no</th>
+                        <th class="d-none">Investment</th>
+                        <th class="d-none">Product</th>
+                        <th class="d-none">Ownership</th>
+                        <th>Indusrty Name</th>
+                        <th>Industry Owner</th>
+                        <th>District</th>
+                        <th>Local Body</th>
+                    </tr>
+                </thead>
+                <tbody id = "industry_list_elements">
+                {% for i in industry %}
+                {% with serial_number=industry.start_index|add:forloop.counter0 %}
+                <tr>
+                    <td>{{ serial_number }}</td>
+                    <td class="d-none">{{ i.investment }}</td>
+                    <td class="d-none">{{ i.industry_acc_product }}</td>
+                    <td class="d-none">{{ i.ownership }}</td>
+                    <td>{{ i.industry_name }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.get_district_display }}</td>
+                    <td>{{ i.get_local_body_display }}</td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+                </tbody>
+            </table>
+            
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if industry.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ industry.previous_page_number|add:-2 }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if industry.number == 1 %}
+                    {% for num in industry.paginator.page_range|slice:":3" %}
+                    {% if industry.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+    
+                    {% else %}
+                    {% for num in industry.paginator.page_range %}
+                        {% if industry.number == num %}
+                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            {% if num == industry.number|add:"-1" or num == industry.number|add:"1" %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    
+                    {% if industry.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ industry.next_page_number|add:2 }}{% if request.session.type %}&type=filter{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <!--
+            <div class="pagination" style="text-align: right;">
+                {% if industry.has_previous %}
+                    <a href="?search={{ search_query }}&page=1" style="margin-right: 10px;">First</a>
+                    <a href="?search={{ search_query }}&page={{ industry.previous_page_number }}" style="margin-right: 10px;">Previous</a>
+                {% endif %}
+            
+                <span class="current-page" style="margin-right: 10px;">{{ industry.number }}</span>
+            
+                {% if industry.has_next %}
+                    <a href="?search={{ search_query }}&page={{ industry.next_page_number }}" style="margin-right: 10px;">Next</a>
+                    <a href="?search={{ search_query }}&page={{ industry.paginator.num_pages }}" style="margin-right: 10px;">Last</a>
+                {% endif %}
+            </div>-->
+
+        </div>
+    </div>
+{% endblock %}
+{% block customjs %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" /><script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="{% static '/js/tablesearch.js' %}"></script>
+    <script>
+    function CSVFilter(){
+        var investment = $("#investmentInput").val();
+        var industry_acc_product = $("#productInput").val();
+        var district = $("#districtInput").val();
+        var localbody = $("#localInput").val();
+        
+        var url = "{% url 'download-csv' %}?";
+
+        if (investment) {
+            url += "investment=" + investment + "&";
+        }
+        if (industry_acc_product) {
+            url += "industry_acc_product=" + industry_acc_product + "&";
+        }
+        if (district) {
+            url += "district=" + district + "&";
+        }
+        if (localbody) {
+            url += "localbody=" + localbody + "&";
+        }
+
+        url = url.slice(0, -1);
+        window.location.href = url;
+    }
+
+    function EXCELFilter(){
+        var searchQuery = $("#search").val();
+        var investment = $("#investmentInput").val();
+        var industry_acc_product = $("#productInput").val();
+        var district = $("#districtInput").val();
+        var localbody = $("#localInput").val();
+        
+        var url = "{% url 'download-excel' %}?";
+        if (searchQuery) {
+            url += "search=" + encodeURIComponent(searchQuery) + "&";
+        }
+        if (investment) {
+            url += "investment=" + investment + "&";
+        }
+        if (industry_acc_product) {
+            url += "industry_acc_product=" + industry_acc_product + "&";
+        }
+        if (district) {
+            url += "district=" + district + "&";
+        }
+        if (localbody) {
+            url += "localbody=" + localbody + "&";
+        }
+        url = url.slice(0, -1);
+        window.location.href = url;
+    }
+
+    // Function to get the human-readable district
+    function getReadableDistrict(district) {
+        // You can implement the logic to convert district to its display name here
+        // For example, assuming you have a dictionary mapping district codes to display names
+        const districtMapping = {
+        'KAILALI': 'कैलाली',
+        'KANCHANPUR': 'कञ्चनपुर',
+        'DADELDHURA': 'डडेल्धुरा',
+        'DOTI': 'डोटी',
+        'ACHHAM': 'अछाम',
+        'BAJURA': 'बाजुरा',
+        'BAJHANG': 'बझाङ',
+        'BAITADI': 'बैतडी',
+        'DARCHULA': 'दार्चुला',
+        };
+
+        // If the district is in the mapping, return its display name; otherwise, return the original value
+        return districtMapping[district] || district;
+    }
+
+    function getReadableLocalBody(localbody) {
+        const localbodyMapping = {
+        'AMARGADHI': 'अमरगढी नगरपालिका',
+        'PARSURAM': 'परशुराम नगरपालिका',
+        'ALITAL': 'आलिताल गाउँपालिका',
+        'BHAGYASWOR': 'भागेश्वर गाउँपालिका',
+        'NAVADURGA': 'नवदुर्गा गाउँपालिका',
+        'AJAYMERU': 'अजयमेरु गाउँपालिका',
+        'GANYAPDHURA': 'गन्यापधुरा गाउँपालिका',
+        'MAHAKALI': 'महाकाली नगरपालिका',
+        'SALYASIKHAR': 'शैल्यशिखर नगरपालिका',
+        'MALIKARJUN': 'मालिकार्जुन गाउँपालिका',
+        'APIHIMAL': 'अपिहिमाल गाउँपालिका',
+        'DUNHU': 'दुहुँ गाउँपालिका',
+        'NAUGADH': 'नौगाड गाउँपालिका',
+        'MARMA': 'मार्मा गाउँपालिका',
+        'LEKAM': 'लेकम गाउँपालिका',
+        'BYAS': 'ब्याँस गाउँपालिका',
+        'DASHRATHCHAND': 'दशरथचन्द नगरपालिका',
+        'PATAN': 'पाटन नगरपालिका',
+        'MELAULI': 'मेलौली नगरपालिका',
+        'PURCHAUDI': 'पुर्चौडी नगरपालिका',
+        'SUNARYA': 'सुर्नया गाउँपालिका',
+        'SIGAS': 'सिगास गाउँपालिका',
+        'SHIVNATH': 'शिवनाथ गाउँपालिका',
+        'PARBESHWOR': 'पञ्चेश्वर गाउँपालिका',
+        'DOGDAKEDAR': 'दोगडाकेदार गाउँपालिका',
+        'DILASAINI': 'डीलासैनी गाउँपालिका',
+        'MANGALSENA': 'मंगलसेन नगरपालिका',
+        'KAMALBAJAR': 'कमलबजार नगरपालिका',
+        'SANFEBAGAR': 'साँफेबगर नगरपालिका',
+        'PANCHADEBAL': 'पन्चदेवल विनायक नगरपालिका',
+        'CHAURPATI': 'चौरपाटी गाउँपालिका',
+        'MELLEKH': 'मेल्लेख गाउँपालिका',
+        'BATRIGADHI': 'बान्निगढी जयगढ गाउँपालिका',
+        'RAMAROSAN': 'रामारोशन गाउँपालिका',
+        'DHAKARI': 'ढकारी गाउँपालिका',
+        'TURMAKHAND': 'तुर्माखाँद गाउँपालिका',
+        'DIPAYAL': 'दिपायल सिलगढी नगरपालिका',
+        'SHIKHAR': 'शिखर नगरपालिका',
+        'PURBICHAUKI': 'पूर्वीचौकी गाउँपालिका',
+        'BADIKEDAR': 'बडीकेदार गाउँपालिका',
+        'JORAYAL': 'जोरायल गाउँपालिका',
+        'SAYAL': 'सायल गाउँपालिका',
+        'AADARSH': 'आदर्श गाउँपालिका',
+        'KIC': 'के.आई.सिं. गाउँपालिका',
+        'BOGTAN': 'बोगटान फुड्सिल गाउँपालिका',
+        'DHANGADI': 'धनगढी उपमहानगरपालिका',
+        'TIKAPUR': 'टिकापुर नगरपालिका',
+        'GHODAGHODI': 'घोडाघोडी नगरपालिका',
+        'LAMKICHUHA': 'लम्कीचुहा नगरपालिका',
+        'VAJANI': 'भजनी नगरपालिका',
+        'GODAWARI': 'गोदावरी नगरपालिका',
+        'GAURIGANGA': 'गौरीगंगा नगरपालिका',
+        'JANAKI': 'जानकी गाउँपालिका',
+        'BARDAGORIYA': 'बर्दगोरिया गाउँपालिका',
+        'MOHANYAL': 'मोहन्याल गाउँपालिका',
+        'KAULARI': 'कैलारी गाउँपालिका',
+        'JOSHIPUR': 'जोशीपुर गाउँपालिका',
+        'CHURE': 'चुरे गाउँपालिका',
+        'BADIMALIKA': 'बडीमालिका नगरपालिका',
+        'TRIBENI': 'त्रिवेणी नगरपालिका',
+        'BUDHIGANGA': 'बुढीगंगा नगरपालिका',
+        'BUDHINANDA': 'बुढीनन्दा नगरपालिका',
+        'GAUMUL': 'गौमुल गाउँपालिका',
+        'JAGANNATH': 'जगन्‍नाथ गाउँपालिका',
+        'SWAMIKARTIK': 'स्वामीकार्तिक खापर गाउँपालिका',
+        'KHAPTAD': 'खप्तड छेडेदह गाउँपालिका',
+        'HIMALI': 'हिमाली गाउँपालिका',
+        'BHIMDATTA': 'भीमदत्त नगरपालिका',
+        'PURNABAS': 'पुर्नवास नगरपालिका',
+        'BEDKOT': 'वेदकोट नगरपालिका',
+        'DODHARA': 'दोधारा चादँनी नगरपालिका',
+        'SUKLAPHATA': 'शुक्लाफाँटा नगरपालिका',
+        'BELAURI': 'बेलौरी नगरपालिका',
+        'KRISHNAPUR': 'कृष्णपुर नगरपालिका',
+        'BELDADI': 'बेलडाडी गाउँपालिका',
+        'LALJHADI': 'लालझाडी गाउँपालिका',
+        'JAYPRITHVI': 'जयपृथ्वी नगरपालिका',
+        'BUNGAL': 'बुंगल नगरपालिका',
+        'TALKOT': 'तलकोट गाउँपालिका',
+        'MASTA': 'मष्टा गाउँपालिका',
+        'KHAPTADCHATRA': 'खप्तडछान्ना गाउँपालिका',
+        'THALARA': 'थलारा गाउँपालिका',
+        'BITTADCHIR': 'वित्थडचिर गाउँपालिका',
+        'SURMA': 'सूर्मा गाउँपालिका',
+        'CHABBISPATHIVERA': 'छबिसपाथिभेरा गाउँपालिका',
+        'DURGATHALI': 'दुर्गाथली गाउँपालिका',
+        'KEDARSU': 'केदारस्युँ गाउँपालिका',
+        'SAIPAL': 'साइपाल गाउँपालिका',
+        };
+
+        // If the district is in the mapping, return its display name; otherwise, return the original value
+        return localbodyMapping[localbody] || localbody;
+    }
+    
+    $(document).ready(function() {
+        $('#search').on('input', function() {
+          var value = $(this).val();
+          $.ajax({
+            url: "{% url 'AjaxSearch' %}",
+            type: 'GET',
+            data: {
+                type:'search',search: value,
+              },
+            dataType: 'json',
+            success: function(response) {
+                $('#industry_list_elements').empty(); 
+                var jsonData = JSON.parse(response);
+                var count = 0
+                for (var index in jsonData) {
+                    if (jsonData.hasOwnProperty(index)) {
+                        count+=1
+                      console.log(count)
+                      var item = jsonData[index];
+                      
+                      var industryName = item.fields.industry_name;
+                        
+                      // Access properties of each item
+                
+                      var element = `
+                  
+                      <tr>
+                          <td>`+ count +` </td>
+                          <td class="d-none"> `+ item.fields.industry_name +` </td>
+        
+                          <td> `+ item.fields.industry_name +` </td>
+                          <td> `+ item.fields.owner_name +` </td>
+                          <td> `+ getReadableDistrict(item.fields.district) +` </td>
+                          <td> `+ getReadableLocalBody(item.fields.local_body) +` </td>
+                          <td class="hide_md">
+                              <div class="d-flex kit-action-com">
+                                  <div class="action-btn-view">
+                                      <a href="/industry/profile/`+item.pk+`" class="kit-card-link">
+                                      <button>
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                            </span>
+                                      </button>
+                                      </a>
+                                  </div>                          
+                                  <div class="action-btn-pen">
+                                      <a href="/industry/edit/`+item.pk+`" class="kit-card-link">
+                                      <button>
+                                        <span class="material-symbols-outlined">
+                                            edit
+                                            </span>
+                                      </button>
+                                      </a>
+                                  </div>
+                                  <div class="action-btn-dlt">
+                                      <a href="/industry/delete/`+item.pk+`" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
+                                      <button>
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                            </span>
+                                      </button>
+                                      </a>
+                                  </div>
+                              </div>
+                          </td>
+                      </tr>
+                  
+                    `;
+                
+                      $('#industry_list_elements').append(element);
+                    }
+                  }
+              // Handle the successful response       
+            
+            },
+            error: function(xhr, status, error) {
+              // Handle the error
+              
+              console.log('An error occurred: ' + error);
+            }
+          });
+        });
+    });
+
+    $(document).ready(function() {
+        $('.md_select').change(function() {
+            var value = $(this).val();
+            var id = this.id;
+
+            investment_input = $("#investmentInput").val()
+            product_input = $("#productInput").val()
+            district_input = $("#districtInput").val()
+            local_input = $("#localInput").val()
+
+        
+            
+            $.ajax({
+              url: "{% url 'AjaxSearch' %}",
+              type: 'GET',
+              data: {
+                  type:'option',investment_input:investment_input,product_input:product_input,district_input:district_input,local_input:local_input
+                },
+              dataType: 'json',
+              success: function(response) {
+                var count = 0
+                  var jsonData = JSON.parse(response);
+                  $('#industry_list_elements').empty();
+                  for (var index in jsonData) {
+                    count+=1
+                      if (jsonData.hasOwnProperty(index)) {
+                        var item = jsonData[index];
+                        
+                        var industryName = item.fields.industry_name;
+                        
+                        // Access properties of each item
+                        var element = `
+                        
+                        <tr>
+                            <td>`+ count +` </td>
+                            <td> `+ item.fields.industry_name +` </td>
+                            <td> `+ item.fields.owner_name +` </td>
+                            <td> `+ getReadableDistrict(item.fields.district) +` </td>
+                            <td> `+ getReadableLocalBody(item.fields.local_body) +` </td>
+                            <td class="hide_md">
+                                <div class="d-flex kit-action-com">
+                                    <div class="action-btn-view">
+                                        <a href="/industry/profile/`+item.pk+`" class="kit-card-link">
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                visibility
+                                                </span>
+                                        </button>
+                                        </a>
+                                    </div>                          
+                                    <div class="action-btn-pen">
+                                        <a href="/industry/edit/`+item.pk+`" class="kit-card-link">
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                edit
+                                                </span>
+                                        </button>
+                                        </a>
+                                    </div>
+                                    <div class="action-btn-dlt">
+                                        <a href="/industry/delete/`+item.pk+`" onclick="return confirm('Are you sure you want to delete this industry?');" class="kit-card-link">
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                                </span>
+                                        </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    
+                      `;
+
+                        $('#industry_list_elements').append(element);
+                      }
+                    }
+                // Handle the successful response     
+                $('#industryList').addClass('myClassMd');
+              
+              },
+              error: function(xhr, status, error) {
+                // Handle the error
+               
+                console.log('An error occurred: ' + error);
+              }
+            });
+        });
+      });
+
+      $('#filter').click(function() {
+        // Handle the click event here
+        alert("hello")
+        console.log('Div clicked');
+        // Perform any other actions you want
+      });
+      
+    $( document ).ready(function() {
+        $('#overlay').fadeIn('slow');
+        setTimeout(function() {
+            $('#overlay').fadeOut('slow');
+        }, 5000);
+    })
+    
+    function PdfDownload(){
+        //href="{%url 'download-pdf' %}"
+        
+        investment_input = $("#investmentInput").val()
+        product_input = $("#productInput").val()
+        district_input = $("#districtInput").val()
+        local_input = $("#localInput").val()
+
+        var get_url = "?investment_input="+investment_input+"&product_input="+product_input+"&district_input="+district_input+"&local_input="+local_input
+
+        window.open("{%url 'download-pdf' %}"+get_url, "_blank");
+        
+    }
+
+    document.getElementById("ResetMd").addEventListener("click", function() {
+        //document.getElementById("ownershipInput").value = "None";
+        //document.getElementById("ownershipInput").dispatchEvent(new Event('change'));
+
+        //document.getElementById("investmentInput").value = "None";
+        //document.getElementById("investmentInput").dispatchEvent(new Event('change'));
+
+        //document.getElementById("productInput").value = "None";
+        //document.getElementById("productInput").dispatchEvent(new Event('change'));
+
+        window.open("{% url 'session-reset' %}","_self"); 
+    });
+    
+    </script>
+    
+{% endblock %}

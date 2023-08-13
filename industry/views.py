@@ -15,7 +15,7 @@ import xlwt
 from django.db.models import Count
 
 
-@login_required
+
 def home(request):
     session_local_delete(request)
     
@@ -100,7 +100,10 @@ def home(request):
                 'male': male,
                 'female': female,
                 }
-    return render(request, 'account/adminpanel.html', context)
+    if request.user.is_authenticated:
+        return render(request, 'account/adminpanel.html', context)
+    else:
+        return render(request, 'public_view.html', context)
 
 
 def get_local_bodies(request, district):
@@ -237,7 +240,6 @@ def industry_profile_pdf(request, industry_id):
     return render(request, 'industry/industrydetail_pdf.html', context)
 
 
-@login_required
 def industry_list(request):
     
     all_localbody = commons.ALL_LOCALBODY_CHOICES
@@ -340,7 +342,10 @@ def industry_list(request):
         'all_localbody': all_localbody,
     }
     
-    return render(request, 'industry/industrylist.html', data)
+    if request.user.is_authenticated:
+        return render(request, 'industry/industrylist.html', data)
+    else:
+        return render(request, 'public_industry_list.html', data)
 
 
 @login_required
