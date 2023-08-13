@@ -109,11 +109,11 @@ def import_file(request):
                 
                 if 'owner_address' in df.columns:
                     industry_data['address'] = row['owner_address']
-                if 'telephone' in df.columns:
+                if 'telephone_number' in df.columns:
                     industry_data['telephone_number'] = row['telephone_number']
                 if 'contact_person' in df.columns:
                     industry_data['contact_person'] = row['contact_person']
-                if 'mobile' in df.columns:
+                if 'mobile_number' in df.columns:
                     industry_data['mobile_number'] = row['mobile_number']
                 if 'ward_no' in df.columns:
                     industry_data['ward_no'] = row['ward_no']

@@ -9,7 +9,7 @@ class Industry(models.Model):
     #Industry Details
     industry_name = models.CharField(max_length=150)
     industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
-    reg_date = models.CharField(max_length=10, blank=True, null=True, validators=[nepali_date_validator])
+    reg_date = models.CharField(max_length=100, blank=True, null=True, validators=[nepali_date_validator])
     owner_name = models.CharField(max_length=100)
     sex = models.CharField(max_length=6, choices=commons.SEX_CHOICES, blank=True, null=True)
     caste = models.CharField(max_length=8, choices=commons.CASTE_CHOICES, blank=True, null=True)
