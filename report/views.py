@@ -54,13 +54,12 @@ def report_show(request, report_id):
 
 from .forms import UploadFileForm   
 from industry.models import Industry
-import csv 
 import pandas as pd
 from django.contrib import messages
-import re
-import os
-from django.conf import settings
+from django.db import transaction
 
+
+@transaction.atomic
 @superadmin_required
 def import_file(request):
     if request.method == 'POST':
@@ -68,25 +67,43 @@ def import_file(request):
         if form.is_valid():
             file = request.FILES['file']
             
-            df = pd.read_excel(file)
+            # Read the Excel file and specify data types
+            dtype_mapping = {'mobile_number': str, 'industry_reg_no': str, 'telephone_number': str, 'reg_date': str}
+            df = pd.read_excel(file, dtype=dtype_mapping)
             
             for _, row in df.iterrows():
                 
                 industry_data = {}
                 
                 if 'industry_name' in df.columns:
-                    industry_data['industry_name'] = row['industry_name']
+                    industry_name = row['industry_name']
+                    if pd.notna(industry_name):
+                        industry_data['industry_name'] = industry_name
+                
                 if 'industry_reg_no' in df.columns:
-                    industry_data['industry_reg_no'] = row['industry_reg_no']
+                    industry_reg_no = row['industry_reg_no']
+                    if pd.notna(industry_reg_no):
+                        industry_data['industry_reg_no'] = industry_reg_no
+                
                 if 'reg_date' in df.columns:
-                    industry_data['reg_date'] = row['reg_date']
+                    reg_date = row['reg_date']
+                    if pd.notna(reg_date):
+                        try:
+                            datetime_obj = pd.to_datetime(reg_date)
+                            formatted_reg_date = datetime_obj.strftime('%Y-%m-%d')  # Format as 'YYYY-MM-DD'
+                            industry_data['reg_date'] = formatted_reg_date
+                        except ValueError:
+                            industry_data['reg_date'] = None
+                    
                 if 'owner_name' in df.columns:
-                    industry_data['owner_name'] = row['owner_name']
+                    owner_name = row['owner_name']
+                    if pd.notna(owner_name):
+                        industry_data['owner_name'] = owner_name
                 
                 #sex
                 if 'sex' in df.columns:
                     sex_choice = row['sex']
-                    if sex_choice == "Other":
+                    if sex_choice == "Others":
                         industry_data['sex'] = "OTHERS"
                     elif sex_choice == "Male":
                         industry_data['sex'] = "MALE"
@@ -108,23 +125,49 @@ def import_file(request):
                         industry_data['caste'] = None
                 
                 if 'owner_address' in df.columns:
-                    industry_data['address'] = row['owner_address']
+                    address = row['owner_address']
+                    if pd.notna(address):
+                        industry_data['address'] = address
+                
                 if 'telephone_number' in df.columns:
-                    industry_data['telephone_number'] = row['telephone_number']
+                    telephone_number = row['telephone_number']
+                    if pd.notna(telephone_number):
+                        industry_data['telephone_number'] = telephone_number
+                    
                 if 'contact_person' in df.columns:
-                    industry_data['contact_person'] = row['contact_person']
+                    contact_person = row['contact_person']
+                    if pd.notna(contact_person):
+                        industry_data['contact_person'] = contact_person
+                
                 if 'mobile_number' in df.columns:
-                    industry_data['mobile_number'] = row['mobile_number']
+                    mobile_number = row['mobile_number']
+                    if pd.notna(mobile_number):
+                        industry_data['mobile_number'] = str(mobile_number)
+                    
                 if 'ward_no' in df.columns:
-                    industry_data['ward_no'] = row['ward_no']
+                    ward_no = row['ward_no']
+                    if pd.notna(ward_no):
+                        industry_data['ward_no'] = ward_no
+                    
                 if 'settlement' in df.columns:
-                    industry_data['settlement'] = row['settlement']
+                    settlement = row['settlement']
+                    if pd.notna(settlement):
+                        industry_data['settlement'] = settlement
+                    
                 if 'latitude' in df.columns:
-                    industry_data['latitude'] = row['latitude']
+                    latitude = row['latitude']
+                    if pd.notna(latitude):
+                        industry_data['latitude'] = latitude
+                        
                 if 'longitude' in df.columns:
-                    industry_data['longitude'] = row['longitude']
+                    longitude = row['longitude']
+                    if pd.notna(longitude):
+                        industry_data['longitude'] = longitude
+                        
                 if 'product_description' in df.columns:
-                    industry_data['product_description'] = row['product_description']
+                    product_description = row['product_description']
+                    if pd.notna(product_description):
+                        industry_data['product_description'] = product_description
                 
                 #for assigning district
                 if 'district' in df.columns:
@@ -292,10 +335,14 @@ def import_file(request):
             
             
                 if 'product_service_name' in df.columns:
-                    industry_data['product_service_name'] = row['product_service_name']
+                    product_service_name = row['product_service_name']
+                    if pd.notna(product_service_name):
+                        industry_data['product_service_name'] = product_service_name
                     
                 if 'machinery_tool' in df.columns:
-                    industry_data['machinery_tool'] = row['machinery_tool']
+                    machinery_tool = row['machinery_tool']
+                    if pd.notna(machinery_tool):
+                        industry_data['machinery_tool'] = machinery_tool
                 
                 if 'male' in df.columns:
                     male_value = row['male'] if pd.notnull(row['male']) else 0
@@ -374,7 +421,7 @@ def import_file(request):
                     
                 if 'total_capital' in df.columns:
                     total_capital_value = row['total_capital'] if pd.notnull(row['total_capital']) else 0
-                    total_capital_value = str(total_capital_value).replace(',', '')  # Remove commas from the number
+                    total_capital_value = str(total_capital_value).replace(',', '') # Remove commas from the number
                     try:
                         industry_data['total_capital'] = float(total_capital_value)
                     except ValueError:
