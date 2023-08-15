@@ -68,7 +68,22 @@ def import_file(request):
             file = request.FILES['file']
             
             # Read the Excel file and specify data types
-            dtype_mapping = {'mobile_number': str, 'industry_reg_no': str, 'telephone_number': str, 'reg_date': str}
+            dtype_mapping = {
+                            'industry_reg_no': str, 
+                            'reg_date': str,
+                            'mobile_number': str, 
+                            'telephone_number': str, 
+                            'sex': str,
+                            'caste': str,
+                            'district': str,
+                            'local_body': str,
+                            'investment': str,
+                            'industry_acc_product': str,
+                            'current_status': str,
+                            'ownership': str,
+                            'raw_materials_source': str,
+                            'current_running_capacity': str,
+                            }
             df = pd.read_excel(file, dtype=dtype_mapping)
             
             for _, row in df.iterrows():
@@ -79,6 +94,8 @@ def import_file(request):
                     industry_name = row['industry_name']
                     if pd.notna(industry_name):
                         industry_data['industry_name'] = industry_name
+                    else:                                                   # Excel row not having industry_name value are not entered
+                        continue
                 
                 if 'industry_reg_no' in df.columns:
                     industry_reg_no = row['industry_reg_no']
@@ -103,26 +120,30 @@ def import_file(request):
                 #sex
                 if 'sex' in df.columns:
                     sex_choice = row['sex']
-                    if sex_choice == "Others":
-                        industry_data['sex'] = "OTHERS"
-                    elif sex_choice == "Male":
-                        industry_data['sex'] = "MALE"
-                    elif sex_choice == "Female":
-                        industry_data['sex'] = "FEMALE"
-                    else:
-                        industry_data['sex'] = None
+                    if pd.notna(sex_choice):  # Check if value is not NaN
+                        sex_choice = sex_choice.strip()
+                        if sex_choice == "Others":
+                            industry_data['sex'] = "OTHERS"
+                        elif sex_choice == "Male":
+                            industry_data['sex'] = "MALE"
+                        elif sex_choice == "Female":
+                            industry_data['sex'] = "FEMALE"
+                        else:
+                            industry_data['sex'] = None
                 
                 #caste
                 if 'caste' in df.columns:
                     caste_choice = row['caste']
-                    if caste_choice == "Dalit":
-                        industry_data['caste'] = "DALIT"
-                    elif caste_choice == "Janajati":
-                        industry_data['caste'] = "JANAJATI"
-                    elif caste_choice == "Others":
-                        industry_data['caste'] = "OTHERS"
-                    else:
-                        industry_data['caste'] = None
+                    if pd.notna(caste_choice):  # Check if value is not NaN
+                        caste_choice = caste_choice.strip()
+                        if caste_choice == "Dalit":
+                            industry_data['caste'] = "DALIT"
+                        elif caste_choice == "Janajati":
+                            industry_data['caste'] = "JANAJATI"
+                        elif caste_choice == "Others":
+                            industry_data['caste'] = "OTHERS"
+                        else:
+                            industry_data['caste'] = None
                 
                 if 'owner_address' in df.columns:
                     address = row['owner_address']
@@ -171,167 +192,173 @@ def import_file(request):
                 
                 #for assigning district
                 if 'district' in df.columns:
-                    district_choice = row['district']
-                    if district_choice == "Kailali":
-                        industry_data['district'] = "KAILALI"
-                    elif district_choice == "Kanchanpur":
-                        industry_data['district'] = "KANCHANPUR"
-                    elif district_choice == "Dadeldhura":
-                        industry_data['district'] = "DADELDHURA"
-                    elif district_choice == "Doti":
-                        industry_data['district'] = "DOTI"
-                    elif district_choice == "Achham":
-                        industry_data['district'] = "ACHHAM"
-                    elif district_choice == "Bajura":
-                        industry_data['district'] = "BAJURA"
-                    elif district_choice == "Bajhang":
-                        industry_data['district'] = "BAJHANG"
-                    elif district_choice == "Baitadi":
-                        industry_data['district'] = "BAITADI"
-                    elif district_choice == "Darchula":
-                        industry_data['district'] = "DARCHULA"
-                    else:
-                        industry_data['district'] = None
+                    district_choice = row['district']   
+                    if pd.notna(district_choice):  # Check if value is not NaN
+                        district_choice = district_choice.strip()   # Removes the space from value in district column
+                        if district_choice == "Kailali":
+                            industry_data['district'] = "KAILALI"
+                        elif district_choice == "Kanchanpur":
+                            industry_data['district'] = "KANCHANPUR"
+                        elif district_choice == "Dadeldhura":
+                            industry_data['district'] = "DADELDHURA"
+                        elif district_choice == "Doti":
+                            industry_data['district'] = "DOTI"
+                        elif district_choice == "Achham":
+                            industry_data['district'] = "ACHHAM"
+                        elif district_choice == "Bajura":
+                            industry_data['district'] = "BAJURA"
+                        elif district_choice == "Bajhang":
+                            industry_data['district'] = "BAJHANG"
+                        elif district_choice == "Baitadi":
+                            industry_data['district'] = "BAITADI"
+                        elif district_choice == "Darchula":
+                            industry_data['district'] = "DARCHULA"
+                        else:
+                            industry_data['district'] = None
                 
                 #for assigning local body
                 if 'local_body' in df.columns:
                     local__body_choice = row['local_body']
-                    if local__body_choice == "Apihimal":
-                        industry_data['local_body'] = "APIHIMAL"
-                    elif local__body_choice == "Kedarseu":
-                        industry_data['local_body'] = "KEDARSU"
-                    elif local__body_choice == "Bhimdatta":
-                        industry_data['local_body'] = "BHIMDATTA"
-                    elif local__body_choice == "Bithadchir":
-                        industry_data['local_body'] = "BITTADCHIR"
-                    elif local__body_choice == "Bungal":
-                        industry_data['local_body'] = "BUNGAL"
-                    elif local__body_choice == "Chabispathivera":
-                        industry_data['local_body'] = "CHABBISPATHIVERA"
-                    elif local__body_choice == "Chaurpati":
-                        industry_data['local_body'] = "CHAURPATI"
-                    elif local__body_choice == "Dhakari":
-                        industry_data['local_body'] = "DHAKARI"
-                    elif local__body_choice == "Dhangadhi":
-                        industry_data['local_body'] = "DHANGADI"
-                    elif local__body_choice == "Durgathali":
-                        industry_data['local_body'] = "DURGATHALI"
-                    elif local__body_choice == "JayaPrithivi":
-                        industry_data['local_body'] = "JAYPRITHVI"
-                    elif local__body_choice == "Khaptadchhanna":
-                        industry_data['local_body'] = "KHAPTADCHATRA"
-                    elif local__body_choice == "Laljhadi":
-                        industry_data['local_body'] = "LALJHADI"
-                    elif local__body_choice == "Lamkichuha":
-                        industry_data['local_body'] = "LAMKICHUHA"
-                    elif local__body_choice == "Masta":
-                        industry_data['local_body'] = "MASTA"
-                    elif local__body_choice == "SaiPaal":
-                        industry_data['local_body'] = "SAIPAL"
-                    elif local__body_choice == "Shuklaphanta":
-                        industry_data['local_body'] = "SUKLAPHATA"
-                    elif local__body_choice == "Surma":
-                        industry_data['local_body'] = "SURMA"
-                    elif local__body_choice == "Talkot":
-                        industry_data['local_body'] = "TALKOT"
-                    elif local__body_choice == "Thalara":
-                        industry_data['local_body'] = "THALARA"
-                    else:
-                        industry_data['local_body'] = None
+                    if pd.notna(local__body_choice):  # Check if value is not NaN
+                        local__body_choice = local__body_choice.strip()
+                        if local__body_choice == "Apihimal":
+                            industry_data['local_body'] = "APIHIMAL"
+                        elif local__body_choice == "Kedarseu":
+                            industry_data['local_body'] = "KEDARSU"
+                        elif local__body_choice == "Bhimdatta":
+                            industry_data['local_body'] = "BHIMDATTA"
+                        elif local__body_choice == "Bithadchir":
+                            industry_data['local_body'] = "BITTADCHIR"
+                        elif local__body_choice == "Bungal":
+                            industry_data['local_body'] = "BUNGAL"
+                        elif local__body_choice == "Chabispathivera":
+                            industry_data['local_body'] = "CHABBISPATHIVERA"
+                        elif local__body_choice == "Chaurpati":
+                            industry_data['local_body'] = "CHAURPATI"
+                        elif local__body_choice == "Dhakari":
+                            industry_data['local_body'] = "DHAKARI"
+                        elif local__body_choice == "Dhangadhi":
+                            industry_data['local_body'] = "DHANGADI"
+                        elif local__body_choice == "Durgathali":
+                            industry_data['local_body'] = "DURGATHALI"
+                        elif local__body_choice == "JayaPrithivi":
+                            industry_data['local_body'] = "JAYPRITHVI"
+                        elif local__body_choice == "Khaptadchhanna":
+                            industry_data['local_body'] = "KHAPTADCHATRA"
+                        elif local__body_choice == "Laljhadi":
+                            industry_data['local_body'] = "LALJHADI"
+                        elif local__body_choice == "Lamkichuha":
+                            industry_data['local_body'] = "LAMKICHUHA"
+                        elif local__body_choice == "Masta":
+                            industry_data['local_body'] = "MASTA"
+                        elif local__body_choice == "SaiPaal":
+                            industry_data['local_body'] = "SAIPAL"
+                        elif local__body_choice == "Shuklaphanta":
+                            industry_data['local_body'] = "SUKLAPHATA"
+                        elif local__body_choice == "Surma":
+                            industry_data['local_body'] = "SURMA"
+                        elif local__body_choice == "Talkot":
+                            industry_data['local_body'] = "TALKOT"
+                        elif local__body_choice == "Thalara":
+                            industry_data['local_body'] = "THALARA"
+                        else:
+                            industry_data['local_body'] = None
                 
                 #for assigning investment
                 if 'investment' in df.columns:
                     investment_choice = row['investment']
-                    if investment_choice == "Small":
-                        industry_data['investment'] = "SMALL"
-                    elif investment_choice == "Micro":
-                        industry_data['investment'] = "MINIATURE"
-                    elif investment_choice == "Cottage":
-                        industry_data['investment'] = "DOMESTIC"
-                    elif investment_choice == "Medium":
-                        industry_data['investment'] = "MEDIUM"
-                    elif investment_choice == "Large":
-                        industry_data['investment'] = "LARGE"
-                    else:
-                        industry_data['investment'] = None
-                else:
-                    industry_data['investment'] = None
+                    if pd.notna(investment_choice):  # Check if value is not NaN
+                        investment_choice = investment_choice.strip()
+                        if investment_choice == "Small":
+                            industry_data['investment'] = "SMALL"
+                        elif investment_choice == "Micro":
+                            industry_data['investment'] = "MINIATURE"
+                        elif investment_choice == "Cottage":
+                            industry_data['investment'] = "DOMESTIC"
+                        elif investment_choice == "Medium":
+                            industry_data['investment'] = "MEDIUM"
+                        elif investment_choice == "Large":
+                            industry_data['investment'] = "LARGE"
+                        else:
+                            industry_data['investment'] = None
                 
                 #for assigning product
                 if 'industry_acc_product' in df.columns:
                     industry_acc_product_choice = row['industry_acc_product']
-                    if industry_acc_product_choice == "Energy":
-                        industry_data['industry_acc_product'] = "E"
-                    elif industry_acc_product_choice == "Manufacturing":
-                        industry_data['industry_acc_product'] = "MF"
-                    elif industry_acc_product_choice == "Agricultural":
-                        industry_data['industry_acc_product'] = "AF"
-                    elif industry_acc_product_choice == "Mineral":
-                        industry_data['industry_acc_product'] = "MI"
-                    elif industry_acc_product_choice == "Infrastructure":
-                        industry_data['industry_acc_product'] = "I"
-                    elif industry_acc_product_choice == "Tourism":
-                        industry_data['industry_acc_product'] = "T"
-                    elif industry_acc_product_choice == "IC":
-                        industry_data['industry_acc_product'] = "Ic"
-                    elif industry_acc_product_choice == "Service":
-                        industry_data['industry_acc_product'] = "S"
-                    elif industry_acc_product_choice == "Others":
-                        industry_data['industry_acc_product'] = "O"
-                    else:
-                        industry_data['industry_acc_product'] = None
-                else:
-                    industry_data['industry_acc_product'] = None
+                    if pd.notna(industry_acc_product_choice):  # Check if value is not NaN
+                        industry_acc_product_choice = industry_acc_product_choice.strip()
+                        if industry_acc_product_choice == "Energy":
+                            industry_data['industry_acc_product'] = "E"
+                        elif industry_acc_product_choice == "Manufacturing":
+                            industry_data['industry_acc_product'] = "MF"
+                        elif industry_acc_product_choice == "Agricultural":
+                            industry_data['industry_acc_product'] = "AF"
+                        elif industry_acc_product_choice == "Mineral":
+                            industry_data['industry_acc_product'] = "MI"
+                        elif industry_acc_product_choice == "Infrastructure":
+                            industry_data['industry_acc_product'] = "I"
+                        elif industry_acc_product_choice == "Tourism":
+                            industry_data['industry_acc_product'] = "T"
+                        elif industry_acc_product_choice == "IC":
+                            industry_data['industry_acc_product'] = "Ic"
+                        elif industry_acc_product_choice == "Service":
+                            industry_data['industry_acc_product'] = "S"
+                        elif industry_acc_product_choice == "Others":
+                            industry_data['industry_acc_product'] = "O"
+                        else:
+                            industry_data['industry_acc_product'] = None
                 
                 #for assigning status   
                 if 'current_status' in df.columns:
                     current_status_choice = row['current_status']
-                    if current_status_choice == "Active":
-                        industry_data['current_status'] = "A"
-                    elif current_status_choice == "Inactive":
-                        industry_data['current_status'] = "I"
-                    else:
-                        industry_data['current_status'] = None
-                else:
-                    industry_data['current_status'] = None
+                    if pd.notna(current_status_choice):  # Check if value is not NaN
+                        current_status_choice = current_status_choice.strip()
+                        if current_status_choice == "Active":
+                            industry_data['current_status'] = "A"
+                        elif current_status_choice == "Inactive":
+                            industry_data['current_status'] = "I"
+                        else:
+                            industry_data['current_status'] = None
                     
                 #for assigning ownership   
                 if 'ownership' in df.columns:
                     ownership_choice = row['ownership']
-                    if ownership_choice == "Private":
-                        industry_data['ownership'] = "PRIVATE"
-                    elif ownership_choice == "Partnership":
-                        industry_data['ownership'] = "PARTNERSHIP"
-                    else:
-                        industry_data['ownership'] = None
-                else:
-                    industry_data['ownership'] = None
+                    if pd.notna(ownership_choice):  # Check if value is not NaN
+                        ownership_choice = ownership_choice.strip()
+                        if ownership_choice == "Private":
+                            industry_data['ownership'] = "PRIVATE"
+                        elif ownership_choice == "Partnership":
+                            industry_data['ownership'] = "PARTNERSHIP"
+                        else:
+                            industry_data['ownership'] = None
                     
                 #for assigning source of raw materials   
                 if 'raw_materials_source' in df.columns:
                     source_of_raw_materials_choice = row['raw_materials_source']
-                    if source_of_raw_materials_choice == "Local":
-                        industry_data['raw_material_source'] = "LOCAL"
-                    elif source_of_raw_materials_choice == "Imported":
-                        industry_data['raw_material_source'] = "IMPORTED"
-                    else:
-                        industry_data['raw_material_source'] = None
-                else:
-                    industry_data['raw_material_source'] = None
+                    if pd.notna(source_of_raw_materials_choice):  # Check if value is not NaN
+                        source_of_raw_materials_choice = source_of_raw_materials_choice.strip()
+                        if source_of_raw_materials_choice == "Local":
+                            industry_data['raw_material_source'] = "LOCAL"
+                        elif source_of_raw_materials_choice == "Imported":
+                            industry_data['raw_material_source'] = "IMPORTED"
+                        else:
+                            industry_data['raw_material_source'] = None
                     
                 #for assigning current running capacity
                 if 'current_running_capacity' in df.columns:
                     current_running_capacity_choice = row['current_running_capacity']
-                    if current_running_capacity_choice == "50-70":
-                        industry_data['current_running_capacity'] = "B"
-                    elif current_running_capacity_choice == "70-100":
-                        industry_data['current_running_capacity'] = "A"
-                    elif current_running_capacity_choice == "50":
-                        industry_data['current_running_capacity'] = "C"
-                    elif current_running_capacity_choice == "25":
-                        industry_data['current_running_capacity'] = "D"
-                    else:
-                        industry_data['current_running_capacity'] = None
+                    if pd.notna(current_running_capacity_choice):  # Check if value is not NaN
+                        current_running_capacity_choice = current_running_capacity_choice.strip()
+                        if current_running_capacity_choice == "50-70":
+                            industry_data['current_running_capacity'] = "B"
+                        elif current_running_capacity_choice == "70-100":
+                            industry_data['current_running_capacity'] = "A"
+                        elif current_running_capacity_choice == "50":
+                            industry_data['current_running_capacity'] = "C"
+                        elif current_running_capacity_choice == "25":
+                            industry_data['current_running_capacity'] = "D"
+                        else:
+                            industry_data['current_running_capacity'] = None
             
             
                 if 'product_service_name' in df.columns:
@@ -427,11 +454,11 @@ def import_file(request):
                     except ValueError:
                         industry_data['total_capital'] = 0
                 
-                industry = Industry(**industry_data)
-                if hasattr(industry, 'total_manpower'):
-                    industry.total_manpower = total_manpower
-                
-                industry.save() 
+                if industry_data:
+                    industry = Industry(**industry_data)
+                    if hasattr(industry, 'total_manpower'):
+                        industry.total_manpower = total_manpower
+                    industry.save() 
             messages.success(request, "The excel data is saved to database.")
     else:
         form = UploadFileForm()

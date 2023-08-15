@@ -10,7 +10,6 @@ from django.http import JsonResponse
 import json
 #export part
 import csv
-import datetime
 import xlwt
 from django.db.models import Count
 
@@ -148,9 +147,7 @@ def add_industry(request):
     }
     if request.method == "POST":
         form = IndustryForm(request.POST, request.FILES)
-        formatted_data = json.dumps(form.data, indent=4)
-        print(formatted_data)
-        # print(form.errors)
+        
         if form.is_valid(): 
             industry_data = form.cleaned_data
             others_text = industry_data.get('others_text')
