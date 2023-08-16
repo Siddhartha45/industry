@@ -10,5 +10,4 @@ class ReportForm(ModelForm):
         
         
 class UploadFileForm(forms.Form):
-    
     file = forms.FileField()

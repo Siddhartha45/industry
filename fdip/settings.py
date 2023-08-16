@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'report',
     'faq',
     'pdf_gen',
+    'industry_without_gis',
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser" 

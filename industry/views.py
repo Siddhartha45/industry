@@ -102,7 +102,7 @@ def home(request):
     if request.user.is_authenticated:
         return render(request, 'account/adminpanel.html', context)
     else:
-        return render(request, 'public_view.html', context)
+        return render(request, 'public/public_view.html', context)
 
 
 def get_local_bodies(request, district):
@@ -342,7 +342,7 @@ def industry_list(request):
     if request.user.is_authenticated:
         return render(request, 'industry/industrylist.html', data)
     else:
-        return render(request, 'public_industry_list.html', data)
+        return render(request, 'public/public_industry_list.html', data)
 
 
 @login_required

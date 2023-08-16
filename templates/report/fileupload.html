@@ -1,41 +1,88 @@
 {% extends "layout/base.html" %}
 {% load static %}
 {% block container %}
+
 <style>
-    form {
-        max-width: 400px;
-        margin-top: 30px;
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
         margin-bottom: 217px;
-        margin-left: 550px;
-        padding: 50px;
+        padding: 0 50px;
+    }
+
+    .kit-form-container {
+        max-width: 400px;
         background-color: #f7f7f7;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-    .headp {
-        margin-top: 50px;
-        margin-left: 630px;
+
+    .kit-form-container h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
+
     .button {
-        width: 25%;
-        height: 40px;
+        width: 70%;
+        height: 50px;
         margin-top: 20px;
         border-radius: 6px;
         background: #2460B9;
         color: #ffffff;
         border: none;
-        transition: 0.1s all ease-in-out;
-      }
+    }
+
+    .alert-container {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
 </style>
-<div class="headp">
-    <h2 class="kit-page-heading">Enter your Excel File</h2>
+
+<div class="alert-container">
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% elif message.tags == "error" %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
 </div>
-<form class="kit-form-container" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="button" type="submit">Upload</button>
-</form>
-{% for message in messages %}
-    {{message}}
-{% endfor %}
+
+<div class="form-container">
+    <div class="kit-form-container">
+        <h2 class="kit-page-heading">Enter your Excel File (Industries with GIS)</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file">
+            <button class="button" type="submit" name="gis_file_upload">Upload</button>
+        </form>
+    </div>
+
+    <div class="kit-form-container">
+        <h2 class="kit-page-heading">Enter your Excel File (Industries Without GIS)</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file">
+            <button class="button" type="submit" name="without_gis_file_upload">Upload(Without GIS)</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Hide the alert-container after 5 seconds
+    setTimeout(function () {
+        var alertContainer = document.querySelector('.alert-container');
+        alertContainer.style.display = 'none';
+    }, 5000);
+</script>
+
 {% endblock %}
