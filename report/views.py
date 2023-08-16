@@ -59,7 +59,7 @@ from django.contrib import messages
 from django.db import transaction
 
 
-@transaction.atomic
+@transaction.atomic     # If error occurs while exporting data doesn't let any data be saved in the database 
 @superadmin_required
 def import_file(request):
     if request.method == 'POST':
