@@ -14,15 +14,7 @@ def without_gis_data_import(request, file):
     df = pd.read_excel(file, dtype=dtype_mapping)
     
     for _, row in df.iterrows():
-        
         industry_data = {}
-        
-        column_names = ['owner_name', 'industry_address', 'industry_reg_no']
-        for column in column_names:
-            if column in df.columns:
-                value = row[column]
-                if pd.notna(value):
-                    industry_data[column] = value
         
         if 'industry_name' in df.columns:
             industry_name = row['industry_name']
@@ -41,28 +33,35 @@ def without_gis_data_import(request, file):
                 except ValueError:
                     industry_data['reg_date'] = None
                     
-        int_data = ['male', 'female']
-        for column in int_data:
+        column_names = ['owner_name', 'industry_address', 'industry_reg_no']
+        for column in column_names:
             if column in df.columns:
-                value = row[column] if pd.notna(row[column]) else 0
+                value = row[column]
+                if pd.notna(value):
+                    industry_data[column] = value
+
+        manpower_colums = ['male', 'female']
+        for manpower_column in manpower_colums:
+            if manpower_column in df.columns:
+                manpower_value = row[manpower_column] if pd.notna(row[manpower_column]) else 0
                 try:
-                    value = int(value)
+                    int_manpower_value = int(manpower_value)
                 except ValueError:
-                    value = 0
-                industry_data[column] = value
-        
+                    int_manpower_value = 0
+                industry_data[manpower_column] = int_manpower_value
         # Stores value of total manpower
         total_manpower = industry_data['male'] + industry_data['female']
         
         capital_columns = ['yearly_capacity', 'fixed_capital', 'current_capital', 'total_capital']
-        for column in capital_columns:
-            if column in df.columns:
-                value = row[column] if pd.notna(row[column]) else 0
-                clean_value = str(value).replace(',', '')   # Remove commas from the number
+        for capital_column in capital_columns:
+            if capital_column in df.columns:
+                capital_value = row[capital_column] if pd.notna(row[capital_column]) else 0
+                clean_capital_value = str(capital_value).replace(',', '')   # Remove commas from the number
                 try:
-                    industry_data[column] = float(clean_value)
+                    float_capital_value = float(clean_capital_value)
                 except ValueError:
-                    industry_data[column] = 0
+                    float_capital_value = 0
+                industry_data[capital_column] = float_capital_value
         
         if industry_data:
             industry = IndustryWithoutGis(**industry_data)

@@ -134,7 +134,6 @@ def get_local_bodies(request, district):
 @login_required
 def add_industry(request):
     """For adding the industry details"""
-    
     data = {
         'sex' : commons.SEX_CHOICES,
         'cas' : commons.CASTE_CHOICES,

@@ -158,11 +158,7 @@
                     <div class="col-sm-6">
                         <p class="kit-industry-title">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance to
                             Product)</p>
-                        {% if industry.industry_acc_product == 'O' %}
-                            <h2 class="kit-industry-content">{{ industry.others_text|default_if_none:'----' }}</h2>
-                        {% else %}
                             <h2 class="kit-industry-content">{{ industry.get_industry_acc_product_display|default_if_none:'----' }}</h2>
-                        {% endif %}
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -176,10 +172,17 @@
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <p class="kit-industry-title">मेशिन औजारको विवरण (Machinery Tool)</p>
                         <h2 class="kit-industry-content">{{ industry.machinery_tool|default_if_none:'----' }}</h2>
                     </div>
+                    {% if industry.industry_acc_product == 'O' %}
+                        <div class="col-sm-6">
+                            <p class="kit-industry-title">अन्य उद्योगको किसिमको विवरण (Industry in accordance to
+                                Product Others description)</p>
+                                <h2 class="kit-industry-content">{{ industry.others_text|default_if_none:'----' }}</h2>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 

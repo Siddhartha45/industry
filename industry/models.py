@@ -53,6 +53,8 @@ class Industry(models.Model):
         return self.industry_name
     
     def save(self, *args, **kwargs):
+        """Overriding save method so that others text is only stored for those industries whose 
+        industry_acc_product is selected as others"""
         if self.industry_acc_product != 'O':
             self.others_text = None
         super().save(*args, **kwargs)
