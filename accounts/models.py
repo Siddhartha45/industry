@@ -3,17 +3,16 @@ from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=100, unique=True)
-    fullname = models.CharField(max_length=100)
-    phone_no = models.CharField(max_length=15)
-    
     SA = 1
     A = 2
     ROLE_CHOICES = (
         (SA, 'Super Admin'),
-        (A,'Admin'),
+        (A, 'Admin'),
     )
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=100, unique=True)
+    fullname = models.CharField(max_length=100)
+    phone_no = models.CharField(max_length=15)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     USERNAME_FIELD = 'email'

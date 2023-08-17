@@ -60,6 +60,7 @@ def report_show(request, report_id):
 @transaction.atomic     # If error occurs while exporting data doesn't let any data be saved in the database 
 @superadmin_required
 def import_file(request):
+    """for importing excel data to database"""
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if 'gis_file_upload' in request.POST:

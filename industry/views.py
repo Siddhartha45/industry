@@ -1,18 +1,19 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, HttpResponseRedirect
-from .models import Industry, IndustryPhoto
-from .forms import IndustryForm
-from fdip import commons
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-import json
-#export part
 import csv
 import xlwt
-from django.db.models import Count
 
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, Count
+from django.core.paginator import Paginator
+from django.core.serializers import serialize
+from django.http import JsonResponse
+
+
+from .models import Industry, IndustryPhoto
+from .forms import IndustryForm
+
+from fdip import commons
 
 
 def home(request):
@@ -294,30 +295,8 @@ def industry_list(request):
             
         elif investment_input == 'None' and product_input != 'None' and district_input != 'None' and local_input != 'None':
             industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input, local_body__contains=local_input)
-            
-        # elif investment_input == 'None' and product_input == 'None' and district_input == 'None':
-        #     industries_queryset = Industry.objects.all().order_by('-id')[:100]
-            
-        # elif investment_input == 'None' and product_input != 'None' and district_input != 'None':
-        #     industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input, district__contains=district_input)
-            
-        # elif investment_input != 'None' and product_input == 'None' and district_input != 'None':
-        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input, district__contains=district_input)
-
-        # elif investment_input != 'None' and product_input != 'None':
-        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input,industry_acc_product__contains=product_input)
-            
-        # elif investment_input != 'None' and product_input == 'None':
-        #     industries_queryset = Industry.objects.filter(investment__contains=investment_input)
-            
-        # elif investment_input == 'None' and product_input != 'None':
-        #     industries_queryset = Industry.objects.filter(industry_acc_product__contains=product_input)
     else:
         industries_queryset = Industry.objects.all().order_by('-id')
-        
-        
-    # Fetch industries queryset based on the search filter
-
 
     # Configure the number of records to display per page
     items_per_page = 100
@@ -364,21 +343,9 @@ def search_industry(request):
     return render(request, 'industry/searchindustry.html', data)
 
 
-# def industry_search(request):
-#     if 'search' in request.GET:
-#         district = request.GET['search']
-#         industries = Industry.objects.filter(district__icontains=district)
-#     else:
-#         industries = Industry.objects.all()
-#     context = {
-#         'industries': industries
-#     }
-#     return render(request, 'industry/industrylist.html', context)
-
-
 @login_required
 def industry_excel(request):
-    # return HttpResponse(request.get().items())
+    """downloads industry data in excel format"""
     filter_investment = request.GET.get("investment")
     filter_industry_acc_product = request.GET.get("industry_acc_product")
     filter_district = request.GET.get("district")
@@ -417,12 +384,12 @@ def industry_excel(request):
         ws.write(row_num, 4, industry.industry_reg_no)
 
     wb.save(response)
-    
     return response
 
 
 @login_required
 def industry_csv(request):
+    """downloads industry data in csv format"""
     filter_investment = request.GET.get("investment")
     filter_industry_acc_product = request.GET.get("industry_acc_product")
     filter_district = request.GET.get("district")
@@ -455,9 +422,9 @@ def industry_csv(request):
     return response
 
 
-#this is in use for downloading pdf
 @login_required
 def download_pdf(request):
+    """downloads industry data in pdf format"""
     investment_input = request.GET.get('investment_input')
     product_input = request.GET.get('product_input')
     district_input = request.GET.get("district_input")
@@ -515,16 +482,10 @@ def download_pdf(request):
     context = {
         'industry': queryset,
         }
-    
     return render(request,"industry/report.html",context)
 
+
 def AjaxSearch(request):
-    from django.core.serializers import serialize
-    from django.http import JsonResponse
-    from django.db.models import Q
-
-
-    
     investment_input = request.GET.get('investment_input')
     product_input = request.GET.get('product_input')
     district_input = request.GET.get('district_input')
@@ -607,9 +568,6 @@ def session_delete(request):
         del request.session['investment_input']
         del request.session['district_input']
         del request.session['local_input']
-
-        #return HttpResponse("session delete")
-    #return HttpResponse("session are not delete")
     return redirect('industry-list')
 
 def session_local_delete(request):
@@ -619,8 +577,3 @@ def session_local_delete(request):
         del request.session['investment_input']
         del request.session['district_input']
         del request.session['local_input']
-
-
-# def district_filter(request, district):
-    
-

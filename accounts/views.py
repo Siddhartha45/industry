@@ -1,16 +1,19 @@
+import xlwt
+import csv
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponse
-from accounts.models import CustomUser
-from .forms import CustomUserForm
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.decorators import login_required, user_passes_test
-from fdip.decorators import superadmin_required
-import xlwt
-import csv
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
-from django.core.exceptions import ValidationError
+
+from .forms import CustomUserForm
+
+from accounts.models import CustomUser
+from fdip.decorators import superadmin_required
+
 
 
 def user_login(request):
@@ -171,8 +174,8 @@ def change_password(request):
     return render(request, 'account/changepassword.html')
 
 
-#customizing the django default passwordresetview to check if users email exist in database before sending mail
 class CustomPasswordResetView(PasswordResetView):
+    """customizing the django default passwordresetview to check if users email exist in database before sending mail"""
     def form_valid(self, form):
         email = form.cleaned_data['email']
         # Check if the email exists in the database
@@ -183,8 +186,8 @@ class CustomPasswordResetView(PasswordResetView):
         return super().form_valid(form)
 
 
-#to display the role names in excel file
 def get_role_display(role_id):
+    """to display the role names in excel file"""
     for role_choice in CustomUser.ROLE_CHOICES:
         if role_choice[0] == role_id:
             return role_choice[1]

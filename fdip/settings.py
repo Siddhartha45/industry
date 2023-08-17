@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'accounts',
     'report',
     'faq',
-    'pdf_gen',
     'industry_without_gis',
 ]
 

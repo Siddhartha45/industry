@@ -6,7 +6,6 @@ deployment:
     - /bin/cp -r fonts $DEPLOYPATH
     - /bin/cp -r industry $DEPLOYPATH
     - /bin/cp -r industry_without_gis $DEPLOYPATH
-    - /bin/cp -r pdf_gen $DEPLOYPATH
     - /bin/cp -r report $DEPLOYPATH
     - /bin/cp -r static $DEPLOYPATH
     - /bin/cp -r templates $DEPLOYPATH

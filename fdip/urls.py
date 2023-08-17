@@ -24,5 +24,4 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('report.urls')),
     path('', include('faq.urls')),
-    path('', include('pdf_gen.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

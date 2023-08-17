@@ -1,6 +1,6 @@
 from django import forms
+
 from .models import CustomUser
-from django.core.validators import validate_email
 
 
 class CustomUserForm(forms.Form):

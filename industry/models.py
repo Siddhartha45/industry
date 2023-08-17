@@ -1,11 +1,12 @@
 from django.db import models
-from fdip import commons
+
 from .validators import nepali_date_validator
+
+from fdip import commons
 
 
 class Industry(models.Model):
-    """Model for Industry"""
-    
+    """Model for Industry"""    
     #Industry Details
     industry_name = models.CharField(max_length=150)
     industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
@@ -55,8 +56,9 @@ class Industry(models.Model):
         if self.industry_acc_product != 'O':
             self.others_text = None
         super().save(*args, **kwargs)
-        
-    
+
+
 class IndustryPhoto(models.Model):
+    """Model for storing industry photos"""
     industry = models.ForeignKey(Industry, on_delete=models.CASCADE, related_name='industry_photo')
     photo = models.ImageField(upload_to='images', null=True, blank=True)
