@@ -1,6 +1,7 @@
 from django.db import models
 
 from .validators import nepali_date_validator
+from .utils import get_choice_display_value
 
 from fdip import commons
 
@@ -58,6 +59,34 @@ class Industry(models.Model):
         if self.industry_acc_product != 'O':
             self.others_text = None
         super().save(*args, **kwargs)
+    
+    @property
+    def sex_display_value(self):
+        return get_choice_display_value(self.sex, commons.SEX_CHOICES)
+    
+    @property
+    def caste_display_value(self):
+        return get_choice_display_value(self.caste, commons.CASTE_CHOICES)
+    
+    @property
+    def investment_display_value(self):
+        return get_choice_display_value(self.investment, commons.INVESTMENT_CHOICES)
+    
+    @property
+    def industry_acc_product_display_value(self):
+        return get_choice_display_value(self.industry_acc_product, commons.TYPE_OF_PRODUCT)
+    
+    @property
+    def ownership_display_value(self):
+        return get_choice_display_value(self.ownership, commons.OWNERSHIP_CHOICES)
+    
+    @property
+    def district_display_value(self):
+        return get_choice_display_value(self.district, commons.DISTRICT_CHOICES)
+    
+    @property
+    def local_body_display_value(self):
+        return get_choice_display_value(self.local_body, commons.ALL_LOCALBODY_CHOICES)
 
 
 class IndustryPhoto(models.Model):

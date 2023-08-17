@@ -356,7 +356,10 @@ def industry_excel(request):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Industry')
     
-    headers = ['Industry Name', 'Industry Owner', 'Address', 'Phone No.']
+    headers = ['Name of Industry', 'Industry Reg No', 'District', 'Local Body', 'Ward no', 'Propriter Name', 
+                'Sex', 'Cast', 'employment (Men)', 'employment (Women)', 'Type of Industry (Investment)', 
+                'Type of Industry (Production)', 'Type of Industry (Private form or Partnership)', 'Total Capital', 
+                'Production Capacity (Annual) Nrs']
     
     for col_num, header in enumerate(headers):
         ws.write(0, col_num, header)
@@ -377,10 +380,20 @@ def industry_excel(request):
     
     for row_num, industry in enumerate(industries, start=1):
         ws.write(row_num, 0, industry.industry_name)
-        ws.write(row_num, 1, industry.owner_name)
-        ws.write(row_num, 2, industry.address)
-        ws.write(row_num, 3, industry.telephone_number)
-        ws.write(row_num, 4, industry.industry_reg_no)
+        ws.write(row_num, 1, industry.industry_reg_no)
+        ws.write(row_num, 2, industry.district_display_value)
+        ws.write(row_num, 3, industry.local_body_display_value)
+        ws.write(row_num, 4, industry.ward_no)
+        ws.write(row_num, 5, industry.owner_name)
+        ws.write(row_num, 6, industry.sex_display_value)
+        ws.write(row_num, 7, industry.caste_display_value)
+        ws.write(row_num, 8, industry.male)
+        ws.write(row_num, 9, industry.female)
+        ws.write(row_num, 10, industry.investment_display_value)
+        ws.write(row_num, 11, industry.industry_acc_product_display_value)
+        ws.write(row_num, 12, industry.ownership_display_value)
+        ws.write(row_num, 13, industry.total_capital)
+        ws.write(row_num, 14, industry.yearly_capacity)
 
     wb.save(response)
     return response
@@ -399,7 +412,10 @@ def industry_csv(request):
     response.write(u'\ufeff'.encode('utf8'))
     
     writer = csv.writer(response)
-    writer.writerow(['Industry Name', 'Industry Owner', 'Address', 'Phone No.'])
+    writer.writerow(['Name of Industry', 'Industry Reg No', 'District', 'Local Body', 'Ward no', 'Propriter Name', 
+                    'Sex', 'Caste', 'employment (Men)', 'employment (Women)', 'Type of Industry (Investment)', 
+                    'Type of Industry (Production)', 'Type of Industry (Private form or Partnership)', 'Total Capital', 
+                    'Production Capacity (Annual) Nrs'])
     
     industries = Industry.objects.all()
     
@@ -416,7 +432,12 @@ def industry_csv(request):
         industries = industries.filter(ownership=filter_localbody)
     
     for industry in industries:
-        writer.writerow([industry.industry_name, industry.owner_name, industry.address, industry.telephone_number, industry.industry_reg_no])
+        writer.writerow(
+            [industry.industry_name, industry.industry_reg_no, industry.district_display_value, industry.local_body_display_value, 
+            industry.ward_no, industry.owner_name, industry.sex_display_value, industry.caste_display_value, industry.male, industry.female, 
+            industry.investment_display_value, industry.industry_acc_product_display_value, industry.ownership_display_value,
+            industry.total_capital, industry.yearly_capacity]
+            )
         
     return response
 
@@ -568,6 +589,7 @@ def session_delete(request):
         del request.session['district_input']
         del request.session['local_input']
     return redirect('industry-list')
+
 
 def session_local_delete(request):
     if 'type' in request.session:
