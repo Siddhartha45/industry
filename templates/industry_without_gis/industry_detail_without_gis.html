@@ -1,0 +1,230 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block container %}
+    <div class="container my-5">
+        <div class="kit-row">
+            <h2 class="kit-page-heading">Industry Details Without GIS( उद्योग विवरण )</h2>
+            <div class="kit-text-navigation"><span>Applicant Portal </span><img src="{% static '/image/arrow.png' %}" alt="">
+                Industry Detail</div>
+        </div>
+
+        <div class="kit-form-container">
+            <div class="kit-row mb-4">
+                <h2 class="kit-page-heading">{{industry.industry_name}}</h2>
+                
+            </div>
+
+            <div class="kit-row">
+                <h2 class="kit-smpage-heading">Industry Details ( उद्योग विवरण )</h2>
+                <div class="kit-btn-container">
+                    <a href="{% url 'industry_without_gis_profile_pdf' industry_id=industry.id %}" class="kit-btn kit-info-btn">Download Pdf</a>
+                    <a href="{% url 'edit_industry_without_gis' industry_id=industry.id %}" class="kit-btn kit-info-btn" target="_blank"><img src="{% static '/image/edit.png' %}" alt="">Update Info</a>
+                </div>
+            </div>
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको नाम(Name of Industry)</p>
+                        <h2 class="kit-industry-content">{{ industry.industry_name|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योग दर्ता मिति (Industry Registration No)</p>
+                        <h2 class="kit-industry-content">{{ industry.industry_reg_no|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योग दर्ता मिति(Registration Date)B.S:</p>
+                        <h2 class="kit-industry-content">{{ industry.reg_date|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">प्रोप्राइटरको नाम (Owner’s Name)</p>
+                        <h2 class="kit-industry-content">{{ industry.owner_name|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">लिङ्ग (Sex)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_sex_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">जाती (Caste)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_caste_display|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">ठेगाना (Address)</p>
+                        <h2 class="kit-industry-content">{{ industry.address|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">फोन नं.(Telephone no.)</p>
+                        <h2 class="kit-industry-content">{{ industry.telephone_number|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">सम्पर्क व्यक्ति (Contact Person)</p>
+                        <h2 class="kit-industry-content">{{ industry.contact_person|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">मोबाइल नं (Mobile No.)</p>
+                        <h2 class="kit-industry-content">{{ industry.mobile_number|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-5">Industry Address ( उद्योग ठेगाना )</h2>
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">जिल्ला (District)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_district_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">स्थानिय तह (Local Body)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_local_body_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">वडा नं.(Ward No.)</p>
+                        <h2 class="kit-industry-content">{{ industry.ward_no|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="kit-industry-title">गाउँ/टोल/बस्ती (Settlement)</p>
+                        <h2 class="kit-industry-content">{{ industry.settlement|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kit-myindustry-detail mt-4">
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <p class="kit-industry-title">उद्योगले उत्पादन गर्ने बस्तु वा सेवाको विवरण (Product Description)
+                        </p>
+                        <h2 class="kit-industry-content">{{ industry.product_description|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">लगानीको प्रकृतिको आधारमा उद्योग(Industry in accordance to
+                            Investment)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_investment_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको स्वामित्व (Ownership)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_ownership_display|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">कच्चा पदार्थको स्रोत ( Source of Raw Materials)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_raw_material_source_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उत्पादनको आधारमा उद्योगको किसिम (Industry in accordance to
+                            Product)</p>
+                            <h2 class="kit-industry-content">{{ industry.get_industry_acc_product_display|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">उद्योगको वर्तमान अवस्था(Current Status)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_current_status_display|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">कुन क्षमतामा उद्योग संचालनमा छ? (Current Running Capacity)</p>
+                        <h2 class="kit-industry-content">{{ industry.get_current_running_capacity_display|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">मेशिन औजारको विवरण (Machinery Tool)</p>
+                        <h2 class="kit-industry-content">{{ industry.machinery_tool|default_if_none:'----' }}</h2>
+                    </div>
+                    {% if industry.industry_acc_product == 'O' %}
+                        <div class="col-sm-6">
+                            <p class="kit-industry-title">अन्य उद्योगको किसिमको विवरण (Industry in accordance to
+                                Product Others description)</p>
+                                <h2 class="kit-industry-content">{{ industry.others_text|default_if_none:'----' }}</h2>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">उत्पादनको विवरण (Product Description)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">वस्तु वा सेवाको नाम(Product Service Name)</p>
+                        <h2 class="kit-industry-content">{{ industry.product_service_name|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">वार्षिक उत्पादन क्षमता(Yearly Capacity)</p>
+                        <h2 class="kit-industry-content">{{ industry.yearly_capacity|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">रोजगारीको अवस्था (Employment)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">जम्मा जनशक्ति संख्या (Total Manpower)</p>
+                        <h2 class="kit-industry-content">{{ industry.total_manpower|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">विदेशी जनशक्ति संख्या(Foreign)</p>
+                                        <h2 class="kit-industry-content">{{ industry.foreign|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">दक्ष जनशक्ति संख्या(Skill full)</p>
+                        <h2 class="kit-industry-content">{{ industry.skillfull|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">पुरुष जनशक्ति संख्या(Male)</p>
+                        <h2 class="kit-industry-content">{{ industry.male|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">अदक्ष जनशक्ति संख्या(Unskilled)</p>
+                        <h2 class="kit-industry-content">{{ industry.unskilled|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">महिला जनशक्ति संख्या(Female)</p>
+                        <h2 class="kit-industry-content">{{ industry.female|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <p class="kit-industry-title">स्वदेशी जनशक्ति संख्या(Indigenous)</p>
+                        <h2 class="kit-industry-content">{{ industry.indigenous|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="kit-smpage-heading mt-4">पुंजीको अवस्था (Capital)<h2>
+            <div class="kit-myindustry-detail">
+                <div class="row mb-4">
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">स्थिर पूँजी (Fixed Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.fixed_capital|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">चालु पूँजी (Current Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.current_capital|default_if_none:'----' }}</h2>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="kit-industry-title">जम्मा पूँजी (Total Capital)</p>
+                        <h2 class="kit-industry-content">{{ industry.total_capital|default_if_none:'----' }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customjs %}
+    <script src="{% static '/js/locationdisplay.js' %}"></script>
+{% endblock %}

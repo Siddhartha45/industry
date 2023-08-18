@@ -330,6 +330,7 @@ def delete_industry(request, industry_id):
     messages.info(request, "Industry deleted!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   #redirects user to same page after deleting
 
+
 def search_industry(request):
     session_local_delete(request)
     if request.GET:

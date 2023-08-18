@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Industry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <table class="table" id="industryList_whole">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name of Industry</th>
+                    <th>Industry Reg No</th>
+                    <th>District</th>
+                    <th>Local Body</th>
+                    <th>Ward no</th>
+                    <th>Propriter Name</th>
+                    <th>Sex</th>
+                    <th>Caste</th>
+                    <th>employment (Men)</th>
+                    <th>employment (Women)</th>
+                    <th>Type of Industry (Investment)</th>
+                    <th>Type of Industry (Production)</th>
+                    <th>Type of Industry (Private form or Partnership)</th>
+                    <th>Total Capital</th>
+                    <th>Production Capacity (Annual) Nrs</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in industry %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.industry_name }}</td>
+                    <td>{{ i.industry_reg_no }}</td>
+                    <td>{{ i.get_district_display }}</td>
+                    <td>{{ i.get_local_body_display }}</td>
+                    <td>{{ i.ward_no }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.get_sex_display }}</td>
+                    <td>{{ i.get_caste_display }}</td>
+                    <td>{{ i.male }}</td>
+                    <td>{{ i.female }}</td>
+                    <td>{{ i.get_investment_display }}</td>
+                    <td>{{ i.get_industry_acc_product_display }}</td>
+                    <td>{{ i.get_ownership_display }}</td>
+                    <td>{{ i.total_capital }}</td>
+                    <td>{{ i.yearly_capacity }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let element = document.getElementById('industryList_whole')
+        html2pdf(industryList_whole,{
+        margin:10,
+        filename:'industry_list.pdf',
+        html2canvas:{scale:2,logging:true,dpi:192,letterRendering:true},
+        jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+        })
+        </script>
+</html>

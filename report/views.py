@@ -107,7 +107,7 @@ def gis_data_import(request, file):
                     industry_data['reg_date'] = None
                     
         column_names = ['industry_reg_no', 'owner_name', 'address', 'telephone_number', 'contact_person', 'mobile_number', 'ward_no', 
-                        'settlement', 'latitude', 'longitude', 'product_description','product_service_name', 'machinery_tool']
+                        'settlement', 'latitude', 'longitude', 'product_description', 'product_service_name', 'machinery_tool']
         for column_name in column_names:
             if column_name in df.columns:
                 value = row[column_name]
