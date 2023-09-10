@@ -2,6 +2,140 @@
 {% load static %}
 {% block container %}
     <div class="container my-5">
+        <h2 class="kit-page-heading">Application Portal (आवेदक पोर्टल)</h2>
+
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+          <div class="col d-none">
+            <a href="{% url 'search-industry' %}" class="kit-card-link">
+            <div class="kit-card h-100">
+              <div class="kit-icon-box"><img src="{% static '/image/searchindustry.png' %}" class="card-img-top" alt="..."></div>
+              <div class="kit-card-body">
+                <h5 class="kit-card-title">Search Industry <br> <span>( मेरो उद्योग प्रोफाइल् )</span></h5>
+              </div>
+            
+            </div>
+          </a>
+          </div>
+
+          <div class="col">
+            <a href="{% url 'industry_without_gis_list' %}" class="kit-card-link">
+            <div class="kit-card h-100">
+              <div class="kit-icon-box"><img src="{% static '/image/viewindustry.png' %}" class="card-img-top" alt="..."></div>
+              <div class="kit-card-body">
+                <h5 class="kit-card-title">View Industries Without GIS<br> <span>( उद्योगहरू हेर्नुहोस् )</span></h5>
+              </div>
+            </div>
+          </a>
+          </div>
+
+          <div class="col">
+            <a href="{% url 'industry-list' %}" class="kit-card-link">
+            <div class="kit-card h-100">
+              <div class="kit-icon-box"><img src="{% static '/image/viewindustry.png' %}" class="card-img-top" alt="..."></div>
+              <div class="kit-card-body">
+                <h5 class="kit-card-title">View Industries <br> <span>( उद्योगहरू हेर्नुहोस् )</span></h5>
+              </div>
+            </div>
+          </a>
+          </div>
+
+            <div class="col">
+              <a href="{% url 'add-industry' %}" class="kit-card-link">
+                <div class="kit-card h-100">
+                  <div class="kit-icon-box"><img src="{% static '/image/addindustry.png' %}" class="card-img-top" alt="..."></div>
+                  <div class="kit-card-body">
+                    <h5 class="kit-card-title">Add Industry Profile <br> <span>( उद्योग प्रोफाइल थप्नुहोस् )</span></h5>
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+            {% if request.user.role == 1 %}
+              <div class="col">
+                <a href="{% url 'user-create' %}" class="kit-card-link">
+                  <div class="kit-card h-100">
+                    <div class="kit-icon-box"><img src="{% static '/image/Createadminuser.png' %}" class="card-img-top" alt="..."></div>
+                    <div class="kit-card-body">
+                      <h5 class="kit-card-title">Create Admin Users <br> <span>( आवेदक पोर्टल )</span></h5>
+                    </div>
+                  </div>
+                </a>
+                </div>
+                <div class="col">
+                  <a href="{% url 'view-users' %}" class="kit-card-link">
+                  <div class="kit-card h-100">
+                    <div class="kit-icon-box"><img src="{% static '/image/viewadminuser.png' %}" class="card-img-top" alt="..."></div>
+                    <div class="kit-card-body">
+                      <h5 class="kit-card-title">View Admin Users <br> <span>( प्रशासक प्रयोगकर्ताहर )</span></h5>
+                    </div>
+                  
+                  </div>
+                  </a>
+                  </div>
+              {% endif %}
+            <div class="col">
+              <a href="{% url 'change-password' %}" class="kit-card-link">
+              <div class="kit-card h-100">
+                <div class="kit-icon-box"><img src="{% static '/image/changepassword.png' %}" class="card-img-top" alt="..."></div>
+                <div class="kit-card-body">
+                  <h5 class="kit-card-title">Change Password <br> <span>(पासवर्ड परिवर्तन)</span></h5>
+                </div>
+              </div>
+            </a>
+            </div>
+            {% if request.user.role == 1 %}
+            <div class="col">
+            <a href="{% url 'report-list' %}" class="kit-card-link">
+              <div class="kit-card h-100">
+                <div class="kit-icon-box"><img src="{% static '/image/reportview.png' %}" class="card-img-top" alt="..."></div>
+                <div class="kit-card-body">
+                  <h5 class="kit-card-title">Report View <br> <span>( रिपोर्ट हेर्नुहोस्)</span></h5>
+                </div>
+              </div>
+            </a>
+            </div>
+            {% endif %}
+            
+            {% if request.user.role == 2 %}
+              <div class="col">
+                <a href="{% url 'report' %}" class="kit-card-link">
+                <div class="kit-card h-100">
+                  <div class="kit-icon-box"><img src="{% static '/image/reportproblem.png' %}" class="card-img-top" alt="..."></div>
+                  <div class="kit-card-body">
+                    <h5 class="kit-card-title">Report a Problem <br> <span>(समस्या रिपोर्ट गर्नुहोस्)</span></h5>
+                  </div>
+                </div>
+              </a>
+              </div>
+            {% endif %}
+            
+            {% if request.user.role == 1 %}
+            <div class="col">
+              <a href="{% url 'faq-list' %}" class="kit-card-link">
+              <div class="kit-card h-100">
+                <div class="kit-icon-box"><img src="{% static '/image/faq.png' %}" class="card-img-top" alt="..."></div>
+                <div class="kit-card-body">
+                  <h5 class="kit-card-title">Frequently Asked Questions <br> <span>(प्रायः सोधिने प्रश्नहरु)</span></h5>
+                </div>
+              </div>
+              </a>
+            </div>
+
+            <div class="col">
+              <a href="{% url 'file' %}" class="kit-card-link">
+              <div class="kit-card h-100">
+                <div class="kit-icon-box"><img src="{% static '/image/bulk.png' %}" class="card-img-top" alt="..."></div>
+                <div class="kit-card-body">
+                  <h5 class="kit-card-title">Bulk Upload</span></h5>
+                </div>
+              </div>
+              </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container my-5">
       <h2 class="kit-page-heading">View Industries on Map (नक्सामा उद्योगहरू हेर्नुहोस्)</h2>
       <div id="map"></div>
     </div>
@@ -10,8 +144,8 @@
       <center>
           <div class="row d-flex justify-content-center my-3">
             <div class="col-md-4">
-              <a href="{% url 'industry_without_gis_home' %}"><button class="btn btn-primary">Industry Without GIS Graphs</button></a>
-            </div>
+                <a href="{% url 'home' %}"><button class="btn btn-primary">Industry With GIS Graphs</button></a>
+              </div>
               <div class="col-md-4">
                   <select class="form-select" aria-label="Default select example" id="districtSelect">
                     <option value="" disabled>Select District</option>
@@ -27,9 +161,8 @@
                   </select>
               </div>
               <div class="col-md-4">
-                <a href="{% url 'home' %}"><button class="btn btn-primary">Reset</button></a>
+                <a href="{% url 'industry_without_gis_home' %}"><button class="btn btn-primary">Reset</button></a>
               </div>
-              
           </div>
       </center>
     </div>
@@ -163,25 +296,6 @@
             </div>
           </div>
         </div>
-        
-        <!--     <div class="col-md-12">-->
-        <!--  <div class="InvestmentChart">-->
-        <!--    <h2 class="chart-title">Industry in accordance to District</h2>-->
-        <!--    <div class="row">-->
-        <!--      <div class="col-md-5 chart-info-list">-->
-        <!--        <h2 class="kit-page-heading mb-3 chart-heading"><span>Total District ( कुल जिल्ला)</span><span class="badge text-bg">{{district_count}}</span></h2>-->
-        <!--        <ul class="chart-list">-->
-        <!--            {% for dist,count in district_dict.items %}-->
-        <!--                <li><span><i class="fa-solid fa-circle me-2" style="color:#01b7f9;"></i>{{dist}}</span> <span class="badge text-bg">{{count}}</span></li>-->
-        <!--            {% endfor %}-->
-        <!--        </ul>-->
-        <!--      </div>-->
-        <!--      <div class="col-md-7">-->
-        <!--        <canvas id="InvestmentChart" style="width:100%;"></canvas>-->
-        <!--      </div>-->
-        <!--    </div>-->
-        <!--  </div>-->
-        <!--</div>-->
         
         <div class="col-md-12 my-5">
           <div class="InvestmentChart">
@@ -533,4 +647,3 @@
   </script>
 
 {% endblock %}
-  

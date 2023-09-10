@@ -34,7 +34,7 @@ industry_acc_product_mapping = {
 }
 
 current_status_mapping = {
-    "चालु": "A",
+    "सक्रिय": "A",
     "निष्कृय": "I",
 }
 

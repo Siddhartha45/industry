@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from django.db.models import Sum
 
 from .models import IndustryWithoutGis
 from .forms import IndustryWithoutGisModelForm
@@ -21,6 +22,88 @@ from report.excel_data_mapping import (
     ownership_mapping, raw_materials_source_mapping, current_running_capacity_mapping, district_mapping, local_body_mapping
     )
 
+
+def industry_without_gis_home(request):
+    session_local_delete(request)
+    
+    selected_district = request.GET.get('district')
+    
+    if selected_district:
+        data_filter = IndustryWithoutGis.objects.filter(district=selected_district)
+    else:
+        data_filter = IndustryWithoutGis.objects.all()
+
+    unique_districts = IndustryWithoutGis.objects.values_list('district', flat=True).distinct()
+
+    district_count = unique_districts.count()
+    
+    total_industry = data_filter.count()
+    #for showing chart acc to investment
+    miniature = data_filter.filter(investment='MINIATURE').count()
+    domestic = data_filter.filter(investment='DOMESTIC').count()
+    small = data_filter.filter(investment='SMALL').count()
+    medium = data_filter.filter(investment='MEDIUM').count()
+    large = data_filter.filter(investment='LARGE').count()
+    #for showing chart acc to ownership
+    private = data_filter.filter(ownership='PRIVATE').count()
+    partnership = data_filter.filter(ownership='PARTNERSHIP').count()
+    #for showing chart acc to current status
+    active = data_filter.filter(current_status='A').count()
+    inactive = data_filter.filter(current_status='I').count()
+    #for showing chart acc to type of product
+    energy = data_filter.filter(industry_acc_product='E').count()
+    manufacturing = data_filter.filter(industry_acc_product='MF').count()
+    ag = data_filter.filter(industry_acc_product='AF').count()
+    mineral = data_filter.filter(industry_acc_product='MI').count()
+    infra = data_filter.filter(industry_acc_product='I').count()
+    tourism = data_filter.filter(industry_acc_product='T').count()
+    it = data_filter.filter(industry_acc_product='IC').count()
+    service = data_filter.filter(industry_acc_product='S').count()
+    others = data_filter.filter(industry_acc_product='O').count()
+    #for showing chart acc to employment
+    total_manpower = data_filter.aggregate(total=Sum('total_manpower'))['total']
+    skilled = data_filter.aggregate(total=Sum('skillfull'))['total']
+    unskilled = data_filter.aggregate(total=Sum('unskilled'))['total']
+    indigenous = data_filter.aggregate(total=Sum('indigenous'))['total']
+    foreign = data_filter.aggregate(total=Sum('foreign'))['total']
+    male = data_filter.aggregate(total=Sum('male'))['total']
+    female = data_filter.aggregate(total=Sum('female'))['total']
+
+    context = {
+                'unique_districts':unique_districts,
+                'district_count':district_count,
+                
+                'total_industry': total_industry,
+                'miniature': miniature,
+                'domestic': domestic,
+                'small': small,
+                'medium': medium,
+                'large': large,
+                'private': private,
+                'partnership': partnership,
+                'active': active,
+                'inactive': inactive,
+                'energy': energy,
+                'manufacturing': manufacturing,
+                'ag': ag,
+                'mineral': mineral,
+                'infra': infra,
+                'tourism': tourism,
+                'it': it,
+                'service': service,
+                'others': others,
+                'total_manpower': total_manpower,
+                'skilled': skilled,
+                'unskilled': unskilled,
+                'indigenous': indigenous,
+                'foreign': foreign,
+                'male': male,
+                'female': female,
+                }
+    if request.user.is_authenticated:
+        return render(request, 'industry_without_gis/industry_without_gis_graph.html', context)
+    else:
+        return render(request, 'public/industry_without_gis_public.html', context)
 
 @superadmin_required
 def without_gis_data_import(request, file):
@@ -506,6 +589,10 @@ def without_gis_download_pdf(request):
         'industry': queryset,
         }
     return render(request,"industry/report.html",context)
+
+
+
+
 
 
 # import re

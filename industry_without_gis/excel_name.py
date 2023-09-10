@@ -3,7 +3,7 @@
 industry_name = "उद्योगको नाम"
 industry_reg_no = "उद्योग दर्ता नं."
 reg_date = "उद्योग दर्ता मिति"
-owner_name = "उद्योगिको नाम"
+owner_name = "उद्योगीको नाम"
 sex = "लिङ्ग"
 caste = "जाती"
 address = "उद्योगिको ठेगाना"

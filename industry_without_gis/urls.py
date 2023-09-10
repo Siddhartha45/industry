@@ -4,6 +4,7 @@ from . import views
 
 
 urlpatterns = [
+    path('industry-without-gis/home/', views.industry_without_gis_home, name="industry_without_gis_home"),
     path('industry-without-gis/list/', views.without_gis_industry_list, name="industry_without_gis_list"),
     path('industry-ajax-search-without-gis/', views.AjaxSearchWithousGis, name="AjaxSearchWithoutGis"),
     path('industry-without-gis/session-reset/', views.session_delete, name="session_reset_without_gis"),
