@@ -71,6 +71,7 @@ def import_file(request):
                     messages.error(request, 'Invalid file format. Please upload correct Excel File with proper data!')
                 else:
                     gis_data_import(request, file)
+                    return redirect('file')
         elif 'without_gis_file_upload' in request.POST:
             if form.is_valid():
                 file = request.FILES['file']
@@ -78,6 +79,7 @@ def import_file(request):
                     messages.error(request, 'Invalid file format. Please upload correct Excel File with proper data!')
                 else:
                     without_gis_data_import(request, file)
+                    return redirect('file')
     else:
         form = UploadFileForm()
     return render(request, 'report/fileupload.html', {'form': form})

@@ -1,0 +1,37 @@
+<!-- translation_settings.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Translation Settings</title>
+</head>
+<body>
+    <h1>Translation Settings</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {% for key, existing_translation in translations.items %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>
+                    <input type="text" name="{{ key }}" value="{{ existing_translation }}">
+                    <!-- Display the existing translation as the initial value -->
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

@@ -331,6 +331,7 @@ def delete_industry(request, industry_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   #redirects user to same page after deleting
 
 
+@login_required
 def search_industry(request):
     session_local_delete(request)
     if request.GET:

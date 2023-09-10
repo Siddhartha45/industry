@@ -5,6 +5,7 @@ import csv
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.serializers import serialize
 
@@ -12,6 +13,8 @@ from .models import IndustryWithoutGis
 from .forms import IndustryWithoutGisModelForm
 
 from fdip import commons
+from fdip.decorators import superadmin_required
+from .excel_name import *
 from industry.views import session_local_delete
 from report.excel_data_mapping import (
     dtype_mapping, sex_mapping, caste_mapping, investment_mapping, industry_acc_product_mapping, current_status_mapping, 
@@ -19,77 +22,93 @@ from report.excel_data_mapping import (
     )
 
 
+@superadmin_required
 def without_gis_data_import(request, file):
     """function for exporting excel data of industries without gis to IndutryWithoutGis model"""
     df = pd.read_excel(file, dtype=dtype_mapping)
+    df.columns = df.columns.str.strip()     # Removes blank spaces from column names
+
     for _, row in df.iterrows():
         industry_data = {}
         
-        if 'industry_name' in df.columns:
-            industry_name = row['industry_name']
-            if pd.notna(industry_name):
-                industry_data['industry_name'] = industry_name
+        if industry_name in df.columns:
+            industry_name_value = row[industry_name]
+            if pd.notna(industry_name_value):
+                industry_data['industry_name'] = industry_name_value
             else:                                                   # Excel row not having industry_name value are not entered
                 continue
 
-        if 'reg_date' in df.columns:
-            reg_date = row['reg_date']
-            if pd.notna(reg_date):
+        if reg_date in df.columns:
+            reg_date_value = row[reg_date]
+            if pd.notna(reg_date_value):
                 try:
-                    datetime_obj = pd.to_datetime(reg_date)
+                    datetime_obj = pd.to_datetime(reg_date_value)
                     formatted_reg_date = datetime_obj.strftime('%Y-%m-%d')  # Format as 'YYYY-MM-DD'
                     industry_data['reg_date'] = formatted_reg_date
                 except ValueError:
                     industry_data['reg_date'] = None
-                    
-        column_names = ['industry_reg_no', 'owner_name', 'address', 'telephone_number', 'contact_person', 'mobile_number', 'ward_no', 
-                        'settlement', 'product_description', 'product_service_name', 'machinery_tool']
-        for column_name in column_names:
-            if column_name in df.columns:
-                value = row[column_name]
+
+        column_names = {
+            'industry_reg_no': industry_reg_no, 'owner_name': owner_name, 'address': address, 
+            'telephone_number': telephone_number, 'contact_person': contact_person, 
+            'mobile_number': mobile_number, 'ward_no': ward_no, 'settlement': settlement, 
+            'product_description': product_description, 'product_service_name': product_service_name, 
+            'machinery_tool': machinery_tool
+        }
+        for k, v in column_names.items():
+            if v in df.columns:
+                value = row[v]
                 if pd.notna(value):
-                    industry_data[column_name] = value
-                    
+                    industry_data[k] = value
+
+        
         column_mappings = {
-            'sex': sex_mapping,
-            'caste': caste_mapping,
-            'investment': investment_mapping,
-            'industry_acc_product': industry_acc_product_mapping,
-            'current_status': current_status_mapping,
-            'ownership': ownership_mapping,
-            'raw_material_source': raw_materials_source_mapping,
-            'current_running_capacity': current_running_capacity_mapping,
-            'district': district_mapping,
-            'local_body': local_body_mapping,
+            'sex': (sex, sex_mapping),
+            'caste': (caste, caste_mapping),
+            'investment': (investment, investment_mapping),
+            'industry_acc_product': (industry_acc_product, industry_acc_product_mapping),
+            'current_status': (current_status, current_status_mapping),
+            'ownership': (ownership, ownership_mapping),
+            'raw_material_source': (raw_material_source, raw_materials_source_mapping),
+            'current_running_capacity': (current_running_capacity, current_running_capacity_mapping),
+            'district': (district, district_mapping),
+            'local_body': (local_body, local_body_mapping),
         }
         for column, mapping in column_mappings.items():
-            if column in df.columns:
-                choice = row[column]
+            if mapping[0] in df.columns:
+                choice = row[mapping[0]]
                 if pd.notna(choice):
-                    industry_data[column] = mapping.get(choice.strip(), None)
+                    industry_data[column] = mapping[1].get(choice.strip(), None)
 
-        manpower_columns = ['male', 'female', 'skillfull', 'unskilled', 'indigenous', 'foreign']
-        for manpower_column in manpower_columns:
-            if manpower_column in df.columns:
-                manpower_value = row[manpower_column] if pd.notna(row[manpower_column]) else 0
+        manpower_columns = {
+            'male': male, 'female': female, 'skillfull': skillfull, 
+            'unskilled': unskilled, 'indigenous': indigenous, 
+            'foreign': foreign
+        }
+        for k, v in manpower_columns.items():
+            if v in df.columns:
+                manpower_value = row[v] if pd.notna(row[v]) else 0
                 try:
                     int_manpower_value = int(manpower_value)
                 except ValueError:
                     int_manpower_value = 0
-                industry_data[manpower_column] = int_manpower_value
-        # Stores value of total manpower
-        total_manpower = industry_data['male'] + industry_data['female']
+                industry_data[k] = int_manpower_value
+        # Stores value of total manpower (if one of the column is missing returns 0)
+        total_manpower = industry_data.get('male', 0) + industry_data.get('female', 0)
         
-        capital_columns = ['yearly_capacity', 'fixed_capital', 'current_capital', 'total_capital']
-        for capital_column in capital_columns:
-            if capital_column in df.columns:
-                capital_value = row[capital_column] if pd.notna(row[capital_column]) else 0
+        capital_columns = {
+            'yearly_capacity': yearly_capacity, 'fixed_capital': fixed_capital, 
+            'current_capital': current_capital, 'total_capital': total_capital
+        }
+        for k, v in capital_columns.items():
+            if v in df.columns:
+                capital_value = row[v] if pd.notna(row[v]) else 0
                 clean_capital_value = str(capital_value).replace(',', '')  # Remove commas from the number
                 try:
                     float_capital_value = float(clean_capital_value)
                 except ValueError:
                     float_capital_value = 0
-                industry_data[capital_column] = float_capital_value
+                industry_data[k] = float_capital_value
         
         if industry_data:
             industry = IndustryWithoutGis(**industry_data)
@@ -99,6 +118,7 @@ def without_gis_data_import(request, file):
     return messages.success(request, "The excel data is saved to database.")
 
 
+@login_required
 def without_gis_industry_list(request):
     all_localbody = commons.ALL_LOCALBODY_CHOICES
     if 'type' in request.session:
@@ -180,12 +200,14 @@ def without_gis_industry_list(request):
     return render(request, 'industry_without_gis/industry_list_without_gis.html', data)
 
 
+@login_required
 def view_industry_profile_without_gis(request, industry_id):
     industry = get_object_or_404(IndustryWithoutGis, id=industry_id)
     context = {'industry': industry}
     return render(request, 'industry_without_gis/industry_detail_without_gis.html', context)
 
 
+@superadmin_required
 def delete_industry_without_gis(request, industry_id):
     industry = get_object_or_404(IndustryWithoutGis, id=industry_id)
     industry.delete()
@@ -193,6 +215,7 @@ def delete_industry_without_gis(request, industry_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))   #redirects user to same page after deleting
 
 
+@login_required
 def edit_industry_without_gis(request, industry_id):
     data = {
         'sex' : commons.SEX_CHOICES,
@@ -315,6 +338,7 @@ def session_delete(request):
     return redirect('industry_without_gis_list')
 
 
+@login_required
 def without_gis_industry_excel(request):
     """downloads industry data in excel format"""
     filter_investment = request.GET.get("investment")
@@ -371,6 +395,7 @@ def without_gis_industry_excel(request):
     return response
 
 
+@login_required
 def without_gis_industry_csv(request):
     """downloads industry data in csv format"""
     filter_investment = request.GET.get("investment")
@@ -413,12 +438,14 @@ def without_gis_industry_csv(request):
     return response
 
 
+@login_required
 def industry_without_gis_profile_pdf(request, industry_id):
     industry = get_object_or_404(IndustryWithoutGis, id=industry_id)
     context = {'industry': industry}
     return render(request, 'industry_without_gis/industry_without_gis_profile_pdf.html', context)
 
 
+@login_required
 def without_gis_download_pdf(request):
     """downloads industry data in pdf format"""
     investment_input = request.GET.get('investment_input')
@@ -479,3 +506,49 @@ def without_gis_download_pdf(request):
         'industry': queryset,
         }
     return render(request,"industry/report.html",context)
+
+
+# import re
+# from industry_without_gis import excel_name
+
+# def translation_settings(request):
+#     # Define the updated translations
+#     updated_translations = {}
+
+#     if request.method == 'POST':
+#         for key in FIELD_TRANSLATIONS:
+#             new_translation = request.POST.get(key)
+#             if new_translation:
+#                 updated_translations[key] = new_translation
+
+#         # Read the contents of the Python file
+#         with open('industry_without_gis/excel_name.py', 'r', encoding='utf-8') as excel_file:
+#             file_contents = excel_file.read()
+
+#         # Update the FIELD_TRANSLATIONS dictionary in the file_contents
+#         for key, value in updated_translations.items():
+#             pattern = re.compile(f"'{key}':\s*['\"].*?['\"']", re.DOTALL)
+#             replacement = f"'{key}': '{value}'"
+#             file_contents = pattern.sub(replacement, file_contents)
+
+#         # Write the updated contents back to the file
+#         with open('industry_without_gis/excel_name.py', 'w', encoding='utf-8') as excel_file:
+#             excel_file.write(file_contents)
+
+#         # Add a success message
+#         messages.success(request, 'Translations updated successfully')
+
+#         # Reload the updated translations
+#         existing_translations = updated_translations
+
+#     else:
+#         # Use the initial translations
+#         existing_translations = FIELD_TRANSLATIONS
+
+#     # Convert updated_translations dictionary to a list of (key, value) pairs for template
+#     updated_translations_list = [(key, value) for key, value in updated_translations.items()]
+
+#     return render(request, 'translation_settings.html', {
+#         'translations': existing_translations,
+#         'updated_translations': updated_translations_list,
+#     })

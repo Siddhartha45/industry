@@ -14,4 +14,6 @@ urlpatterns = [
     path('industry-without-gis/download/csv/', views.without_gis_industry_csv, name="without_gis_csv"),
     path('industry-without-gis-profile/download/pdf/<int:industry_id>/', views.industry_without_gis_profile_pdf, name="industry_without_gis_profile_pdf"),
     path('industry-without-gis/download/pdf/', views.without_gis_download_pdf, name="industry_without_gis_download_pdf"), 
+    
+    # path('translation_settings/', views.translation_settings, name='translation_settings'),
 ]
