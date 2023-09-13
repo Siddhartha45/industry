@@ -18,7 +18,7 @@
         {% endfor %}
 
         <div class="cng-pw-title d-flex justify-content-between mt-4">
-            <p>Industries List<span>
+            <p>Industries List Without GIS<span>
                     ( उद्योग सूची )</span>
             </p>
             
@@ -199,7 +199,7 @@
         var district = $("#districtInput").val();
         var localbody = $("#localInput").val();
         
-        var url = "{% url 'download-csv' %}?";
+        var url = "{% url 'without_gis_csv' %}?";
 
         if (investment) {
             url += "investment=" + investment + "&";
@@ -225,7 +225,7 @@
         var district = $("#districtInput").val();
         var localbody = $("#localInput").val();
         
-        var url = "{% url 'download-excel' %}?";
+        var url = "{% url 'without_gis_excel' %}?";
         if (searchQuery) {
             url += "search=" + encodeURIComponent(searchQuery) + "&";
         }
@@ -365,7 +365,7 @@
         $('#search').on('input', function() {
           var value = $(this).val();
           $.ajax({
-            url: "{% url 'AjaxSearch' %}",
+            url: "{% url 'AjaxSearchWithoutGis' %}",
             type: 'GET',
             data: {
                 type:'search',search: value,
@@ -390,6 +390,7 @@
                       <tr>
                           <td>`+ count +` </td>
                           <td class="d-none"> `+ item.fields.industry_name +` </td>
+        
                           <td> `+ item.fields.industry_name +` </td>
                           <td> `+ item.fields.owner_name +` </td>
                           <td> `+ getReadableDistrict(item.fields.district) +` </td>
@@ -426,7 +427,7 @@
         
             
             $.ajax({
-              url: "{% url 'AjaxSearch' %}",
+              url: "{% url 'AjaxSearchWithoutGis' %}",
               type: 'GET',
               data: {
                   type:'option',investment_input:investment_input,product_input:product_input,district_input:district_input,local_input:local_input
@@ -496,21 +497,11 @@
 
         var get_url = "?investment_input="+investment_input+"&product_input="+product_input+"&district_input="+district_input+"&local_input="+local_input
 
-        window.open("{%url 'download-pdf' %}"+get_url, "_blank");
-        
+        window.open("{%url 'industry_without_gis_download_pdf' %}"+get_url, "_blank");
     }
 
     document.getElementById("ResetMd").addEventListener("click", function() {
-        //document.getElementById("ownershipInput").value = "None";
-        //document.getElementById("ownershipInput").dispatchEvent(new Event('change'));
-
-        //document.getElementById("investmentInput").value = "None";
-        //document.getElementById("investmentInput").dispatchEvent(new Event('change'));
-
-        //document.getElementById("productInput").value = "None";
-        //document.getElementById("productInput").dispatchEvent(new Event('change'));
-
-        window.open("{% url 'session-reset' %}","_self"); 
+        window.open("{% url 'session_reset_without_gis' %}","_self"); 
     });
     
     </script>

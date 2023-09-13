@@ -201,7 +201,6 @@ def without_gis_data_import(request, file):
     return messages.success(request, "The excel data is saved to database.")
 
 
-@login_required
 def without_gis_industry_list(request):
     all_localbody = commons.ALL_LOCALBODY_CHOICES
     if 'type' in request.session:
@@ -280,7 +279,10 @@ def without_gis_industry_list(request):
         'all_localbody': all_localbody,
     }
     
-    return render(request, 'industry_without_gis/industry_list_without_gis.html', data)
+    if request.user.is_authenticated:
+        return render(request, 'industry_without_gis/industry_list_without_gis.html', data)
+    else:
+        return render(request, 'public/public_withoutgis_industry_list.html', data)
 
 
 @login_required

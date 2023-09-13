@@ -53,7 +53,10 @@
                                 <a class="nav-link" aria-current="page" href="{% url 'login' %}">Log in</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="{% url 'industry-list' %}">Industry List</a>
+                                <a class="nav-link" aria-current="page" href="{% url 'industry-list' %}">Industry List(With GIS)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="{% url 'industry_without_gis_list' %}">Industry List(Without GIS)</a>
                             </li>
                         {% endif %}
                     </ul>
