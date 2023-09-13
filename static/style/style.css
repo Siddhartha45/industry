@@ -936,7 +936,7 @@ td {
 }
 
 
-footer {
+/* footer {
   height: 60px;
   display: flex;
   justify-content: center;
@@ -954,6 +954,25 @@ footer p {
   align-items: center;
   text-align: center;
   margin-bottom: 0;
+} */
+
+footer {
+  height: 40px;
+  align-items: center;
+  background-color: red;
+  text-align: center;
+  color: white;
+}
+footer p {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: 12px;
+  a {
+    color: #fff;
+  }
 }
 
 .kit-tab-content {
