@@ -59,7 +59,7 @@ def report_show(request, report_id):
     return render(request, 'report/show.html', context)
 
 
-@transaction.atomic     # If error occurs while exporting data doesn't let any data be saved in the database 
+@transaction.atomic     # If error occurs while exporting data doesn't let any data to be saved in the database 
 @superadmin_required
 def import_file(request):
     """for importing excel data to database"""

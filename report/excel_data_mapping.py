@@ -34,12 +34,12 @@ industry_acc_product_mapping = {
 }
 
 current_status_mapping = {
-    "सक्रिय": "A",
+    "चालु": "A",
     "निष्कृय": "I",
 }
 
 ownership_mapping = {
-    "निजी": "PRIVATE",
+    "निजि": "PRIVATE",
     "साझेदारी": "PARTNERSHIP",
 }
 
@@ -127,7 +127,7 @@ local_body_mapping = {
     "धनगढी उपमहानगरपालिका": "DHANGADI",
     "टिकापुर नगरपालिका": "TIKAPUR",
     "घोडाघोडी नगरपालिका": "GHODAGHODI",
-    "लम्कीचुहा नगरपालिका": "LAMKICHUHA",
+    "लम्किचुहा नगरपालिका": "LAMKICHUHA",
     "भजनी नगरपालिका": "VAJANI",
     "गोदावरी नगरपालिका": "GODAWARI",
     "गौरीगंगा नगरपालिका": "GAURIGANGA",
