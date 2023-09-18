@@ -10,10 +10,10 @@ class Industry(models.Model):
     """Model for Industry"""
     created_on = models.DateTimeField(auto_now_add=True)    
     #Industry Details
-    industry_name = models.CharField(max_length=150)
-    industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
-    reg_date = models.CharField(max_length=10, blank=True, null=True, validators=[nepali_date_validator])
-    owner_name = models.CharField(max_length=100)
+    industry_name = models.CharField(max_length=255)
+    industry_reg_no = models.CharField(max_length=255, blank=True, null=True)
+    reg_date = models.CharField(max_length=20, blank=True, null=True, validators=[nepali_date_validator])
+    owner_name = models.CharField(max_length=255)
     sex = models.CharField(max_length=6, choices=commons.SEX_CHOICES, blank=True, null=True)
     caste = models.CharField(max_length=8, choices=commons.CASTE_CHOICES, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)

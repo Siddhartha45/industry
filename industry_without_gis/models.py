@@ -7,10 +7,10 @@ from fdip import commons
 
 class IndustryWithoutGis(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
-    industry_name = models.CharField(max_length=150, blank=True, null=True)
-    industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
-    reg_date = models.CharField(max_length=10, validators=[nepali_date_validator], blank=True, null=True)
-    owner_name = models.CharField(max_length=100, blank=True, null=True)
+    industry_name = models.CharField(max_length=255, blank=True, null=True)
+    industry_reg_no = models.CharField(max_length=255, blank=True, null=True)
+    reg_date = models.CharField(max_length=20, validators=[nepali_date_validator], blank=True, null=True)
+    owner_name = models.CharField(max_length=255, blank=True, null=True)
     sex = models.CharField(max_length=6, choices=commons.SEX_CHOICES, blank=True, null=True)
     caste = models.CharField(max_length=8, choices=commons.CASTE_CHOICES, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
