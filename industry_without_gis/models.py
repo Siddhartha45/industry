@@ -6,6 +6,7 @@ from fdip import commons
 
 
 class IndustryWithoutGis(models.Model):
+    created_on = models.DateTimeField(auto_now_add=True)
     industry_name = models.CharField(max_length=150, blank=True, null=True)
     industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
     reg_date = models.CharField(max_length=10, validators=[nepali_date_validator], blank=True, null=True)

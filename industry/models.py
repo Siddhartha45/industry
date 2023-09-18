@@ -7,7 +7,8 @@ from fdip import commons
 
 
 class Industry(models.Model):
-    """Model for Industry"""    
+    """Model for Industry"""
+    created_on = models.DateTimeField(auto_now_add=True)    
     #Industry Details
     industry_name = models.CharField(max_length=150)
     industry_reg_no = models.CharField(max_length=100, blank=True, null=True)
