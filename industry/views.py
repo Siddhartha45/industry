@@ -43,12 +43,15 @@ def home(request):
     small = data_filter.filter(investment='SMALL').count()
     medium = data_filter.filter(investment='MEDIUM').count()
     large = data_filter.filter(investment='LARGE').count()
+    total_industry_acc_inv = miniature + domestic + small + medium + large
     #for showing chart acc to ownership
     private = data_filter.filter(ownership='PRIVATE').count()
     partnership = data_filter.filter(ownership='PARTNERSHIP').count()
+    total_ownership = private + partnership
     #for showing chart acc to current status
     active = data_filter.filter(current_status='A').count()
     inactive = data_filter.filter(current_status='I').count()
+    total_current_status = active + inactive
     #for showing chart acc to type of product
     energy = data_filter.filter(industry_acc_product='E').count()
     manufacturing = data_filter.filter(industry_acc_product='MF').count()
@@ -59,6 +62,8 @@ def home(request):
     it = data_filter.filter(industry_acc_product='IC').count()
     service = data_filter.filter(industry_acc_product='S').count()
     others = data_filter.filter(industry_acc_product='O').count()
+    total_industry_acc_pro = (energy + manufacturing + ag + mineral + infra + 
+                             tourism + it + service + others)
     #for showing chart acc to employment
     total_manpower = data_filter.aggregate(total=Sum('total_manpower'))['total']
     skilled = data_filter.aggregate(total=Sum('skillfull'))['total']
@@ -74,15 +79,23 @@ def home(request):
                 'district_dict':district_dict,
                 
                 'total_industry': total_industry,
+                
+                'total_industry_acc_inv': total_industry_acc_inv,
                 'miniature': miniature,
                 'domestic': domestic,
                 'small': small,
                 'medium': medium,
                 'large': large,
+                
+                'total_ownership': total_ownership,
                 'private': private,
                 'partnership': partnership,
+                
+                'total_current_status': total_current_status,
                 'active': active,
                 'inactive': inactive,
+                
+                'total_industry_acc_pro': total_industry_acc_pro,
                 'energy': energy,
                 'manufacturing': manufacturing,
                 'ag': ag,
