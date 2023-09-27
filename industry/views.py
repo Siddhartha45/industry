@@ -33,7 +33,6 @@ def home(request):
     except:
         district_dict = {}
 
-
     district_count = unique_districts.count()
     
     total_industry = data_filter.count()
@@ -74,9 +73,10 @@ def home(request):
     female = data_filter.aggregate(total=Sum('female'))['total']
 
     context = {
-                'unique_districts':unique_districts,
-                'district_count':district_count,
-                'district_dict':district_dict,
+                'data_filter': data_filter,
+                'unique_districts': unique_districts,
+                'district_count': district_count,
+                'district_dict': district_dict,
                 
                 'total_industry': total_industry,
                 

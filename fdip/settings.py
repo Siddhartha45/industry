@@ -27,11 +27,9 @@ SECRET_KEY = 'django-insecure-w6(96f=0+#n(cu6a4mrvy%7ro4tc6&#4q%%6vyc4tyy@3qaoe-
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'goldfish-app-iobpd.ondigitalocean.app', 
-    'industry.kantipurinfotech.com', 
-    'localhost', 
     '10.5.60.109',
     '103.175.192.224',
+    'industry.sudurpashchim.gov.np',
 ]
 
 

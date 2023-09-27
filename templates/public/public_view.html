@@ -262,16 +262,9 @@
         zoom: 7.4,
     });
 
-    addMarker({lat: 28.2096, lng: 83.9856}, 'Pokhara');
-    addMarker({lat: 27.0449, lng: 84.8672}, 'Birgunj');
-    addMarker({lat: 28.9873, lng: 80.1652}, 'Mahendranagar');
-    addMarker({lat: 27.354712, lng: 87.667488}, 'Taplejung');
-    addMarker({lat: 28.683359, lng: 80.608063}, 'Dhangadi');
-    addMarker({lat: 29.5239, lng: 82.0788}, 'Rara Lake');
-    addMarker({lat: 27.6866, lng: 83.4323}, 'Butwal');
-    addMarker({lat: 27.429071, lng: 85.029716}, 'Hetauda');
-    addMarker({lat: 27.700001, lng: 85.333336}, 'Kathmandu');
-    addMarker({lat: 27.005915, lng: 84.859085}, 'Biratnagar');
+    {% for data in data_filter %}
+      addMarker({lat: {{data.latitude}}, lng: {{data.longitude}}}, '{{ data.industry_name|escapejs }}');
+    {% endfor %}
 
     function addMarker(coordinates, content){
         let marker = new google.maps.Marker({
