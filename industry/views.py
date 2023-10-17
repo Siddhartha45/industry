@@ -252,6 +252,7 @@ def industry_profile_pdf(request, industry_id):
 
 def industry_list(request):
     
+    districts = commons.DISTRICT_CHOICES
     all_localbody = commons.ALL_LOCALBODY_CHOICES
 
     if 'type' in request.session:
@@ -328,6 +329,7 @@ def industry_list(request):
         'request':request,
         'messages': messages.get_messages(request),
         'all_localbody': all_localbody,
+        'districts': districts,
     }
     
     if request.user.is_authenticated:
