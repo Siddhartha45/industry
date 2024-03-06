@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Table with Filter</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .filter-input {
+            padding: 8px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-container">
+    <form method="get">
+        <input type="text" name="searched_name" placeholder="Filter by name.." {% if searched_name %}value={{searched_name}}{% endif %}>
+        <select id="categoryFilter" class="filter-input" name="searched_district">
+            <option value="">District</option>
+            {% for k, v in district %}
+            <option value="{{k}}" {% if searched_district == k %}selected{% endif %}>{{v}}</option>
+            {% endfor %}
+        </select>
+        <select id="categoryFilter" class="filter-input" name="searched_investment">
+            <option value="">Investment</option>
+            {% for k, v in investment %}
+            <option value="{{k}}" {% if searched_investment == k %}selected{% endif %}>{{v}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+        <button><a href="?">Reset</a></button>
+    </form>
+    </div>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Industry Name</th>
+                <th>Owner</th>
+                <th>District</th>
+                <th>Investment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in page_obj %}
+            <tr>
+                <td>{{starting_sn|add:forloop.counter0}}</td>
+                <td>{{i.industry_name}}</td>
+                <td>{{i.owner_name}}</td>
+                <td>{{i.get_district_display}}</td>
+                <td>{{i.get_investment_display}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if searched_name %}&searched_name={{ searched_name }}{% endif %}{% if searched_district %}&searched_district={{ searched_district }}{% endif %}{% if searched_investment %}&searched_investment={{ searched_investment }}{% endif %}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if searched_name %}&searched_name={{ searched_name }}{% endif %}{% if searched_district %}&searched_district={{ searched_district }}{% endif %}{% if searched_investment %}&searched_investment={{ searched_investment }}{% endif %}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if searched_name %}&searched_name={{ searched_name }}{% endif %}{% if searched_district %}&searched_district={{ searched_district }}{% endif %}{% if searched_investment %}&searched_investment={{ searched_investment }}{% endif %}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if searched_name %}&searched_name={{ searched_name }}{% endif %}{% if searched_district %}&searched_district={{ searched_district }}{% endif %}{% if searched_investment %}&searched_investment={{ searched_investment }}{% endif %}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>

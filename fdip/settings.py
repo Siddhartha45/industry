@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     '10.5.60.109',
     '103.175.192.224',
     'industry.sudurpashchim.gov.np',
+    '*'
 ]
 
 
@@ -49,6 +50,9 @@ INSTALLED_APPS = [
     'report',
     'faq',
     'industry_without_gis',
+    #improv is for learning part
+    'improv',
+    'django.contrib.humanize'
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser" 
@@ -88,29 +92,29 @@ WSGI_APPLICATION = 'fdip.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Default database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Database used in server
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'industry',
-        'USER': 'user',
-        'PASSWORD':'k@nt1purInfot3ch',
-        'HOST':'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
-        }
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'industry',
+#         'USER': 'user',
+#         'PASSWORD':'k@nt1purInfot3ch',
+#         'HOST':'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#             'charset': 'utf8mb4',
+#         }
+#     }
+# }
 
 
 # Database used in Cpanel

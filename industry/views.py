@@ -176,6 +176,8 @@ def add_industry(request):
                 
             messages.success(request, 'Industry Detail is Added Successfully!')
             return redirect('industry-list')
+        else:
+            print(form.errors)
     else:
         form = IndustryForm()
         
